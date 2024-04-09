@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "501102519819",
+    "project_id": "tsmarts",
+    "storage_bucket": "tsmarts.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501102519819:android:660e397f3c0d65d7ed090e",
+        "android_client_info": {
+          "package_name": "com.t_smart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501102519819-nn3bubead0uin0ia16bd1ptqhrkiapjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9z4btjC4XL-S5UJGtEKIxJOkPlYH2Qwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501102519819-nn3bubead0uin0ia16bd1ptqhrkiapjj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "501102519819-cnepbnvg69q9c322r687l75rr1trkt4l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.T-Smart"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

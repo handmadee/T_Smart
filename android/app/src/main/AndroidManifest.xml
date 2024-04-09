@@ -1,12 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
+<!-- Wifi State -->
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+<!-- NOTIFICATION -->
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<!-- NetWork -->
+   <uses-permission android:name="android.permission.INTERNET" />
+          <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+        <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
+
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
@@ -16,10 +25,29 @@
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize"
         android:exported="true">
-        <intent-filter>
+        <intent-filter android:autoVerify="true" >
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+       <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="www.example.com" />
+        <data
+         android:scheme="tSmart" 
+         android:host="notification"
+        />
+    </intent-filter>
+          <!-- <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http" />
+        <data android:scheme="https" />
+        <data android:host="www.example.com" />
+    </intent-filter> -->
       </activity>
     </application>
 </manifest>
+   

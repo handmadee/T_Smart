@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Aubrey-Regular.ttf",
+      "sha1": "b7e1d0ff17d1499598438ba55460cc3390f6a554"
+    },
+    {
+      "path": "assets/fonts/Inter-Medium.ttf",
+      "sha1": "a418a8ba73bbcfa8c131c426ab836d78457afa9b"
+    },
+    {
+      "path": "assets/fonts/Jost-Bold.ttf",
+      "sha1": "15c306309ab5e093c973fab0ba1ef88a7012cc2d"
+    },
+    {
+      "path": "assets/fonts/Jost-SemiBold.ttf",
+      "sha1": "04165a9fe78bef66820e3c57dd19cb9b40bcbd88"
+    },
+    {
+      "path": "assets/fonts/Mulish-Bold.ttf",
+      "sha1": "17352fd4b1929910ad99ec6b9d1e04cb40662147"
+    },
+    {
+      "path": "assets/fonts/Mulish-ExtraBold.ttf",
+      "sha1": "3aa02045b5b77630a14817e34c4ed94998b3cc48"
+    },
+    {
+      "path": "assets/fonts/Mulish-SemiBold.ttf",
+      "sha1": "acaafc30e6e58676eae869901793e156afc22b63"
+    },
+    {
+      "path": "assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "assets/fonts/Poppins-SemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "assets/fonts/Roboto-Regular.ttf",
+      "sha1": "56c5c0d38bde4c1f1549dda43db37b09c608aad3"
+    },
+    {
+      "path": "assets/fonts/Rubik-Medium.ttf",
+      "sha1": "dfb3bb5c226cf55f1dd579caf8e8829753d0e71c"
+    },
+    {
+      "path": "assets/fonts/Rubik-Regular.ttf",
+      "sha1": "a68256ef0c0a3a7b597dba28408e584cf24c1e56"
+    }
+  ]
+}

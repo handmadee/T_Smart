@@ -1,0 +1,291 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "nameCourse": "Product Design v1.0",
+      "about": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,Sed ut perspiciatis unde omni istnatus error sit voluptatem accusantium doloremque laudantium",
+      "author": "Robertson Connie",
+      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5FHPRV8f6zxOycByAag-I_vtx5qEiXrl-878wkKTJuKbPJuoT4tiPsMeDsGWOOZuhgik&usqp=CAU",
+      "categoryID": "Programs",
+      "lessons": [
+        {
+          "id": 1,
+          "nameLesson": "Welcome to the Course",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=5RAtFSEkFho",
+          "courseID": 1
+        },
+        {
+          "id": 2,
+          "nameLesson": "Process overview",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=RjHflb-QgVc&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=2",
+          "courseID": 1
+        },
+        {
+          "id": 3,
+          "nameLesson": "Discovery",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=3",
+          "courseID": 1
+        },
+        {
+          "id": 4,
+          "nameLesson": "Pay Now Animation",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=4",
+          "courseID": 1
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nameCourse": "Product Design",
+      "about": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,Sed ut perspiciatis unde omni istnatus error sit voluptatem accusantium doloremque laudantium",
+      "author": "Robertson Connie",
+      "price": 190,
+      "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa1TbdGOxksutEsN8C4hDOpZQVsPrjqsF0hw&usqp=CAU",
+      "categoryID": "Popular",
+      "lessons": [
+        {
+          "id": 1,
+          "nameLesson": "Welcome to the Course",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=5RAtFSEkFho",
+          "courseID": 2
+        },
+        {
+          "id": 2,
+          "nameLesson": "Process overview",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=RjHflb-QgVc&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=2",
+          "courseID": 2
+        },
+        {
+          "id": 3,
+          "nameLesson": "Discovery",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=3",
+          "courseID": 2
+        },
+        {
+          "id": 4,
+          "nameLesson": "Pay Now Animation",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=4",
+          "courseID": 2
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nameCourse": "HTML & CSS Basic",
+      "about": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,Sed ut perspiciatis unde omni istnatus error sit voluptatem accusantium doloremque laudantium",
+      "author": "Robertson Connie",
+      "price": 190,
+      "avatar": "https://cdn-media-1.freecodecamp.org/ghost/2019/04/css-html-1.png",
+      "categoryID": "New",
+      "lessons": [
+        {
+          "id": 1,
+          "nameLesson": "Welcome to the Course",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=5RAtFSEkFho",
+          "courseID": 3
+        },
+        {
+          "id": 2,
+          "nameLesson": "Process overview",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=RjHflb-QgVc&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=2",
+          "courseID": 3
+        },
+        {
+          "id": 3,
+          "nameLesson": "Discovery",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=3",
+          "courseID": 3
+        },
+        {
+          "id": 4,
+          "nameLesson": "Pay Now Animation",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=4",
+          "courseID": 3
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nameCourse": "Javascript Basic",
+      "about": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,Sed ut perspiciatis unde omni istnatus error sit voluptatem accusantium doloremque laudantium",
+      "author": "Robertson Connie",
+      "price": 190,
+      "avatar": "https://www.freecodecamp.org/news/content/images/2021/06/javascriptfull.png",
+      "categoryID": "Programs",
+      "lessons": [
+        {
+          "id": 1,
+          "nameLesson": "Welcome to the Course",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=5RAtFSEkFho",
+          "courseID": 4
+        },
+        {
+          "id": 2,
+          "nameLesson": "Process overview",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=RjHflb-QgVc&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=2",
+          "courseID": 4
+        },
+        {
+          "id": 3,
+          "nameLesson": "Discovery",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=3",
+          "courseID": 4
+        },
+        {
+          "id": 4,
+          "nameLesson": "Pay Now Animation",
+          "author": "Robertson Connie",
+          "price": 190,
+          "video": "https://www.youtube.com/watch?v=J35jug1uHzE&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=4",
+          "courseID": 4
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nameCourse": "Learn Node.js",
+      "about": "Have you tried to learn Node before? You start a new course, and the instructor has you installing a bunch of libraries before you even know what Node is or how it works. You eventually get stuck and reach out to the instructor, but you get no reply. You then close the course and never open it again.",
+      "price": 190,
+      "avatar": "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20200918183825/Best-Way-to-Learn-NodeJS-A-Complete-Roadmap.png",
+      "categoryID": "Programs",
+      "lessons": [
+        {
+          "id": 1,
+          "nameLesson": "#1. Feeling Backend RESTFul",
+          "author": "Dev 24h",
+          "video": "https://www.youtube.com/watch?v=jR-n-cQnpNI&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        },
+        {
+          "id": 2,
+          "nameLesson": "#2. Xây dựng Chức năng Của Một Website",
+          "author": "Dev 24h",
+          "video": "https://www.youtube.com/watch?v=WdqMSB2nttk&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&index=4&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        },
+        {
+          "id": 3,
+          "nameLesson": "3. Mô Hình Hoạt Động Client Server",
+          "author": "Robertson Connie",
+          "video": "https://www.youtube.com/watch?v=GXjt7PcYd6M&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&index=5&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        },
+        {
+          "id": 4,
+          "nameLesson": "#4. Vận Hành Một Website",
+          "author": "Robertson Connie",
+          "video": "https://www.youtube.com/watch?v=qr9yP3_whrQ&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&index=6&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        },
+        {
+          "id": 5,
+          "nameLesson": "#5. Dữ Liệu Để Hiển Thị Website",
+          "author": "Robertson Connie",
+          "video": "https://www.youtube.com/watch?v=qr9yP3_whrQ&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&index=6&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        },
+        {
+          "id": 6,
+          "nameLesson": "#6. Website Khi Có Lưu Trữ Data",
+          "author": "Robertson Connie",
+          "video": "https://www.youtube.com/watch?v=1Q-DJQ8Q89o&list=PLncHg6Kn2JT4smWdJceM0bDg4YUF3yqLu&index=8&ab_channel=H%E1%BB%8FiD%C3%A2nIT",
+          "courseID": 5
+        }
+      ]
+    },
+    {
+      "id": "6cee",
+      "nameCourse": "Study GO Zero  to Master1",
+      "about": "Day la khoa hoc",
+      "author": "Dat",
+      "price": "356",
+      "avatar": "https://statics.cdn.200lab.io/f/20230912165152/golang-scalable-backend.jpeg",
+      "categoryID": "1",
+      "lessons": [
+        {
+          "nameLesson": "Learn Go 100 second ",
+          "author": "‘Fireship;",
+          "video": "https://www.youtube.com/watch?v=446E-r0rXHI",
+          "courseID": "6cee"
+        },
+        {
+          "id": "2",
+          "nameLesson": "Studicode",
+          "author": "12ss",
+          "video": "https://www.youtube.com/watch?v=8uiZC0l4Ajw",
+          "courseID": "6cee"
+        },
+        {
+          "id": "2",
+          "nameLesson": "Studicode",
+          "author": "12ss",
+          "video": "https://www.youtube.com/watch?v=8uiZC0l4Ajw",
+          "courseID": "6cee"
+        }
+      ]
+    },
+    {
+      "id": "a3b6",
+      "nameCourse": "JS NANG CAO",
+      "about": "Avadvsd",
+      "author": "Dat",
+      "price": "200",
+      "avatar": "https://files.fullstack.edu.vn/f8-prod/courses/12.png",
+      "categoryID": "1",
+      "lessons": [
+        {
+          "id": "2",
+          "nameLesson": "Bai1",
+          "author": "Dat",
+          "video": "https://www.youtube.com/watch?v=8uiZC0l4Ajw",
+          "courseID": "a3b6"
+        },
+        {
+          "id": "2",
+          "nameLesson": "Bai1",
+          "author": "Dat",
+          "video": "https://www.youtube.com/watch?v=8uiZC0l4Ajw",
+          "courseID": "a3b6"
+        }
+      ]
+    }
+  ],
+  "db": {
+    "lessons": {
+      "belongsTo": "courses"
+    },
+    "information": {
+      "belongsTo": "accounts"
+    }
+  }
+}
