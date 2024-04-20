@@ -1,16 +1,17 @@
-import axiosClient from "./axios.client";
+// authApi.js
+import axios from 'axios';
 
-
-
+import { ApiClient } from "./axios.client";
+import { common } from '../utils/utils';
+const axiosClient = ApiClient();
 // Đăng nhập
 export const login = async (credentials) => {
-    console.log(credentials)
     try {
         const response = await axiosClient.post('/auth/login', credentials);
-        return response;
+        return response.data;
     } catch (error) {
         console.log(error)
-        throw new Error(error.response.data.message || 'Login failed');
+        throw new Error(error.response?.data.data?.message || 'Login failed');
     }
 };
 
@@ -18,28 +19,29 @@ export const login = async (credentials) => {
 export const register = async (userData) => {
     try {
         const response = await axiosClient.post('/auth/signup', userData);
-        return response;
+        return response.data;
     } catch (error) {
-        console.log(error)
-        throw new Error(error || 'Registration failed');
+        throw new Error(error.response?.data?.data?.message || 'Registration failed');
     }
 };
 
 // Kiểm tra token
 export const checkToken = async (token) => {
     try {
-        console.log(`Bearer ${token}`)
-        const response = await axiosClient.post('/auth/verify-token', null, {
+        const response = await fetch(`${common?.BASE_URL}/auth/verify-token`, {
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${token}`
+                'authorization': `Bearer ${token}`
             }
         });
-        return response.data;
+        const data = await response.json();
+        return data.data;
     } catch (error) {
-        throw new Error(error.response.data.message || 'Token validation failed');
+        console.log(error)
+        console.error('Token Validate Error:', error);
+        throw error;
     }
 };
-
 
 // Làm mới token
 export const refreshToken = async (refreshToken) => {
@@ -47,7 +49,8 @@ export const refreshToken = async (refreshToken) => {
         const response = await axiosClient.post('/auth/refresh-token', { refreshToken });
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message || 'Token refresh failed');
+        console.log(error)
+        throw new Error(error.response?.data?.data?.message || 'Token refresh failed');
     }
 };
 
@@ -57,6 +60,6 @@ export const logout = async (refreshToken) => {
         const response = await axiosClient.post('/auth/logout', { refreshToken });
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message || 'Logout failed');
+        throw new Error(error.response?.da?.data?.message || 'Logout failed');
     }
 };

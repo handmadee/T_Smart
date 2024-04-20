@@ -14,12 +14,9 @@ import { SetPass } from '../screens/Auth/SetPass.js';
 import { Forgot } from '../screens/Auth/Forgot.js';
 import HomeNav from './Home.nav.js';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import EditProfile from '../screens/Setting/EditProfile.js';
 const AuthNav = React.memo(() => {
     // Notification 
-
-
-
-
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer >
@@ -39,6 +36,7 @@ const AuthNav = React.memo(() => {
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
                 <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: true }} />
+                <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: true }} />
                 <Stack.Screen name="SetPass" component={SetPass} options={{ headerShown: true }} />
                 <Stack.Screen name="HomeNav" component={HomeNav} options={{ headerShown: false }} />
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, TextInput, FlatList, TouchableOpacity, TextBase, ScrollView } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -9,22 +9,50 @@ import { RowComponent } from '../../components/RowComponent';
 import { PlayCircle, ChartSuccess, Star } from 'iconsax-react-native';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Search } from '../../contanst/search';
-import FastImage from 'react-native-fast-image';
 import LazyImage from '../../components/LazyImage';
 import { LineProcess } from '../../contanst/LineProcess';
 import { dataCourse1 } from '../../data/data';
 import { useTranslation } from 'react-i18next';
+import { trackingCourseFinsnish, trackingCourseLearn } from '../../apis/trackingCourse';
+import LoadingView from '../Auth/LoadingScreen';
+import { useSelector } from 'react-redux';
 
 const MyCourse = ({ navigation }) => {
+    const idUser = useSelector(state => state.authReducer?.authData?.id);
+    const [courseSuccess, setCourseSuccess] = useState([]);
+    const [courseLearn, setCourseLearn] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const [courseSuccess, setCourseSuccess] = useState(() => dataCourse1.filter((item) => item.status === 112) || []);
-    const [courseLearn, setCourseLearn] = useState(() => dataCourse1.filter((item) => item.status === 111) || []);
+    useEffect(() => {
+        feachData();
+    }, [])
+
+    const feachData = async () => {
+        try {
+            setLoading(true);
+            const courseLearn1 = await trackingCourseLearn(idUser);
+            console.log(courseLearn1?.data?.data?.data);
+            setCourseLearn(courseLearn1?.data?.data?.data);
+            const courseSuccess1 = await trackingCourseFinsnish(idUser);
+            setCourseSuccess(courseSuccess1?.data?.data?.data);
+            console.log(courseSuccess1?.data?.data?.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+
+
+
     const [onGo, setOnGo] = useState(false);
     const { t } = useTranslation();
-    const CourseSuccess = useCallback(({ image = '', title = '', category = '', time = 0 }) => {
+    const CourseSuccess = useCallback(({ image = '', title = '', category = '', time = 0, date = '20/10/2024' }) => {
+        const day = new Date(date).getDate() + '/' + (new Date(date).getMonth() + 1) + '/' + new Date(date).getFullYear();
         return (
             <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
-                <LazyImage url={image} width={wp(40)} height={'100%'} style={styles.lazy} resize={'cover'} />
+                <LazyImage url={image} width={wp(35)} height={'100%'} style={styles.lazy} resize={'cover'} />
                 <View style={{ paddingRight: 15 }}>
                     <Text style={[styles.cardCategory]} >{category}</Text>
                     <Text style={[styles.title]}>{title}</Text>
@@ -36,11 +64,11 @@ const MyCourse = ({ navigation }) => {
                             <Star color='gold' size={12} />
                         </View>
                         <Text style={[styles.star, { letterSpacing: .2 }]}>
-                            {time} Hour
+                            {time}
                         </Text>
                     </View>
                     <Text style={[styles.star, styles.cretificate,]}
-                        onPress={() => handleViewCertificate({ image: image, title: title })}>View Certificate</Text>
+                        onPress={() => handleViewCertificate({ title: title, date: day })}>View Certificate</Text>
                     <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
 
                 </View>
@@ -81,12 +109,13 @@ const MyCourse = ({ navigation }) => {
             <FlatList
                 data={courseSuccess}
                 renderItem={({ item, index }) => <CourseSuccess
-                    image={item?.image}
+                    image={item?.courseID?.imageCourse}
                     category={item?.category}
-                    title={item?.title}
-                    time={112}
+                    title={item?.courseID?.title}
+                    time={item?.courseID?.totalLesson}
+                    date={item?.updatedAt}
                 />}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item?._id}
             />
         )
     }, [courseSuccess, CourseSuccess])
@@ -96,11 +125,12 @@ const MyCourse = ({ navigation }) => {
             <FlatList
                 data={courseLearn}
                 renderItem={({ item, index }) => <CourseGoing
-                    image={item?.image}
+                    image={item?.courseID?.imageCourse}
                     category={item?.category}
-                    title={item?.title}
-                    learned={12}
-                    totalCourse={112}
+                    title={item?.courseID?.title}
+                    learned={item?.completedLessonsCount}
+                    totalCourse={item?.courseID?.totalLesson}
+
                     time={112}
                 />}
 
@@ -109,6 +139,7 @@ const MyCourse = ({ navigation }) => {
     }, [courseLearn, CourseGoing])
 
     const handlePress = useCallback(() => {
+        feachData();
         return setOnGo(!onGo);
     }, [onGo]);
 
@@ -117,7 +148,7 @@ const MyCourse = ({ navigation }) => {
     }, [])
 
     return (
-        <View style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
+        loading ? <LoadingView /> : <View style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
             <Container style={styles.content}>
                 {/* Search */}
                 <Search placeholder='3D Design Illustration' />
@@ -230,8 +261,8 @@ const styles = StyleSheet.create({
         height: wp(5),
         borderRadius: 50,
         position: 'absolute',
-        right: 0,
-        top: -10,
+        right: 10,
+        top: 10,
     },
     img: {
         width: wp(25),

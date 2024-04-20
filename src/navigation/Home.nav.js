@@ -18,17 +18,9 @@ import MyCourse from '../screens/Course/MyCourse.js';
 import HightScores from '../screens/Games/HightScros.js';
 import SelectGames from '../screens/Games/SelectGames';
 import GameNav from './Game.nav.js';
-import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import LeaderBoard from '../screens/Rank/Leaderboard.js';
 
-const theme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        background: Color.colorGhostwhite,
-    },
-};
 
 export const CustomHeader = React.memo(({ navigation, title }) => {
     const goBack = useCallback(() => {
@@ -45,7 +37,6 @@ export const CustomHeader = React.memo(({ navigation, title }) => {
     );
 });
 
-
 const HomeNav = React.memo(() => {
     const { t, i18n } = useTranslation();
     const IconTab = ({ focused, children, name }) => (
@@ -56,123 +47,130 @@ const HomeNav = React.memo(() => {
     );
     const Tab = createBottomTabNavigator();
     return (
-        <Tab.Navigator
-            screenOptions={({ navigation, route }) => ({
-                header: () => (
-                    <SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>
-                        <View style={{ backgroundColor: Color.colorGhostwhite }}>
-                            <CustomHeader navigation={navigation} title={route.name} />
-                        </View>
-                    </SafeAreaView>
-                ),
-                gestureEnabled: false,
-                tabBarLabel: '',
-                tabBarStyle: {
-                    ...(Platform.OS === 'ios' && { paddingTop: 20 }),
-                    height: hp(8),
-
-                }
-            })}
-        >
-            <Tab.Screen
-                name="CourseNav"
-                component={CourseNav}
-                options={({ route }) => {
-                    return {
-                        tabBarIcon: ({ focused }) => (
-                            <IconTab focused={focused} name={t('home')}>
-                                <Home size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
-                            </IconTab>
-                        ),
-                        headerShown: false,
-                        tabBarStyle: {
-                            ...(Platform.OS === 'ios' && { paddingTop: 20 }),
-                            height: hp(8),
-                            display: getTabBarVisible(route),
-                        }
-                    };
-                }}
-            />
-            <Tab.Screen
-                name="My Courses"
-                component={MyCourse}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <IconTab focused={focused} name={t('coure')}>
-                            <Book size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
-                        </IconTab>
+        <NavigationContainer independent={true}>
+            <Tab.Navigator
+                screenOptions={({ navigation, route }) => ({
+                    header: () => (
+                        <SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>
+                            <View style={{ backgroundColor: Color.colorGhostwhite }}>
+                                <CustomHeader navigation={navigation} title={route.name} />
+                            </View>
+                        </SafeAreaView>
                     ),
-                }}
-            />
-            <Tab.Screen
-                name="Honor"
-                component={HightScores}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <IconTab focused={focused} name={t('Honor')}>
-                            <Message size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
-                        </IconTab>
-                    ),
-                    headerShown: false,
-                }}
-            />
-            <Tab.Screen
-                name="GameNav"
-                component={GameNav}
-                options={({ route }) => {
-                    return {
-                        tabBarIcon: ({ focused }) => (
-                            <IconTab focused={focused} name={t('Game')}>
-                                <Game size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
-                            </IconTab>
+                    gestureEnabled: false,
+                    tabBarLabel: '',
+                    tabBarStyle: {
+                        ...(Platform.OS === 'ios' && { paddingTop: 20 }),
+                        height: hp(8),
 
-                        ),
-                        headerShown: false,
-                        tabBarStyle: {
-                            ...(Platform.OS === 'ios' && { paddingTop: 20 }),
-                            backgroundColor: '#4B5FBB',
-                            height: hp(8),
-                            display: getTabBarVisible(route),
-                        }
-                    };
-                }}
-            />
-            <Tab.Screen
-                name="Profile"
-                component={SettingNav}
-                options={({ route }) => {
-                    return {
+                    }
+                })}
+            >
+                <Tab.Screen
+                    name="CourseNav"
+                    component={CourseNav}
+                    options={({ route }) => {
+                        return {
+                            tabBarIcon: ({ focused }) => (
+                                <IconTab focused={focused} name={t('home')}>
+                                    <Home size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                </IconTab>
+                            ),
+                            headerShown: false,
+                            tabBarStyle: {
+                                ...(Platform.OS === 'ios' && { paddingTop: 20 }),
+                                height: hp(8),
+                                display: getTabBarVisible(route),
+                            }
+                        };
+                    }}
+                />
+                <Tab.Screen
+                    name="My Courses"
+                    component={MyCourse}
+                    options={{
                         tabBarIcon: ({ focused }) => (
-                            <IconTab focused={focused} name={t('Profile')}>
-                                <User size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                            <IconTab focused={focused} name={t('coure')}>
+                                <Book size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
                             </IconTab>
                         ),
+
                         headerShown: false,
+                    }}
+                />
+                <Tab.Screen
+                    name="Honor"
+                    component={LeaderBoard}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <IconTab focused={focused} name={t('Honor')}>
+                                <Message size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                            </IconTab>
+                        ),
                         tabBarStyle: {
-                            ...(Platform.OS === 'ios' && { paddingTop: 20 }),
-                            height: hp(8),
-                            display: getTabBarVisible(route),
-                        }
-                    };
-                }}
-            />
+                            display: 'none'
+                        },
+                        headerShown: true,
+
+
+                    }}
+                />
+                <Tab.Screen
+                    name="GameNav"
+                    component={GameNav}
+                    options={({ route }) => {
+                        return {
+                            tabBarIcon: ({ focused }) => (
+                                <IconTab focused={focused} name={t('Game')}>
+                                    <Game size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                </IconTab>
+
+                            ),
+                            headerShown: false,
+                            tabBarStyle: {
+                                ...(Platform.OS === 'ios' && { paddingTop: 20 }),
+                                backgroundColor: '#4B5FBB',
+                                height: hp(8),
+                                display: getTabBarVisible(route),
+                            }
+                        };
+                    }}
+                />
+                <Tab.Screen
+                    name="Profile"
+                    component={SettingNav}
+                    options={({ route }) => {
+                        return {
+                            tabBarIcon: ({ focused }) => (
+                                <IconTab focused={focused} name={t('Profile')}>
+                                    <User size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                </IconTab>
+                            ),
+                            headerShown: false,
+                            tabBarStyle: {
+                                ...(Platform.OS === 'ios' && { paddingTop: 20 }),
+                                height: hp(8),
+                                display: getTabBarVisible(route),
+                            }
+                        };
+                    }}
+                />
 
 
 
-        </Tab.Navigator>
+            </Tab.Navigator>
+        </NavigationContainer>
+
     );
 });
 
 function getTabBarVisible(route) {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === 'EditProfile1' || routeName === 'Notification' || routeName === 'Security' || routeName === 'Help' || routeName === 'DetailCourse' || routeName === 'LessonCourse' || routeName === 'ShowAnswer' || routeName === 'Quiz' ||
-        routeName === 'CartificateCourse' || routeName === 'TopicSet'
+        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne'
     ) {
         return 'none';
     }
-
-
-
     return 'flex';
 }
 

@@ -1,86 +1,153 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable prettier/prettier */
-'use strict'
-
-import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native"
-import { Container } from "../../components/Container"
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import React from "react";
+import { Image, Pressable, SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
+import { useForm, Controller } from 'react-hook-form';
+import { Container } from "../../components/Container";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from "../../../GlobalStyles";
 import Input from "../../components/Input";
-import { useCallback, useState } from "react";
 import Button from "../../components/Button";
-import { RowComponent } from "../../components/RowComponent";
 import CheckButton from '../../contanst/checkbox';
 import { useTranslation } from 'react-i18next';
+import Modal2 from "../../components/Modal";
+import LoadingView from "./LoadingScreen";
+import { register } from "../../apis/authApi";
+import { addAuth } from "../../redux/token/slice.token";
+import { useDispatch, useSelector } from "react-redux";
+import { checkInforUser } from "../../apis/courseApi";
+
 
 
 export default function SignUp({ navigation }) {
+    const dispatch = useDispatch();
     const { t } = useTranslation();
-    const [userName, setUserName] = useState('');
-    const [pass, setPass] = useState('');
-    const [usernameError, setUsernameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const changeUserName = (text) => setUserName(text);
-    const changePass = (text) => setPass(text);
-    //  Handler checkbox 
-    const [check, setCheck] = useState(false);
-    const handleCheck = useCallback(() => setCheck(!check), [check]);
+    const { control, handleSubmit, formState: { errors }, getValues } = useForm();
+    const [isVisible, setIsVisible] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
-    const handlerSignIn = useCallback(() => navigation.navigate('Login'), [navigation]);
-
+    const onSubmit = async (data) => {
+        try {
+            setIsLoading(true);
+            const client = await register({ username: data.userName, password: data.pass });
+            const account = {
+                id: client.message.data.user_id,
+                accesstoken: client.message.data.accessToken,
+                refreshtoken: client.message.data.refreshToken,
+                infor: null
+            }
+            dispatch(addAuth(account));
+            await AsyncStorage.setItem('auth',
+                check ? JSON.stringify(account) : data.userName
+            )
+            navigation.navigate('');
+        } catch (error) {
+            console.log(error)
+            setIsVisible(true);
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Color.primaryWhite }}>
-            <Container width={wp(90)}>
-                {/* Logo */}
-                <View style={{ alignSelf: 'center' }}>
-                    <Image
-                        source={require('./../../../assets/Logo.png')}
-                        style={{ width: wp(65), height: hp(23) }}
+        isLoading ? <LoadingView /> : (
+            <SafeAreaView style={{ flex: 1, backgroundColor: Color.primaryWhite }}>
+                <Container width={wp(90)}>
+                    <View style={{ alignSelf: 'center' }}>
+                        <Image
+                            source={require('./../../../assets/Logo.png')}
+                            style={{ width: wp(65), height: hp(23) }}
+                        />
+                    </View>
+                    <Text style={styles.title}>{t('getting')}</Text>
+                    <Text style={styles.detail}>{t('create')}</Text>
+
+
+
+
+                    <Controller
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                show={false}
+                                label={'Your Email'}
+                                placeholder={'Username'}
+                                onChange={field.onChange}
+                                value={field.value}
+                                error={errors.userName ? true : false}
+                                err={errors.userName ? errors.userName.message : ''}
+                                disable={false}
+                            />
+                        )}
+                        name="userName"
+                        rules={{ required: "Username không được để trống", pattern: { value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message: "Vui lòng nhập đúng định dạng email" } }}
                     />
-                </View>
-                {/* Getting */}
-                <Text style={styles.title}>
-                    {t('getting')}
-                </Text>
-                <Text style={styles.detail}>
-                    {t('create')}
-                </Text>
-                {/*  */}
-                <Input show={false} label={'Your Email'} placeholder={'Username'} onChange={changeUserName} error={false} err={usernameError} value={userName} disable={false} />
-                {/*  */}
-                <Input show={true} label={'Password'} placeholder={'password'} onChange={changePass} error={false} styInput={{ backgroundColor: Color.colorGhostwhite, color: Color.colorDimgray_200 }} icon={Color.colorDimgray_200} err={passwordError} value={pass} />
-                {/* Remember */}
-                <View style={styles.ctRemember}>
-                    <CheckButton borderColor={Color.globalApp} status={check} handlePress={handleCheck} style={styles.checkBtn} />
-                    <Text style={styles.Remember}>{t("agree")}</Text>
-                </View>
-                {/* Button */}
-                <Button title={t('signup')} onPress={() => { }} />
-                {/* Or */}
-                <Text style={styles.or}>{t('or')}</Text>
-                <RowComponent width={wp(40)} style={{ alignSelf: 'center' }} >
-                    <Image source={require('./../../../assets/google.png')} style={{ width: wp(15), height: hp(5) }} />
-                    <View style={{ width: wp(5) }} />
-                    <Image source={require('./../../../assets/apple.png')} style={{ width: wp(15), height: hp(5) }} />
-                </RowComponent>
-                {/* Login */}
-                <Text style={styles.or}> Don’t have an Account? <Text
-                    style={{ color: Color.colorMediumslateblue, textDecorationLine: 'underline' }}
-                    onPress={handlerSignIn}
-                >SIGN IN</Text></Text>
-            </Container>
-        </SafeAreaView >
+
+                    <Controller
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                show={true}
+                                label={'Password'}
+                                placeholder={'password'}
+                                onChange={field.onChange}
+                                value={field.value}
+                                error={errors.pass ? true : false}
+                                err={errors.pass ? errors.pass.message : ''}
+                            />
+                        )}
+                        name="pass"
+                        rules={{ required: "Mật khẩu không được để trống", minLength: { value: 6, message: "Mật khẩu phải từ 6 kí tự trở lên" } }}
+                    />
+
+                    <Controller
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                show={true}
+                                label={'Password'}
+                                placeholder={'Enter the password'}
+                                onChange={field.onChange}
+                                value={field.value}
+                                error={errors.rpPass ? true : false}
+                                err={errors.rpPass ? errors.rpPass.message : ''}
+                            />
+                        )}
+                        name="rpPass"
+                        rules={{ required: "Mật khẩu nhập lại không được để trống", validate: value => value === getValues('pass') || "Mật khẩu không trùng khớp" }}
+                    />
+
+
+
+                    <View style={styles.ctRemember}>
+                        <CheckButton borderColor={Color.globalApp} handlePress={() => { }} style={styles.checkBtn} status={true} />
+                        <Text style={styles.Remember}>{t("agree")}</Text>
+                    </View >
+
+                    {errors.agreeError && <Text style={{ color: 'red', marginBottom: 10 }}>{errors.agreeError.message}</Text>}
+
+                    <Button title={t('signup')} onPress={handleSubmit(onSubmit)} />
+
+                    <Text style={styles.or}>{t('or')}</Text>
+
+                    <Text style={styles.or}> Don’t have an Account? <Text
+                        style={{ color: Color.colorMediumslateblue, textDecorationLine: 'underline' }}
+                        onPress={() => navigation.navigate('Login')}
+                    >SIGN IN</Text></Text>
+                </Container >
+                <Modal2 img={
+                    require('./../../../assets/Logo.png')
+                }
+                    title={'Đăng kí thất bại'}
+                    value={'Email đã tồn tại vui lòng nhập email khác'}
+                    isVisible={isVisible}
+                    onPress={() => setIsVisible(!isVisible)}
+                />
+            </SafeAreaView >
+        )
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection:
-            'column',
+        flexDirection: 'column',
         alignItems: 'center',
         paddingVertical: hp(5)
     },
@@ -89,7 +156,6 @@ const styles = StyleSheet.create({
         fontSize: FontSize.headingH4_size,
         color: Color.colorGray_100,
         letterSpacing: 0.2,
-
     },
     detail: {
         fontFamily: FontFamily.mulishBold,
@@ -119,5 +185,6 @@ const styles = StyleSheet.create({
     checkBtn: {
         borderRadius: 50,
         borderWidth: 3,
-    }
+    },
+    input: { backgroundColor: Color.colorGhostwhite, color: Color.colorDimgray_200 },
 })

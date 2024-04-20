@@ -14,6 +14,11 @@ import { ShowAnswer } from '../screens/Games/ShowQuiz.js';
 import LessonCourse from '../screens/Course/LessonCourse.js';
 import Quiz from '../screens/Games/quiz.js';
 import CartificateCourse from '../screens/Course/CertificateCourse';
+import SearchCourse from '../screens/Course/SearchCourse.js';
+import EditProfile from '../screens/Setting/EditProfile.js';
+import Notification12 from '../screens/Services/Notification.js';
+
+
 
 const CourseNav = React.memo(() => {
     const Stack = createNativeStackNavigator();
@@ -34,13 +39,12 @@ const CourseNav = React.memo(() => {
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="DetailCourse" component={DetailCourse} options={{ headerShown: true }} />
             <Stack.Screen name="Quiz" component={Quiz} options={{ headerShown: false }} />
+            <Stack.Screen name="CartificateCourse" component={CartificateCourse} options={{ headerShown: true }} />
             <Stack.Screen name="ShowAnswer" component={ShowAnswer} options={{ headerShown: true }} />
             <Stack.Screen name="LessonCourse" component={LessonCourse} options={{ headerShown: true }} />
-            <Stack.Screen name="CartificateCourse" component={CartificateCourse} options={{ headerShown: true }} />
-
-
-
-
+            <Stack.Screen name="SearchCourse" component={SearchCourse} options={{ headerShown: true }} />
+            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: true }} />
+            <Stack.Screen name="NotificationOne" component={Notification12} options={{ headerShown: true }} />
         </Stack.Navigator >
 
     );

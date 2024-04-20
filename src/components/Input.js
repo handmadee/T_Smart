@@ -1,16 +1,26 @@
 /* eslint-disable prettier/prettier */
 import React, { useCallback, useState } from 'react';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
+import { Text, View, TextInput, StyleSheet, Platform } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Eye, EyeSlash, PasswordCheck, Google } from 'iconsax-react-native';
 import { Color, FontFamily } from '../../GlobalStyles';
-function Input(props) {
-    const [isEye, setEye] = useState(props.show);
-    const error = props.err || '';
-    const isError = error.length > 0;
+
+// Tạo một custom hook để xử lý logic
+function useInput(initialShow) {
+    const [isEye, setEye] = useState(initialShow);
     const showEye = useCallback(() => {
         setEye(!isEye);
     }, [isEye]);
+
+    return { isEye, showEye };
+}
+
+// Sử dụng custom hook trong component Input
+function Input(props) {
+    const { isEye, showEye } = useInput(props.show);
+    const error = props.err || '';
+    const isError = error.length > 0;
+
     return (
         <View>
             <View style={[styles.contaiInput, { borderColor: isError ? 'red' : '#333', borderWidth: isError ? 1 : 0 }]}>
@@ -34,18 +44,35 @@ function Input(props) {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     contaiInput: {
         width: wp(90),
         height: hp(7.5),
-        marginTop: hp(1.7),
+        marginTop: hp(1),
         borderRadius: 13,
         backgroundColor: Color.colorGhostwhite,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: wp(3),
+        ...Platform.select({
+            ios: {
+                shadowColor: Color.colorDimgray_200,
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
     },
+    eyeIcon: {
+        color: Color.colorDimgray_200
+    }
 });
 
 export default Input;

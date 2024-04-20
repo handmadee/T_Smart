@@ -8,12 +8,11 @@ import { Color } from '../../GlobalStyles';
 import LazyImage from '../components/LazyImage';
 
 const SlideShow = ({ dataImage }) => {
-    const images = dataImage || [];
     const flatListRef = useRef(null);
     const scrollX = useRef(new Animated.Value(0)).current;
     const currentIndex = useRef(0);
     const nextSlide = () => {
-        const nextIndex = (currentIndex.current + 1) % images.length;
+        const nextIndex = (currentIndex.current + 1) % dataImage.length;
         flatListRef.current?.scrollToOffset({
             offset: nextIndex * wp(90),
             animated: true,
@@ -25,15 +24,14 @@ const SlideShow = ({ dataImage }) => {
         const interval = setInterval(nextSlide, 3000);
         return () => clearInterval(interval);
     }, []);
-
     return (
         <View style={styles.slide}>
             <FlatList
                 ref={flatListRef}
                 horizontal
-                data={images}
+                data={dataImage}
                 renderItem={({ item }) => (
-                    <LazyImage url={item} width={wp(90)} height={hp(20)} />
+                    <LazyImage url={item?.urlImage} width={wp(90)} height={hp(20)} />
                 )}
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
@@ -45,7 +43,7 @@ const SlideShow = ({ dataImage }) => {
             />
 
             <View style={styles.dotContainer}>
-                {images.map((_, index) => (
+                {dataImage.map((_, index) => (
                     <Animated.View
                         key={index}
                         style={[

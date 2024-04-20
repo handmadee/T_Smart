@@ -8,12 +8,12 @@ import { Container } from '../../components/Container';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Search } from '../../contanst/search';
 import Button from '../../components/Button';
+import { useSelector } from 'react-redux';
 
 
-const CartificateCourse = ({ navigation }) => {
-    const handlePress = () => {
-        // Logic for onPress event
-    };
+const CartificateCourse = ({ navigation, route }) => {
+    const { title, date } = route.params.course;
+    const { fullname } = useSelector(state => state.authReducer?.authData?.infor);
 
     const Cartificate = React.memo(({ name = '', language = '', date = '16/3/2024', id = 'MD18302' }) => {
         const fullName = name && name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
@@ -38,7 +38,7 @@ const CartificateCourse = ({ navigation }) => {
                 <Search placeholder='3D Design Illustration' />
                 {/* Content */}
                 <Container style={[styles.container]} >
-                    <Cartificate name='Phạm Xuân Đạt' language={'JAVASCRIPTS'} />
+                    <Cartificate name={fullname} language={title} date={date} />
                     <Button title={'Download Certificate'} />
                 </Container>
             </Container>

@@ -27,7 +27,9 @@ export const ShowAnswer = ({ navigation, route }) => {
                             <Text style={[styles.questionText, { flexWrap: 'wrap', width: '70%' }]}>
                                 {item.question}</Text>
                         </View>
-                        <Text style={[styles.correctAnswer, { width: '95%' }]}>Correct Answer: {item.answer}</Text>
+                        <Text style={[styles.correctAnswer, { width: '95%' }]}>Correct Answer: {
+                            item.answers.find((answer) => answer.isCorrect)?.titleAnswer
+                        }</Text>
                     </View>
                 )}
                 keyExtractor={(item, index) => item.question}

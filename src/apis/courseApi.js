@@ -1,87 +1,148 @@
-import axiosClient from "./axios.client";
+import { ApiClient } from "./axios.client";
+const axiosClient = ApiClient();
 
 // Get all courses
 export const getCourses = async (page = 1, limit = 10) => {
-    return await axiosClient.get(`/course?page=${page}&limit=${limit}`);
+    try {
+        const response = await axiosClient.get(`/course/?page=${page}&limit=${limit}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch courses:', error);
+        throw error;
+    }
 };
 
 // Get course by id
 export const getCourseById = async (id) => {
-    return await axiosClient.get(`/course/${id}`);
+    try {
+        const response = await axiosClient.get(`/course/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to fetch course with id ${id}:`, error);
+        throw error;
+    }
 };
 
 // Create a new course
 export const createCourse = async (courseData) => {
-    return await axiosClient.post('/course', courseData);
+    try {
+        const response = await axiosClient.post('/course', courseData);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to create course:', error);
+        throw error;
+    }
 };
 
 // Update a course
 export const updateCourse = async (id, updatedData) => {
-    return await axiosClient.put(`/course/${id}`, updatedData);
-};
-// Delete a course
-export const removeCourse = async (id) => {
-    return await axiosClient.delete(`/course/${id}`);
-};
-
-// Search  
-
-export const searchCourse = async (keyword) => {
-    return await axiosClient.get(`/search?q=${keyword}`);
-}
-
-// Category 
-
-export const getCategory = async () => {
-    return await axiosClient.get('/category');
-}
-
-
-// Get Category by id
-export const getCategoryById = async (id) => {
-    return await axiosClient.get(`/category/${id}`);
-};
-
-
-// notifiaction 
-
-export const getNotification = async () => {
-    return await axiosClient.get('/notificationList');
-}
-
-// Check Infor User 
-export const checkInforUser = async (id) => {
-    return await axiosClient.get(`/auth/user/${id}`);
-}
-
-//  import Infor 
-export const importInfor = async (data) => {
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    };
     try {
-        const response = await axiosClient.post(`/user`, data, config);
-        return response;
+        const response = await axiosClient.put(`/course/${id}`, updatedData);
+        return response.data;
     } catch (error) {
-        console.error(`Failed to update information for user with id ${id}: ${error}`);
+        console.error(`Failed to update course with id ${id}:`, error);
         throw error;
     }
-}
+};
 
-// edit Infor 
-export const editInfor = async (id, data) => {
+// Delete a course
+export const removeCourse = async (id) => {
+    try {
+        await axiosClient.delete(`/course/${id}`);
+        return true; // Indicate success if the request succeeds
+    } catch (error) {
+        console.error(`Failed to delete course with id ${id}:`, error);
+        throw error;
+    }
+};
+
+// Search for courses
+export const searchCourse = async (keyword) => {
+    try {
+        const response = await axiosClient.get('/search', {
+            params: {
+                q: keyword
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to search courses:', error);
+        throw error;
+    }
+};
+
+// Get all categories
+export const getCategory = async () => {
+    try {
+        const response = await axiosClient.get('/category');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        throw error;
+    }
+};
+
+// Get category by id
+export const getCategoryById = async (id) => {
+    try {
+        const response = await axiosClient.get(`/category/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to fetch category with id ${id}:`, error);
+        throw error;
+    }
+};
+
+// Get notifications
+export const getNotification = async () => {
+    try {
+        const response = await axiosClient.get('/notificationList');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch notifications:', error);
+        throw error;
+    }
+};
+
+// Get user information by id
+export const checkInforUser = async (id) => {
+    try {
+        const response = await axiosClient.get(`/auth/user/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to fetch user information for user with id ${id}:`, error);
+        throw error;
+    }
+};
+
+// Import user information
+export const importInfor = async (userData) => {
     const config = {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
     };
     try {
-        const response = await axiosClient.put(`/user/${id}`, data, config);
-        return response;
+        const response = await axiosClient.post('/user', userData, config);
+        return response.data;
     } catch (error) {
-        console.error(`Failed to update information for user with id ${id}: ${error}`);
+        console.error('Failed to import user information:', error);
+        throw error;
+    }
+};
+
+// Edit user information by id
+export const editInfor = async (id, userData) => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+    try {
+        const response = await axiosClient.put(`/user/${id}`, userData, config);
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to edit user information for user with id ${id}:`, error);
         throw error;
     }
 };
