@@ -1,166 +1,243 @@
-
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable semi */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable prettier/prettier */
-'use strict'
-
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
-import DatePicker from 'react-native-date-picker'
-import { Calendar } from 'iconsax-react-native';
-import Button from '../../components/Button';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { launchImageLibrary } from 'react-native-image-picker';
-import React, { useCallback, useState } from 'react';
-import { FillIP } from '../Auth/FillProfile';
+import React, { useCallback, useState } from "react";
+import { Image, Pressable, SafeAreaView, StyleSheet, Text, View, TextInput } from "react-native";
+import { Container } from "../../components/Container";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { Color, FontFamily, FontSize } from "../../../GlobalStyles";
+import { useForm, Controller } from "react-hook-form";
+import Input from "../../components/Input";
+import DatePicker from "react-native-date-picker";
+import { Calendar } from "iconsax-react-native";
+import Button from "../../components/Button";
+import DropDownPicker from "react-native-dropdown-picker";
+import { launchImageLibrary } from "react-native-image-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { editInfor, importInfor } from "../../apis/courseApi";
+import LoadingView from "../Auth/LoadingScreen";
+import { updateInfor } from "../../redux/token/slice.token";
+import Modal2 from "../../components/Modal";
 
 
-export default function EditProfile() {
-    const [open1, setOpen1] = useState(false);
+
+export default function EditProfile({ navigation }) {
+    const dispatch = useDispatch();
+    const idUser = useSelector(state => state.authReducer?.authData?.id);
+    const inforUser = useSelector(state => state.authReducer?.authData?.infor);
+    const [image, setImage] = useState('');
+    const { control, handleSubmit, formState: { errors } } = useForm();
+    const [date, setDate] = useState(new Date());
+    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('Nam');
-    const [items, setItems] = useState([
-        { label: 'Nam', value: 'Nam' },
-        { label: 'Nữ', value: 'Nữ' },
-    ]);
-    const [date, setDate] = useState(new Date('2003-10-24'));
-    const [imageSource, setImageSource] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
+
+
     const selectImage = useCallback(() => {
         const options = {
-            storegeOptions: {
+            title: "Select Avatar",
+            storageOptions: {
                 skipBackup: true,
-                path: 'images',
-            }
-        }
+                path: "images",
+            },
+        };
         launchImageLibrary(options, (response) => {
-            console.log(response)
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                alert('An error occurred while selecting the image. Please try again.');
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                console.log(response)
+                setImage(response?.assets[0]);
+                // Set the preview image
+                setPreviewImage(response?.assets[0]?.uri);
+            }
         });
     }, []);
-    // State Infor
-    const [fullName, setFullName] = useState('');
-    const [nickName, setNickName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
 
+    const onSubmit = async (data) => {
+        const formData = new FormData();
+        formData.append('fullname', data.fullName);
+        formData.append('phone', data.phoneNumber);
+        formData.append('email', data.userName);
+        if (image) {
+            const imageBlob = {
+                uri: image?.uri,
+                type: image?.type,
+                name: image?.fileName,
+            };
+            formData.append('avatar', imageBlob);
+        }
+        formData.append('accountId', idUser);
 
-
+        try {
+            setLoading(true);
+            await importInfor(formData)
+            await dispatch(updateInfor({ ...inforUser, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
+            setOpen(true);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
-        <ScrollView style={styles.container}
-            bounces={false} showsVerticalScrollIndicator={false}
-        >
-            {/* Header */}
-            <View style={styles.header}>
-                <View style={styles.avatarContainer}>
-                    <Image source={require('./../../../assets/avatar.png')} style={styles.avatar} resizeMode="cover" />
-                    <Image source={require('./../../../assets/SQUARE.png')} style={styles.squareIcon} resizeMode="cover" />
-                </View>
-            </View>
-            {/* Header */}
-            <View style={{
-                flexDirection: 'column', alignItems: 'center',
-                width: wp(90)
-            }}>
+        loading ? <LoadingView /> :
+            <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
+                <Container width={wp(90)} style={styles.container}>
+                    {/* Profile */}
+                    <Pressable
+                        style={{
+                            borderColor: Color.globalApp,
+                            borderWidth: 2,
+                            borderRadius: wp(25),
+                            padding: 10
+                        }}
+                        onPress={selectImage}>
+                        <Image
+                            source={previewImage ? { uri: previewImage } : (inforUser?.avatar ? { uri: inforUser?.avatar } : require("./../../../assets/avatar.png"))}
+                            style={{ width: wp(25), height: wp(25), borderRadius: 50 }}
+                            resizeMode="cover"
+                        />
+                    </Pressable>
 
+                    {/* Form  */}
+                    <View style={{ marginTop: hp(5) }}>
 
-                {/* Fill Inpput */}
-                <FillIP placeholder={'FullName'} value={fullName} onPress={setFullName} />
-                <FillIP placeholder={'NickName'} value={nickName} onPress={setNickName} />
-                <Pressable style={[styles.input, { marginBottom: hp(2), flexDirection: 'row', alignItems: 'center' }]} onPress={() => setOpen1(!open1)}>
-                    <Calendar
-                        size={FontSize.size_mini}
-                        color={Color.colorDimgray_200}
-                    />
-                    <Text style={{ fontFamily: FontFamily.mulishBold, color: Color.colorDimgray_200, marginLeft: 10 }} >{date.toString()}</Text>
-                </Pressable>
-                <FillIP placeholder={'Email'} value={email} onPress={setEmail} />
-                <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
-                    <Image source={require('./../../../assets/vietnam.png')}
-                        resizeMode='contain' style={{ width: wp(10), height: hp(6) }}
-                    />
-                    <FillIP placeholder={'( +84)  724-848-1225'} style={{ width: 'auto' }} value={phone} onPress={setPhone} />
-                </View>
+                        {/* FullName */}
+                        <Controller
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    show={false}
+                                    label={'FullName'}
+                                    placeholder={'Full Name'}
+                                    onChange={field.onChange}
+                                    value={field.value}
+                                    error={errors.fullName ? true : false}
+                                    err={errors.fullName ? errors.fullName.message : ''}
+                                    disable={false}
+                                />
+                            )}
+                            name="fullName"
+                            defaultValue={inforUser?.fullname}
+                            rules={{
+                                required: "Vui lòng nhập tên của bạn", pattern: {
+                                    value: /^[a-zA-Z\s]+$/
+                                    , message: "Hãy nhập đúng tên của bạn !!"
+                                }
+                            }
 
-                {/* Gagrende */}
-                <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    placeholder={'Gender'}
-                    style={[styles.input, { borderWidth: 0, marginTop: hp(2), alignSelf: 'center' }]}
-                />
-                <DatePicker
-                    mode='date'
-                    modal
-                    open={open1}
-                    date={date}
-                    onConfirm={(date) => {
-                        setOpen(false)
-                        setDate(date)
+                            }
+                        />
+                        {/* PhoneNumber */}
+                        <Controller
+                            control={control}
+                            render={({ field }) => (
+                                <>
+                                    <View style={[styles.input, { flexDirection: "row", alignItems: "center" }]}>
+                                        <Image
+                                            source={require("./../../../assets/vietnam.png")}
+                                            resizeMode="contain"
+                                            style={{ width: wp(10), height: hp(6) }}
+                                        />
+                                        <TextInput
+                                            placeholder="+84xxxx"
+                                            style={{ marginLeft: 20 }}
+                                            onChangeText={field.onChange}
+                                            value={field.value}
+                                        />
+                                    </View>
+                                    <Text style={{ alignSelf: 'flex-start', color: 'red' }}>
+                                        {errors.phoneNumber && errors.phoneNumber.message}
+                                    </Text>
+                                </>
+                            )}
+                            name="phoneNumber"
+                            defaultValue={inforUser?.phone}
+                            rules={{ required: "Phone Number is required", pattern: { value: /^[0-9]{10}$/, message: "Invalid phone number" } }}
+                        />
+                        {/* Email */}
+                        <Controller
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    show={false}
+                                    label={'Your Email'}
+                                    placeholder={'Email'}
+                                    onChange={field.onChange}
+                                    value={field.value}
+                                    error={errors.userName ? true : false}
+                                    err={errors.userName ? errors.userName.message : ''}
+                                    disable={false}
+                                />
+                            )}
+                            name="userName"
+                            defaultValue={inforUser?.email}
+                            rules={{ required: "Email không được để trống", pattern: { value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message: "Vui lòng nhập đúng định dạng email" } }}
+                        />
+                        {/* Calede */}
+                        <Pressable
+                            style={[styles.input, { marginBottom: hp(2), flexDirection: "row", alignItems: "center" }]}
+                            onPress={() => console.log("Open calendar")}
+                        >
+                            <Calendar size={FontSize.size_mini} color={Color.colorDimgray_200} />
+                            <Text
+                                style={{
+                                    fontFamily: FontFamily.mulishBold,
+                                    color: Color.colorDimgray_200,
+                                    marginLeft: 10,
+                                }}
+                            >
+                                {date.toString()}
+                            </Text>
+                        </Pressable>
+
+                        {/* Button */}
+                        <Button title="Tạo Thông Tin" onPress={handleSubmit(onSubmit)} />
+                    </View>
+                </Container>
+                <Modal2 title={'Tạo thành công'} img={require('./../../../assets/Logo.png')}
+                    value={'Thông tin của bạn đã được tạo  thành công'}
+                    onPress={() => {
+                        navigation.navigate('Home')
                     }}
-                    onCancel={() => {
-                        setOpen(false)
-                    }}
+                    isVisible={open}
                 />
-            </View>
-            {/* Button */}
-            <Button title="Update" onPress={() => { }} />
-
-        </ScrollView>
-    )
+            </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: wp(90),
+        flexDirection: "column",
+        alignItems: "center",
         paddingVertical: hp(2),
-        alignSelf: 'center'
+        backgroundColor: Color.colorGhostwhite,
     },
     input: {
-        width: wp(85),
-        height: hp(8),
-        padding: wp(3),
-        backgroundColor: Color.primaryWhite,
-        borderRadius: 12,
-        color: Color.colorDimgray_200,
-        fontFamily: FontFamily.mulishBold,
-    },
-    header: {
+        width: wp(90),
+        height: hp(7.5),
+        marginTop: hp(1),
+        borderRadius: 13,
+        backgroundColor: Color.colorGhostwhite,
+        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: hp(2.5),
+        paddingHorizontal: wp(3),
+        ...Platform.select({
+            ios: {
+                shadowColor: Color.colorDimgray_200,
+                shadowOffset: {
+                    width: 0,
+                    height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
     },
-    avatarContainer: {
-        position: 'relative',
-    },
-    avatar: {
-        width: wp(25),
-        height: wp(25),
-        borderRadius: 50,
-        backgroundColor: Color.colorGray_100,
-        borderWidth: 5,
-        borderColor: Color.globalApp,
-    },
-    squareIcon: {
-        position: 'absolute',
-        width: wp(10),
-        height: wp(10),
-        bottom: 0,
-        right: -20,
-    },
-    fullName: {
-        fontFamily: FontFamily.jostSemiBold,
-        fontSize: FontSize.headingH4_size,
-        color: Color.colorGray_100,
-        letterSpacing: 0.2,
-        lineHeight: 30,
-        marginVertical: hp(1),
-    },
-})
+});

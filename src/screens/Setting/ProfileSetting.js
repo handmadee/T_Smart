@@ -20,16 +20,17 @@ import {
     Colorfilter
 } from "iconsax-react-native";
 import { useTranslation } from 'react-i18next';
-import SpecialOfferSwitch from '../../contanst/Switch';
-import auth from '@react-native-firebase/auth';
-
+import { useDispatch, useSelector } from "react-redux";
+import { removeAuth } from "../../redux/token/slice.token";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ProfileSetting = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const { t, i18n } = useTranslation();
     const [vn, setVN] = useState(true);
     const [dark, setTheme] = useState(false);
-
     const VNN = require('./../../../assets/vietnam.png');
     const EV = require('./../../../assets/england.png');
     const mon = require('./../../../assets/mon.png');
@@ -55,21 +56,21 @@ const ProfileSetting = ({ navigation }) => {
         navigation.navigate(screen);
     }, [navigation]);
 
-    const logOut = useCallback(() => {
-        auth()
-            .signOut()
-            .then(() => navigation.navigate('LetsAuth'));
-    }, [])
-
+    const logOut = async () => {
+        await AsyncStorage.setItem('auth', JSON.stringify({ "accesstoken": '' }));
+        dispatch(removeAuth());
+    };
     const Header = React.memo(() => {
         return (
             <View style={styles.header}>
                 <View style={styles.avatarContainer}>
-                    <Image source={require('./../../../assets/avatar.png')} style={styles.avatar} resizeMode="cover" />
+                    <Image source={
+                        inforUser?.avatar ? { uri: inforUser?.avatar } : require('./../../../assets/avatar.png')
+                    } style={styles.avatar} resizeMode="cover" />
                     <Image source={require('./../../../assets/SQUARE.png')} style={styles.squareIcon} resizeMode="cover" />
                 </View>
                 <Text style={styles.fullName}>
-                    Dat (FPT)
+                    {inforUser?.fullname}
                 </Text>
             </View>
         )
@@ -108,9 +109,6 @@ const ProfileSetting = ({ navigation }) => {
                                 <Image source={dark ? mon : sun} style={{ width: '10%', height: '100%' }} resizeMode="cover" />
                             </RowComponent>
                         </Pressable>
-
-
-
                         {/* Logout */}
                         <SettingsItem icon={<Logout size="17" color={Color.colorGray_100} />} text={t('log')} onPress={logOut} />
                     </View>

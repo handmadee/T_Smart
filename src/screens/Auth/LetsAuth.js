@@ -11,24 +11,27 @@ import { H1 } from '../../components/H1';
 import { RowComponent } from '../../components/RowComponent';
 import Button from '../../components/Button';
 import { useTranslation } from 'react-i18next';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
+// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+// import auth from '@react-native-firebase/auth';
 
 function LetsAuth({ navigation }) {
     const { t } = useTranslation();
     // Auth 
-    GoogleSignin.configure({
-        webClientId: '501102519819-nn3bubead0uin0ia16bd1ptqhrkiapjj.apps.googleusercontent.com',
-    });
+    // GoogleSignin.configure({
+    //     webClientId: '501102519819-nn3bubead0uin0ia16bd1ptqhrkiapjj.apps.googleusercontent.com',
+    // });
+    // async function onGoogleButtonPress() {
+    //     // Check if your device supports Google Play
+    //     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    //     // Get the users ID token
+    //     const { user, idToken } = await GoogleSignin.signIn();
+    //     console.log(user);
+    //     // Create a Google credential with the token
+    //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    //     return auth().signInWithCredential(googleCredential) && navigation.navigate('HomeNav');
+    // }
     async function onGoogleButtonPress() {
-        // Check if your device supports Google Play
-        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-        // Get the users ID token
-        const { user, idToken } = await GoogleSignin.signIn();
-        console.log(user);
-        // Create a Google credential with the token
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        return auth().signInWithCredential(googleCredential) && navigation.navigate('HomeNav');
+        return ''
     }
 
     const handlerLogin = useCallback(() => navigation.navigate('Login'), [navigation]);

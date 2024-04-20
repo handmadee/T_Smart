@@ -11,10 +11,17 @@ import { Camera, Clock, Message, Star, Star1, Book, Mobile, Transmit, AudioSquar
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import loadText from '../../services/loadText';
 import Button from '../../components/Button';
+import { createTracking } from '../../apis/trackingCourse';
+import Modal2 from '../../components/Modal';
+import { useSelector } from 'react-redux';
+import LoadingView from '../Auth/LoadingScreen';
 
 export default function DetailCourse({ navigation, route }) {
-    const course = route.params.course;
+    const course = route.params?.course;
+    const idUser = useSelector(sate => sate?.authReducer?.authData?.id);
     const [readMore, setReadMore] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [isShowModal, setIsShowModal] = useState(false);
     const RenderIntructor = React.memo(() => {
         return (
             <Container style={[styles.intructor]}>
@@ -123,7 +130,7 @@ export default function DetailCourse({ navigation, route }) {
                             }
                             <Text style={[styles.p, { color: Color.globalApp, textDecorationLine: 'underline' }]}
                                 onPress={() => setReadMore(!readMore)}>
-                                {readMore ? 'Pull Up' : 'Read more'}
+                                {readMore ? '     Pull Up' : 'Read more'}
                             </Text>
                         </Text>
                     </View>
@@ -136,12 +143,25 @@ export default function DetailCourse({ navigation, route }) {
             </Container>
         )
     })
+    const handlerLearing = async () => {
+        // return navigation.navigate('LessonCourse', { courseID: course?._id });
+        try {
+            setLoading(true);
+            const tracking = await createTracking({ idAccount: idUser, idCourse: course?._id });
+            if (tracking) {
+                setIsShowModal(true);
+            }
+        } catch (error) {
+            navigation.navigate('LessonCourse', { courseID: course?._id });
+            console.log('Failed to tracking course:', error);
+        } finally {
+            setLoading(false);
+        }
 
-    const handlerLearing = () => {
-        return navigation.navigate('LessonCourse', { lesson: course?.StudySection ?? [] });
+
     }
     return (
-        <SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>
+        loading ? <LoadingView /> : (<SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>
             <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
@@ -149,14 +169,14 @@ export default function DetailCourse({ navigation, route }) {
                 <View style={{ width: wp(100), paddingBottom: hp(10) }}>
                     <View>
                         <Image
-                            source={{ uri: course?.image }}
+                            source={{ uri: course?.imageCourse }}
                             style={{ width: wp(100), height: hp(30) }}
                         />
                     </View>
                     <View style={{ flex: .7 }}>
                         {
                             course && (
-                                <RenderDetailCousrse name={course?.title} time={course?.time ?? 90} about={course?.detail} caterory={course?.category} readMore={readMore} />
+                                <RenderDetailCousrse name={course?.title} time={course?.time ?? 90} about={course?.detailCourse} caterory={course?.category} readMore={readMore} />
                             )
                         }
                         {/* Intructor */}
@@ -167,7 +187,19 @@ export default function DetailCourse({ navigation, route }) {
                 </View>
             </ScrollView >
             <Button title="Start Learning" style={[styles.startCourse]} onPress={handlerLearing} />
-        </SafeAreaView >
+            <Modal2 img={
+                require('./../../../assets/Logo.png')
+            }
+                title={'Đăng kí khoá học '}
+                value={'Bạn Đã Đăng Kí Khoá Học Thành Công'}
+                isVisible={isShowModal}
+                onPress={() => {
+                    setIsShowModal(!isShowModal);
+                    navigation.navigate('LessonCourse', { courseID: course?._id });
+                }}
+            />
+
+        </SafeAreaView >)
     );
 }
 

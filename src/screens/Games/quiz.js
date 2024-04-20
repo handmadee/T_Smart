@@ -11,11 +11,11 @@ import Button from "../../components/Button";
 
 const Quiz = ({ navigation, route }) => {
     const quizData = route.params.quizData;
+
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
-
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -35,7 +35,7 @@ const Quiz = ({ navigation, route }) => {
     }, [currentQuestion, timeLeft]);
 
     const handleAnswer = (selectedOption) => {
-        if (selectedOption === quizData[currentQuestion].answer) {
+        if (selectedOption?.isCorrect) {
             setScore(score + 1);
         }
         if (currentQuestion < quizData.length - 1) {
@@ -84,7 +84,7 @@ const Quiz = ({ navigation, route }) => {
                         onPress={() => handleAnswer(item)}
                     >
                         <Text style={styles.answer}>{String.fromCharCode(65 + index)}. </Text>
-                        <Text style={styles.answer}>{item}</Text>
+                        <Text style={styles.answer}>{item?.titleAnswer}</Text>
                     </Pressable>
                 ))}
             </View>
@@ -96,7 +96,7 @@ const Quiz = ({ navigation, route }) => {
             <Container style={styles.viewContain}>
                 <MemoizedQuestion
                     question={quizData[currentQuestion].question}
-                    manyAnswers={quizData[currentQuestion].manyAnswers}
+                    manyAnswers={quizData[currentQuestion].answers}
                     current={currentQuestion}
                     end={quizData.length}
                 />
