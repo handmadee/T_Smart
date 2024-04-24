@@ -13,6 +13,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import ChangePass from '../screens/Auth/ChangePass.js';
 
 const SettingNav = React.memo(({ navigation, route }) => {
     const Stack = createNativeStackNavigator();
@@ -36,6 +37,8 @@ const SettingNav = React.memo(({ navigation, route }) => {
             <Stack.Screen name="Notification" component={Notification} options={{ headerTitle: 'Notification' }} />
             <Stack.Screen name="Help" component={Help} options={{ headerTitle: 'Terms & Conditions' }} />
             <Stack.Screen name="Security" component={Security} options={{ headerTitle: 'Security' }} />
+            <Stack.Screen name="ChangePassword" component={ChangePass} options={{ headerTitle: 'ChangePass' }} />
+
         </Stack.Navigator >
     );
 });

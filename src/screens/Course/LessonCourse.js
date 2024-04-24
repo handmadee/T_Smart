@@ -38,8 +38,7 @@ const LessonCourse = ({ navigation, route }) => {
             const tracking = await getTracking(idUser, idCourse);
             // SET LESSON LEARN
             const trackingData = tracking.data?.data?.data?.trackingCourse?.learnLesson || [];
-            setHaveLearn(trackingData);
-            console.log(trackingData);
+            await setHaveLearn(trackingData);
         } catch (error) {
             console.log(error);
         } finally {
@@ -52,9 +51,7 @@ const LessonCourse = ({ navigation, route }) => {
         fetchCourse()
     }, [fetchCourse])
 
-    useEffect(() => {
-        haveLearnRef.current = haveLearn;
-    }, [haveLearn]);
+
 
     const handlePress = useCallback(async (id, url) => {
         console.log(id)
@@ -104,7 +101,7 @@ const LessonCourse = ({ navigation, route }) => {
                         }
                         {/* Đã hoàn thành */}
                         {
-                            haveLearn.includes(id) && (
+                            status && (
                                 <Image source={require('./../../../assets/check.png')}
                                     style={{
                                         width: 25,
@@ -191,7 +188,7 @@ const LessonCourse = ({ navigation, route }) => {
                                     index={index + 1}
                                     title={lesson?.titleLesson}
                                     duration={lesson?.timeLesson}
-                                    status={lesson?.status}
+                                    status={haveLearn.includes(lesson?._id)}
                                     onPress={() => handlePress(lesson?._id, lesson?.urlVideo)}
                                     id={lesson._id}
                                 />
@@ -212,6 +209,8 @@ const LessonCourse = ({ navigation, route }) => {
             keyExtractor={(item, index) => index.toString()}
         />
     ), [dataLeson, watching]);
+
+
 
 
 

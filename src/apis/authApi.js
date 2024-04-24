@@ -63,3 +63,14 @@ export const logout = async (refreshToken) => {
         throw new Error(error.response?.da?.data?.message || 'Logout failed');
     }
 };
+
+// change password
+
+export const changePassword = async (data) => {
+    try {
+        const response = await axiosClient.put('/auth/changePassword', data);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.data?.message || 'Change password failed');
+    }
+};
