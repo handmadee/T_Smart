@@ -167,7 +167,7 @@ const HomeNav = React.memo(() => {
 function getTabBarVisible(route) {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === 'EditProfile1' || routeName === 'Notification' || routeName === 'Security' || routeName === 'Help' || routeName === 'DetailCourse' || routeName === 'LessonCourse' || routeName === 'ShowAnswer' || routeName === 'Quiz' ||
-        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne'
+        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne' || routeName === 'ChangePasswo'
     ) {
         return 'none';
     }

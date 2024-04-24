@@ -66,6 +66,7 @@ export default function FillProfile() {
         }
 
         try {
+            console.log(inforUser)
             setLoading(true);
             await editInfor(inforUser?._id, formData);
             dispatch(updateInfor({ ...inforUser, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
@@ -168,7 +169,12 @@ export default function FillProfile() {
                             )}
                             name="userName"
                             defaultValue={inforUser?.email}
-                            rules={{ required: "Email không được để trống", pattern: { value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message: "Vui lòng nhập đúng định dạng email" } }}
+                            rules={{
+                                required: "Email không được để trống", pattern: {
+                                    value: /^[\w\-.]+@[\w-]+\.[\w-]{2,4}$/g,
+                                    message: "Vui lòng nhập đúng định dạng email"
+                                }
+                            }}
                         />
                         {/* Calede */}
                         <Pressable

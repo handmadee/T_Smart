@@ -24,31 +24,30 @@ const Home = ({ navigation }) => {
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const [open, setOpen] = useState(false);
     useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                setLoading(true);
+                const categoryResponse = await getCategory();
+                setCategories(categoryResponse.data.data);
+                const courseResponse = await getCourses();
+                console.log(courseResponse.data.data.courses)
+                setCourses(courseResponse.data.data.courses);
+                const imageResponse = await getNotification();
+                console.log(imageCourse)
+                setImageCourse(imageResponse.data.data);
+                console.log(inforUser)
+                if (!inforUser) {
+                    setOpen(true);
+                }
+            } catch (error) {
+                console.error('Error fetching initial data:', error);
+                setLoading(false);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchInitialData();
     }, []);
-
-    const fetchInitialData = async () => {
-        try {
-            setLoading(true);
-            const categoryResponse = await getCategory();
-            setCategories(categoryResponse.data.data);
-            const courseResponse = await getCourses();
-            console.log(courseResponse.data.data.courses)
-            setCourses(courseResponse.data.data.courses);
-            const imageResponse = await getNotification();
-            console.log(imageCourse)
-            setImageCourse(imageResponse.data.data);
-            console.log(inforUser)
-            if (!inforUser) {
-                setOpen(true);
-            }
-        } catch (error) {
-            console.error('Error fetching initial data:', error);
-            setLoading(false);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleCategoryPress = useCallback(async (category) => {
         setTrackingCourse(category.nameCategory);
@@ -81,6 +80,14 @@ const Home = ({ navigation }) => {
             </View>
             <Pressable onPress={onPress} >
                 <Image source={require("./../../../assets/NOTIFICATIONS.png")} resizeMode='contain' />
+                <View style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    backgroundColor: 'red',
+                    position: 'absolute',
+                    right: 0,
+                }} />
             </Pressable>
         </RowComponent>
     );
