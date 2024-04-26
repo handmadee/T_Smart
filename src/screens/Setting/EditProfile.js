@@ -29,7 +29,7 @@ export default function EditProfile({ navigation }) {
     const [open, setOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState(null);
 
-
+    console.log(idUser)
     const selectImage = useCallback(() => {
         const options = {
             title: "Select Avatar",
@@ -73,7 +73,7 @@ export default function EditProfile({ navigation }) {
         try {
             setLoading(true);
             await importInfor(formData)
-            await dispatch(updateInfor({ ...inforUser, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
+            await dispatch(updateInfor({ ...inforUser, id: data?._id, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
             setOpen(true);
         } catch (error) {
             console.log(error);
@@ -174,7 +174,13 @@ export default function EditProfile({ navigation }) {
                             )}
                             name="userName"
                             defaultValue={inforUser?.email}
-                            rules={{ required: "Email không được để trống", pattern: { value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, message: "Vui lòng nhập đúng định dạng email" } }}
+                            rules={{
+                                required: "Email không được để trống",
+                                pattern: {
+                                    value: /^[\w\-.]+@[\w-]+\.[\w-]{2,4}$/g,
+                                    message: "Vui lòng nhập đúng định dạng email"
+                                }
+                            }}
                         />
                         {/* Calede */}
                         <Pressable

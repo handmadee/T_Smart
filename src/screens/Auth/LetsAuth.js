@@ -11,6 +11,7 @@ import { H1 } from '../../components/H1';
 import { RowComponent } from '../../components/RowComponent';
 import Button from '../../components/Button';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 // import auth from '@react-native-firebase/auth';
 
@@ -31,7 +32,18 @@ function LetsAuth({ navigation }) {
     //     return auth().signInWithCredential(googleCredential) && navigation.navigate('HomeNav');
     // }
     async function onGoogleButtonPress() {
-        return ''
+        Toast.show({
+            type: 'error',
+            text1: '',
+            text2: 'Chức năng này đang được phát triển 👋 📱'
+        });
+    }
+    async function onGoogleApplePress() {
+        Toast.show({
+            type: 'error',
+            text1: '',
+            text2: 'Chức năng này đang được phát triển 👋 📱'
+        });
     }
 
     const handlerLogin = useCallback(() => navigation.navigate('Login'), [navigation]);
@@ -56,12 +68,14 @@ function LetsAuth({ navigation }) {
                             >{t('google')}</Text>
                         </RowComponent>
                     </Pressable>
-                    <RowComponent>
-                        <Image source={require('./../../../assets/apple.png')} style={{ width: wp(15), height: hp(5) }} />
-                        <Text
-                            style={styles.txtBtn}
-                        >{t('apple')}</Text>
-                    </RowComponent>
+                    <Pressable onPress={onGoogleApplePress}>
+                        <RowComponent>
+                            <Image source={require('./../../../assets/apple.png')} style={{ width: wp(15), height: hp(5) }} />
+                            <Text
+                                style={styles.txtBtn}
+                            >{t('apple')}</Text>
+                        </RowComponent>
+                    </Pressable>
                 </View>
                 {/* Or */}
                 <View style={styles.signIn}>
@@ -75,6 +89,17 @@ function LetsAuth({ navigation }) {
                     >{t('signup')}</Text></Text>
                 </View>
             </Container>
+            <Toast topOffset={10} visibilityTime={2000}
+                text1Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+                text2Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+
+            />
         </SafeAreaView >
     );
 }

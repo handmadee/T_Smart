@@ -11,20 +11,23 @@ import SpecialOfferSwitch from '../../contanst/Switch';
 import { SettingsItem } from './ProfileSetting';
 import { User } from "iconsax-react-native";
 import Button from "../../components/Button";
+import Toast from 'react-native-toast-message';
 
-export default function Security() {
+export default function Security({ navigation }) {
     const [Remember, setIsRemember] = React.useState(true);
     const [Biometric, setBiometric] = React.useState(true);
     const [Face, setIsFace] = React.useState(false);
-
-
+    const onHandleChange = () => navigation.navigate('ChangePassword');
+    const handlerChangePin = () => {
+        Toast.show({
+            type: 'info',
+            text1: 'Xin Lỗi',
+            text2: 'Tính năng này đang được phát triển  🔥🔥🔥'
+        });
+    }
     const toggleRemember = () => setIsRemember(previousState => !previousState);
     const toggleBiometric = () => setBiometric(previousState => !previousState);
     const toggleFace = () => setIsFace(previousState => !previousState);
-
-
-
-
     return (
         <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', flex: 1 }}>
             <View>
@@ -33,13 +36,22 @@ export default function Security() {
                 <SpecialOfferSwitch title={'Face ID'} status={Face} toggleSwitch={toggleFace} />
             </View>
             <View style={{ marginBottom: hp(10) }}>
-                <Pressable style={styles.btn}>
+                <Pressable style={styles.btn} onPress={handlerChangePin}>
                     <Text style={styles.title}>Change PIN</Text>
                 </Pressable>
-                <Button title={"Change Password"} />
+                <Button title={"Change Password"} onPress={onHandleChange} />
             </View>
+            <Toast topOffset={5} visibilityTime={3500}
+                text1Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+                text2Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
 
-
+            />
         </View>
     );
 }

@@ -1,20 +1,105 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Container } from '../../components/Container'
 import { useTranslation } from 'react-i18next'
-import { Color } from '../../../GlobalStyles'
+import { Color, FontFamily } from '../../../GlobalStyles'
 import { Heart, Icon } from 'iconsax-react-native'
-
+import { getNews } from '../../apis/newsApi'
+import LoadingView from '../Auth/LoadingScreen'
 
 
 
 export default function Notification12({ navigation }) {
+
     const { t } = useTranslation();
     const [tab, setTab] = useState(false);
+    const handlerTab = useCallback(() => setTab(!tab), [tab]);
+    const [more, setMore] = useState(false);
+    const [Notification, setNotification] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const handlerTab = useCallback(() => setTab(!tab), [tab])
+    useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                setLoading(true);
+                const response = await getNews();
+                console.log(response)
+                setNotification(response?.data?.data)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchNews();
+    }, [])
+
+    const ItemNotification = ({ imagePost = '', contentNew = '', createDate }) => {
+        return (
+            <View style={[styles.itemNotification]}>
+                <View style={[styles.row, { justifyContent: 'space-between' }]}>
+                    {/* Head */}
+                    <View style={[styles.row, { marginBottom: hp(2) }]}>
+                        <View style={{
+                            width: wp(15),
+                            height: wp(15),
+                            borderRadius: wp(5)
+                        }}>
+                            <Image source={require('./../../../assets/Logo.png')} style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: wp(5),
+                            }} resizeMode='cover' />
+                        </View>
+                        <View style={[styles.column, { marginLeft: 10 }]}>
+                            <Text style={{ fontFamily: FontFamily.jostBold, color: Color.colorGray_200, }}>
+                                TSMART
+                            </Text>
+                            <Text style={{ fontFamily: FontFamily.jostBold, color: Color.colorDimgray_100 }}>
+                                {createDate}
+                            </Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Heart
+                            size={20}
+                            color={'red'}
+                        />
+                    </View>
+                </View>
+                {/* Content */}
+                <Text style={{
+                    fontSize: 16,
+                    fontFamily: FontFamily.mulishBold
+                }}>
+                    {more ? contentNew.slice(0, 100) + '...' : contentNew}
+                </Text>
+                {
+                    contentNew.length > 100 && <Text style={{
+                        fontSize: 16,
+                        fontFamily: FontFamily.mulishBold,
+                        color: Color.globalApp
+                    }} onPress={() => setMore(!more)}>
+                        {more ? "Xem thêm" : "Ẩn bớt"}
+                    </Text>
+                }
+                {/* PostImage */}
+                <View style={{
+                    width: wp(88),
+                    maxHeight: hp(35),
+                    borderRadius: wp(5),
+                    alignSelf: 'center'
+                }}>
+                    {imagePost && <Image source={{ uri: imagePost }} style={{
+                        width: '100%',
+                        height: '100%'
+                    }} resizeMode='cover' />}
+                </View>
+            </View>
+        )
+    }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
             <Container width={wp(90)}
@@ -43,113 +128,37 @@ export default function Notification12({ navigation }) {
                 </View>
                 {/* Select Notification */}
                 {
-                    !tab ? <ScrollView style={{ marginTop: hp(2), height: hp(80) }}
-                        showsVerticalScrollIndicator={false}
-                        bounces={false}
-
-                    >
-                        <View style={styles.itemNotification}>
-                            <View style={[styles.row, { justifyContent: 'space-between' }]}>
-                                {/* Head */}
-                                <View style={[styles.row]}>
-                                    <View style={{
-                                        width: wp(15),
-                                        height: wp(15),
-                                        borderRadius: wp(5)
-                                    }}>
-                                        <Image source={require('./../../../assets/Logo.png')} style={{
-                                            width: '100%',
-                                            height: '100%'
-                                        }} resizeMode='cover' />
-                                    </View>
-                                    <View style={[styles.column]}>
-                                        <Text>
-                                            TSMART
-                                        </Text>
-                                        <Text>
-                                            18/04/2024
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View>
-                                    <Heart
-                                        size={20}
-                                        color={Color.colorBlack}
+                    !tab
+                        ?
+                        <View style={{ marginTop: hp(2), height: hp(80), borderRadius: 10 }} >
+                            {
+                                loading
+                                    ?
+                                    <LoadingView />
+                                    :
+                                    <FlatList
+                                        data={Notification}
+                                        renderItem={({ item }) => {
+                                            return <ItemNotification
+                                                imagePost={item?.imagePost}
+                                                contentNew={item?.contentNews}
+                                                createDate={item?.createdAt}
+                                            />
+                                        }}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        bounces={false}
+                                        showsVerticalScrollIndicator={false}
+                                        maxToRenderPerBatch={5}
                                     />
-                                </View>
-                            </View>
-                            {/* Content */}
-                            <Text>
-                                💁👌🎍😍  Mùng 10/3 ai cũng được quà
-                                Giỗ Tổ Hùng Vương 10/3 Âm lịch. Lễ hội Đền Hùng còn gọi là Giỗ Tổ Hùng Vương, là một lễ hội lớn nhằm tưởng nhớ và tỏ lòng biết ơn công lao lập nước của các vua Hùng, những vị vua đầu tiên của dân tộc
-                            </Text>
-                            {/* PostImage */}
-                            <View style={{
-                                width: wp(88),
-                                maxHeight: hp(35),
-                                borderRadius: wp(5),
-                                alignSelf: 'center'
-                            }}>
-                                <Image source={require('./../../../assets/Post3.jpg')} style={{
-                                    width: '100%',
-                                    height: '100%'
-                                }} resizeMode='cover' />
-                            </View>
+                            }
                         </View>
-                        {/* Item 2 */}
-                        <View style={styles.itemNotification}>
-                            <View style={[styles.row, { justifyContent: 'space-between' }]}>
-                                {/* Head */}
-                                <View style={[styles.row]}>
-                                    <View style={{
-                                        width: wp(15),
-                                        height: wp(15),
-                                        borderRadius: wp(5)
-                                    }}>
-                                        <Image source={require('./../../../assets/Logo.png')} style={{
-                                            width: '100%',
-                                            height: '100%'
-                                        }} resizeMode='cover' />
-                                    </View>
-                                    <View style={[styles.column]}>
-                                        <Text>
-                                            TSMART
-                                        </Text>
-                                        <Text>
-                                            16/04/2024
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View>
-                                    <Heart
-                                        size={20}
-                                        color={Color.colorBlack}
-                                    />
-                                </View>
-                            </View>
-                            {/* Content */}
-                            <Text>
-                                😍  Tay ải tay ai :3
-                            </Text>
-                            {/* PostImage */}
-                            <View style={{
-                                width: wp(88),
-                                maxHeight: hp(35),
-                                borderRadius: wp(5),
-                                alignSelf: 'center'
-                            }}>
-                                <Image source={require('./../../../assets/Post2.jpg')} style={{
-                                    width: '100%',
-                                    height: '100%'
-                                }} resizeMode='cover' />
-                            </View>
-                        </View>
-                    </ScrollView> : <Text
-                        style={{
-                            marginTop: hp(2),
-                            textAlign: 'center',
-                        }}
-                    >Chưa có thông báo nào gần đây </Text>
+                        :
+                        <Text
+                            style={{
+                                marginTop: hp(2),
+                                textAlign: 'center',
+                            }}
+                        >Chưa có thông báo nào gần đây </Text>
                 }
                 {/* Notification */}
 
@@ -200,7 +209,8 @@ const styles = StyleSheet.create({
     itemNotification: {
         borderWidth: 0.5,
         borderColor: Color.colorSilver_100,
-        padding: 10,
-        marginBottom: 20
+        padding: 15,
+        marginBottom: 20,
+        backgroundColor: Color.primaryWhite,
     }
 })

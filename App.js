@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View, Modal, TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
 import AuthNav from "./src/navigation/Auth.nav";
 import Splash from "./Splash";
@@ -13,9 +13,18 @@ import { Color, FontFamily, FontSize } from "./GlobalStyles";
 import { Container } from "./src/components/Container";
 import { Rank } from './src/screens/Rank/rank';
 import LeaderBoard from "./src/screens/Rank/Leaderboard";
+import Input from "./src/components/Input";
+import Button from "./src/components/Button";
+import PlayQuiz from "./src/screens/Quiz/PlayQuiz";
+import SelectGames from "./src/screens/Quiz/HomeQuiz";
+import ResuftQuiz from "./src/screens/Quiz/ResuftGameQuiz";
+
 
 
 const App = () => {
+  const [currentPass, setCurrentPass] = useState('');
+  const [newPass, setNewPass] = useState('')
+  const [confirmPass, setConfirmPass] = useState('')
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
@@ -25,7 +34,9 @@ const App = () => {
 
 
 
+
+
   );
-}
+};
 
 export default App;
