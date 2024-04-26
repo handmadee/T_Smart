@@ -23,7 +23,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from "react-redux";
 import { removeAuth } from "../../redux/token/slice.token";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Toast from 'react-native-toast-message';
+import AlertNotification from "../../components/AlertNotification";
+import LoadingView from "../Auth/LoadingScreen";
 
 const ProfileSetting = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -31,19 +33,25 @@ const ProfileSetting = ({ navigation }) => {
     const { t, i18n } = useTranslation();
     const [vn, setVN] = useState(true);
     const [dark, setTheme] = useState(false);
+    const [isShow, setIsShow] = useState(false);
     const VNN = require('./../../../assets/vietnam.png');
     const EV = require('./../../../assets/england.png');
     const mon = require('./../../../assets/mon.png');
     const sun = require('./../../../assets/sun.png');
 
+    const handlerIn = () => setIsShow(true);
+    const logOut = async () => {
+        await AsyncStorage.setItem('auth', JSON.stringify({ "accesstoken": '' }));
+        dispatch(removeAuth());
+    };
+    const handlerOut = () => setIsShow(!isShow);
+
     const settingsData = [
         { icon: <User size="17" color={Color.colorGray_100} />, text: t('edit'), onPress: "EditProfile1" },
-        { icon: <EmptyWallet size="17" color={Color.colorGray_100} />, text: t('payment') },
+        { icon: <EmptyWallet size="17" color={Color.colorGray_100} />, text: t('payment'), onPress: "Payment" },
         { icon: <SecurityUser size="17" color={Color.colorGray_100} />, text: t('security'), onPress: "Security" },
-        { icon: <Notification size="17" color={Color.colorGray_100} />, text: t('Notification'), onPress: "EditProfile" },
+        { icon: <Notification size="17" color={Color.colorGray_100} />, text: t('Notification'), onPress: "NotificationOne" },
         { icon: <MessageQuestion size="17" color={Color.colorGray_100} />, text: t('help'), onPress: "Help" },
-        // { icon: <Notification size="17" color={Color.colorGray_100} />, text: t('notification'), onPress: "Notification" },
-        // { icon: <Logout size="17" color={Color.colorGray_100} />, text: t('log') }
     ];
     const handlerSetLanguage = () => {
         setVN(!vn);
@@ -56,10 +64,14 @@ const ProfileSetting = ({ navigation }) => {
         navigation.navigate(screen);
     }, [navigation]);
 
-    const logOut = async () => {
-        await AsyncStorage.setItem('auth', JSON.stringify({ "accesstoken": '' }));
-        dispatch(removeAuth());
-    };
+
+    const handlerChangePin = () => {
+        Toast.show({
+            type: 'error',
+            text1: 'Xin lỗi',
+            text2: 'Tính năng này đang được phát triển  👋'
+        });
+    }
     const Header = React.memo(() => {
         return (
             <View style={styles.header}>
@@ -85,7 +97,9 @@ const ProfileSetting = ({ navigation }) => {
                     {/* Settings */}
                     <View style={styles.settingsContainer}>
                         {settingsData.map((item, index) => (
-                            <SettingsItem key={index} icon={item.icon} text={item.text} onPress={() => navigateTo(item.onPress)} />
+                            <SettingsItem key={index} icon={item.icon} text={item.text} onPress={
+                                item.onPress !== 'Payment' ? () => navigateTo(item.onPress) : handlerChangePin
+                            } />
                         ))}
                         {/* Switch  */}
                         <Pressable onPress={handlerSetLanguage} >
@@ -110,10 +124,31 @@ const ProfileSetting = ({ navigation }) => {
                             </RowComponent>
                         </Pressable>
                         {/* Logout */}
-                        <SettingsItem icon={<Logout size="17" color={Color.colorGray_100} />} text={t('log')} onPress={logOut} />
+                        <SettingsItem icon={<Logout size="17" color={Color.colorGray_100} />} text={t('log')} onPress={handlerIn} />
                     </View>
                 </View>
             </Container>
+            <Toast topOffset={20} visibilityTime={3500}
+                text1Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+                text2Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+
+            />
+            <AlertNotification
+                isVisible={isShow}
+                title={'Thông báo'}
+                value={'Bạn có muốn đăng xuất không ?'}
+                isPress={true}
+                txtBtn1="Ở lại học đã chứ 📖"
+                txtBtn2="Có"
+                onPress={handlerOut}
+                onPress2={logOut}
+            />
         </SafeAreaView>
     );
 };

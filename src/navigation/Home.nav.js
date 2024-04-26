@@ -16,7 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import MyCourse from '../screens/Course/MyCourse.js';
 import HightScores from '../screens/Games/HightScros.js';
-import SelectGames from '../screens/Games/SelectGames';
+import SelectGames from '../screens/Quiz/HomeQuiz.js';
 import GameNav from './Game.nav.js';
 import { useTranslation } from 'react-i18next';
 import LeaderBoard from '../screens/Rank/Leaderboard.js';
@@ -167,7 +167,7 @@ const HomeNav = React.memo(() => {
 function getTabBarVisible(route) {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === 'EditProfile1' || routeName === 'Notification' || routeName === 'Security' || routeName === 'Help' || routeName === 'DetailCourse' || routeName === 'LessonCourse' || routeName === 'ShowAnswer' || routeName === 'Quiz' ||
-        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne' || routeName === 'ChangePasswo'
+        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne' || routeName === 'ChangePasswo' || routeName === 'Exam' || routeName === 'viewAnswer'
     ) {
         return 'none';
     }

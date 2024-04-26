@@ -1,21 +1,36 @@
 'use strict'
 
-import React, { useCallback } from 'react'
-import { View, StyleSheet, SafeAreaView, ImageBackground, Text, Image, Platform, Pressable } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { View, StyleSheet, SafeAreaView, ImageBackground, Text, Image, Platform, Pressable, ScrollView } from 'react-native'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Clock } from 'iconsax-react-native';
 import { dataQuiz } from '../../data/data';
+import { getCategoryQuiz } from '../../apis/trackingQuiz';
+import LoadingView from '../Auth/LoadingScreen';
+
 
 
 export default function SelectGames({ navigation }) {
-    const quiz = require('./../../../assets/QUIZTEST.png');
-    const python = require('./../../../assets/python.png');
-    const java = require('./../../../assets/java.png');
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-
+    useEffect(() => {
+        const fetchCategory = async () => {
+            try {
+                setLoading(true);
+                const response = await getCategoryQuiz();
+                setData(response?.data?.data)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchCategory();
+    }, [])
     const CardSelect = React.memo(({ image, title, onPress }) => (
         <Pressable
             style={{
@@ -36,7 +51,7 @@ export default function SelectGames({ navigation }) {
             }}
             onPress={onPress}
         >
-            <Image source={image} style={{
+            <Image source={{ uri: image }} style={{
                 width: wp(25),
                 height: hp(10),
                 resizeMode: 'contain'
@@ -54,15 +69,15 @@ export default function SelectGames({ navigation }) {
         </Pressable>
     ), []);
 
-    const handlerSelect = useCallback(() => {
+    const handlerSelect = useCallback((id, image) => {
         return navigation.navigate('TopicSet', {
-            data: dataQuiz
+            data: { id, image }
         })
     })
 
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        loading ? <LoadingView /> : <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground
                 source={require('./../../../assets/bgrQuiz.png')}
                 style={{
@@ -81,19 +96,38 @@ export default function SelectGames({ navigation }) {
                     marginTop: hp(35)
                 }}
             >
-                <CardSelect image={quiz} title={'Bộ để kiểm tra'}
-                    onPress={() => ''}
-                />
-                <CardSelect image={python} title={'Python'}
-                    onPress={handlerSelect}
-                />
-                <CardSelect image={java} title={'Java'}
-                    onPress={() => ''}
-                />
+                <View
+                    style={{
+                        width: wp(90),
+                        height: hp(55),
+                    }}
+                >
+                    <ScrollView
+                        bounces={true}
+                        showsVerticalScrollIndicator={true}
+                    >
+                        {
+                            data.map((item, index) => (
+                                <CardSelect
+                                    key={index}
+                                    image={item.imageCategory}
+                                    title={item.nameCategory}
+                                    onPress={() => handlerSelect(item._id, item.imageCategory)}
+                                />
+                            ))
+                        }
+                    </ScrollView>
+                </View>
+
 
             </Container>
 
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 
+<Image source={{}} style={{
+    width: wp(15),
+    height: hp(10),
+    resizeMode: 'contain',
+}} />

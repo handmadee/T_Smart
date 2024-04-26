@@ -3,16 +3,11 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { EditProfile, Help, Notification, ProfileSetting, Security } from './../../src/screens/Setting/index.js';
+import { Help, Notification, ProfileSetting, Security } from './../../src/screens/Setting/index.js';
 import FillProfile from '../screens/Setting/FillProfile.js';
 import { Color } from '../../GlobalStyles.js';
 import { Container } from '../components/Container.js';
 import { CustomHeader } from './Home.nav.js';
-
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import ChangePass from '../screens/Auth/ChangePass.js';
 
 const SettingNav = React.memo(({ navigation, route }) => {
@@ -34,7 +29,6 @@ const SettingNav = React.memo(({ navigation, route }) => {
             }}>
             <Stack.Screen name="Setting" component={ProfileSetting} options={{ headerShown: false }} />
             <Stack.Screen name="EditProfile1" component={FillProfile} options={{ headerTitle: 'Edit Profile' }} />
-            <Stack.Screen name="Notification" component={Notification} options={{ headerTitle: 'Notification' }} />
             <Stack.Screen name="Help" component={Help} options={{ headerTitle: 'Terms & Conditions' }} />
             <Stack.Screen name="Security" component={Security} options={{ headerTitle: 'Security' }} />
             <Stack.Screen name="ChangePassword" component={ChangePass} options={{ headerTitle: 'ChangePass' }} />

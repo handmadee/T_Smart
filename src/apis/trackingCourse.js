@@ -19,3 +19,4 @@ export const getTracking = async (idAccount, idCourse) => {
 export const addLessonToTracking = async (data) => {
     return await axiosClient.put('/tracking', data)
 }
+

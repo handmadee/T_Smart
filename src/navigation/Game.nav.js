@@ -7,15 +7,13 @@ import { View, Text, Pressable, StyleSheet, SafeAreaView } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color, FontFamily, FontSize } from '../../GlobalStyles.js';
 import { Container } from '../components/Container.js';
-import DetailCourse from '../screens/Course/DetailCourse.js';
-import Home from '../screens/Home/Home.js';
-import { ShowAnswer } from '../screens/Games/ShowQuiz.js';
 import Quiz from '../screens/Games/quiz.js';
-import CartificateCourse from '../screens/Course/CertificateCourse';
-import SelectGames from '../screens/Games/SelectGames';
-import TopicSet from '../screens/Games/TopicSet';
+import SelectGames from '../screens/Quiz/HomeQuiz.js';
 import { CustomHeader } from './Home.nav.js';
-
+import TopicSet from '../screens/Quiz/TopicSet.js';
+import ResuftQuiz from '../screens/Quiz/ResuftGameQuiz.js';
+import PlayQuiz from '../screens/Quiz/PlayQuiz.js';
+import { ViewAnswer } from '../screens/Quiz/seeAnswer.js';
 
 
 const GameNav = React.memo(() => {
@@ -33,12 +31,15 @@ const GameNav = React.memo(() => {
                     </SafeAreaView>
                 ),
                 gestureEnabled: false
-
             }}>
             <Stack.Screen name="SelectGames" component={SelectGames} options={{ headerShown: false }} />
-            <Stack.Screen name="Quiz1" component={Quiz} options={{ headerShown: true }} />
+            <Stack.Screen name="Exam" component={PlayQuiz} options={{
+                headerShown: false,
+            }}
+            />
             <Stack.Screen name="TopicSet" component={TopicSet} options={{ headerShown: true }} />
-            <Stack.Screen name="ShowAnswer" component={ShowAnswer} options={{ headerShown: true }} />
+            <Stack.Screen name="ShowAnswer" component={ResuftQuiz} options={{ headerShown: false }} />
+            <Stack.Screen name="viewAnswer" component={ViewAnswer} options={{ headerShown: false }} />
         </Stack.Navigator >
 
     );
