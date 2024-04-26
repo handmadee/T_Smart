@@ -1,3 +1,3 @@
 export const common = {
-    BASE_URL: 'http://10.0.2.2:3052/v1/api',
+    BASE_URL: 'http://192.168.1.28:3052/v1/api',
 }

@@ -15,7 +15,10 @@ import { Rank } from './src/screens/Rank/rank';
 import LeaderBoard from "./src/screens/Rank/Leaderboard";
 import Input from "./src/components/Input";
 import Button from "./src/components/Button";
-import ChangePass from "./src/screens/Auth/ChangePass";
+import PlayQuiz from "./src/screens/Quiz/PlayQuiz";
+import SelectGames from "./src/screens/Quiz/HomeQuiz";
+import ResuftQuiz from "./src/screens/Quiz/ResuftGameQuiz";
+
 
 
 const App = () => {
@@ -34,6 +37,6 @@ const App = () => {
 
 
   );
-}
+};
 
 export default App;

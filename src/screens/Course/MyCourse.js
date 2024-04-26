@@ -1,197 +1,162 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, TextInput, FlatList, TouchableOpacity, TextBase, ScrollView } from 'react-native';
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
-import { PlayCircle, ChartSuccess, Star } from 'iconsax-react-native';
+import { Star } from 'iconsax-react-native';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Search } from '../../contanst/search';
 import LazyImage from '../../components/LazyImage';
 import { LineProcess } from '../../contanst/LineProcess';
-import { dataCourse1 } from '../../data/data';
-import { useTranslation } from 'react-i18next';
 import { trackingCourseFinsnish, trackingCourseLearn } from '../../apis/trackingCourse';
 import LoadingView from '../Auth/LoadingScreen';
 import { useSelector } from 'react-redux';
+
 
 const MyCourse = ({ navigation }) => {
     const idUser = useSelector(state => state.authReducer?.authData?.id);
     const [courseSuccess, setCourseSuccess] = useState([]);
     const [courseLearn, setCourseLearn] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        feachData();
-    }, [])
-
+    const [onGo, setOnGo] = useState(false);
     const feachData = async () => {
         try {
             setLoading(true);
-            const courseLearn1 = await trackingCourseLearn(idUser);
-            console.log(courseLearn1?.data?.data?.data);
-            setCourseLearn(courseLearn1?.data?.data?.data);
-            const courseSuccess1 = await trackingCourseFinsnish(idUser);
-            setCourseSuccess(courseSuccess1?.data?.data?.data);
-            console.log(courseSuccess1?.data?.data?.data)
+            const courseLearnData = await trackingCourseLearn(idUser);
+            setCourseLearn(courseLearnData?.data?.data?.data);
+            const courseSuccessData = await trackingCourseFinsnish(idUser);
+            setCourseSuccess(courseSuccessData?.data?.data?.data);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
+    useEffect(() => {
+        feachData();
+    }, []);
 
+    const handlePress = useCallback(() => {
+        feachData();
+        setOnGo(!onGo);
+    }, [onGo]);
 
-
-    const [onGo, setOnGo] = useState(false);
-    const { t } = useTranslation();
-    const CourseSuccess = useCallback(({ image = '', title = '', category = '', time = 0, date = '20/10/2024' }) => {
+    const CourseSuccess = ({ image = '', title = '', category = '', time = 0, date = '20/10/2024' }) => {
         const day = new Date(date).getDate() + '/' + (new Date(date).getMonth() + 1) + '/' + new Date(date).getFullYear();
         return (
             <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
                 <LazyImage url={image} width={wp(35)} height={'100%'} style={styles.lazy} resize={'cover'} />
-                <View style={{ paddingRight: 15 }}>
-                    <Text style={[styles.cardCategory]} >{category}</Text>
+                <View style={{ paddingRight: 15, width: wp(45) }}>
+                    <Text style={[styles.cardCategory]}>{category}</Text>
                     <Text style={[styles.title]}>{title}</Text>
                     <View style={[styles.rowC, { marginVertical: 7 }]}>
                         <View style={[styles.rowC, styles.line]}>
-                            <Text style={[styles.star, { marginRight: 10 }]}>
-                                4.3
-                            </Text>
+                            <Text style={[styles.star, { marginRight: 10 }]}>4.3</Text>
                             <Star color='gold' size={12} />
                         </View>
-                        <Text style={[styles.star, { letterSpacing: .2 }]}>
-                            {time}
-                        </Text>
+                        <Text style={[styles.star, { letterSpacing: .2 }]}>{time + " " + "Hour"}</Text>
                     </View>
-                    <Text style={[styles.star, styles.cretificate,]}
-                        onPress={() => handleViewCertificate({ title: title, date: day })}>View Certificate</Text>
+                    <Text
+                        style={[styles.star, styles.certificate]}
+                        onPress={() => handleViewCertificate({ title: title, date: day })}
+                    >
+                        View Certificate
+                    </Text>
                     <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
-
                 </View>
             </View>
-        )
-    })
-    const CourseGoing = useCallback(({ image = '', category = '', title = '', time = 90, learned = 0, totalCourse = 0 }) => {
-        console.log(title)
-        return (
-            <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
-                <LazyImage url={image} width={wp(30)} height={'100%'} style={styles.lazy} resize={'cover'} />
-                <View style={{ paddingRight: 15 }}>
-                    <Text style={[styles.cardCategory]} >{title}</Text>
-                    <Text style={[styles.title]}>{category}</Text>
-                    <View style={[styles.rowC, { marginVertical: 7 }]}>
-                        <View style={[styles.rowC, styles.line]}>
-                            <Text style={[styles.star, { marginRight: 10 }]}>
-                                4.3
-                            </Text>
-                            <Star color='gold' size={12} />
-                        </View>
-                        <Text style={[styles.star, { letterSpacing: .2 }]}>
-                            {time} Hour
-                        </Text>
+        );
+    };
+
+    const CourseGoing = ({ image = '', category = '', title = '', time = 90, learned = 0, totalCourse = 0 }) => (
+        <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
+            <LazyImage url={image} width={wp(30)} height={'100%'} style={styles.lazy} resize={'cover'} />
+            <View style={{ paddingRight: 15 }}>
+                <Text style={[styles.cardCategory]}>{title}</Text>
+                <Text style={[styles.title]}>{category}</Text>
+                <View style={[styles.rowC, { marginVertical: 7 }]}>
+                    <View style={[styles.rowC, styles.line]}>
+                        <Text style={[styles.star, { marginRight: 10 }]}>4.3</Text>
+                        <Star color='gold' size={12} />
                     </View>
-                    <LineProcess w={wp(34)} h={hp(1)} on={learned} total={totalCourse} />
-                    <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
-
+                    <Text style={[styles.star, { letterSpacing: .2 }]}>{time}Hour</Text>
                 </View>
+                <LineProcess w={wp(34)} h={hp(1)} on={learned} total={totalCourse} />
+                <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
             </View>
+        </View>
+    );
 
-        )
-    });
-
-
-    const RenderCourseSuccess = React.memo(() => {
-        return (
-            <FlatList
-                data={courseSuccess}
-                renderItem={({ item, index }) => <CourseSuccess
+    const RenderCourseSuccess = () => (
+        <FlatList
+            data={courseSuccess}
+            renderItem={({ item, index }) => (
+                <CourseSuccess
                     image={item?.courseID?.imageCourse}
                     category={item?.category}
                     title={item?.courseID?.title}
                     time={item?.courseID?.totalLesson}
                     date={item?.updatedAt}
-                />}
-                keyExtractor={(item) => item?._id}
-            />
-        )
-    }, [courseSuccess, CourseSuccess])
+                />
+            )}
+            keyExtractor={(item) => item?._id}
+        />
+    );
 
-    const RenderCourseGoing = React.memo(() => {
-        return (
-            <FlatList
-                data={courseLearn}
-                renderItem={({ item, index }) => <CourseGoing
+    const RenderCourseGoing = () => (
+        <FlatList
+            data={courseLearn}
+            renderItem={({ item, index }) => (
+                <CourseGoing
                     image={item?.courseID?.imageCourse}
                     category={item?.category}
                     title={item?.courseID?.title}
                     learned={item?.completedLessonsCount}
                     totalCourse={item?.courseID?.totalLesson}
-
                     time={112}
-                />}
+                />
+            )}
+        />
+    );
 
-            />
-        )
-    }, [courseLearn, CourseGoing])
-
-    const handlePress = useCallback(() => {
-        feachData();
-        return setOnGo(!onGo);
-    }, [onGo]);
-
-    const handleViewCertificate = useCallback((course) => {
-        return navigation.navigate('CartificateCourse', { course: course });
-    }, [])
+    const handleViewCertificate = (course) => {
+        navigation.navigate('CartificateCourse', { course: course });
+    };
 
     return (
         loading ? <LoadingView /> : <View style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
             <Container style={styles.content}>
-                {/* Search */}
                 <Search placeholder='3D Design Illustration' />
-                {/* Content */}
                 <Container style={[styles.container]}>
                     <RowComponent style={[styles.rowC, { width: '100%', justifyContent: 'space-between' }]}>
-                        <TouchableOpacity style={[styles.btn, {
-                            backgroundColor: onGo ? Color.globalApp : Color.colorAliceblue,
-                        }]} onPress={handlePress}>
-                            <Text style={[styles.txtButton, {
-                                color: onGo ? Color.primaryWhite : Color.colorGray_100,
-                            }]}>{t('completed')}</Text>
+                        <TouchableOpacity
+                            style={[styles.btn, { backgroundColor: onGo ? Color.globalApp : Color.colorAliceblue }]}
+                            onPress={handlePress}
+                        >
+                            <Text style={[styles.txtButton, { color: onGo ? Color.primaryWhite : Color.colorGray_100 }]}>
+                                Completed
+                            </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.btn,
-                        {
-                            backgroundColor: !onGo ? Color.globalApp : Color.colorAliceblue,
-                        }
-                        ]} onPress={handlePress}>
-                            <Text style={[styles.txtButton, {
-                                color: !onGo ? Color.primaryWhite : Color.colorGray_100,
-                            }]}>{t('ongoing')}</Text>
+                        <TouchableOpacity
+                            style={[styles.btn, { backgroundColor: !onGo ? Color.globalApp : Color.colorAliceblue }]}
+                            onPress={handlePress}
+                        >
+                            <Text style={[styles.txtButton, { color: !onGo ? Color.primaryWhite : Color.colorGray_100 }]}>
+                                Ongoing
+                            </Text>
                         </TouchableOpacity>
                     </RowComponent>
-                    {/* Render Data */}
-                    {
-                        onGo ? <RenderCourseSuccess /> : <RenderCourseGoing />
-                    }
-
-
-                    {/* The End */}
+                    {onGo ? <RenderCourseSuccess /> : <RenderCourseGoing />}
                 </Container>
             </Container>
         </View>
-
     );
 };
 
 const shadowStyle = {
     shadowColor: '#000',
-    shadowOffset: {
-        width: 0,
-        height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 5,
@@ -228,13 +193,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Color.primaryWhite,
         alignSelf: 'center',
-        marginBottom: hp(2)
+        marginBottom: hp(2),
     },
     cardCategory: {
         fontFamily: FontFamily.mulishBold,
         fontSize: FontSize.paragraphSmall_size,
         color: Color.colorOrangered,
-        marginVertical: 10
+        marginVertical: 10,
     },
     title: {
         fontFamily: FontFamily.jostSemiBold,
@@ -248,13 +213,12 @@ const styles = StyleSheet.create({
         color: Color.colorGray_100,
         letterSpacing: 0.2,
     },
-    cretificate: {
+    certificate: {
         color: Color.globalApp,
         textDecorationLine: 'underline',
         fontSize: 12,
         textAlign: 'right',
-        marginVertical: 7
-
+        marginVertical: 7,
     },
     tick: {
         width: wp(5),
@@ -272,17 +236,16 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         borderRightColor: Color.colorGray_100,
         borderRightWidth: 2,
-        marginRight: 20
+        marginRight: 20,
     },
     rowC: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     lazy: {
         borderBottomLeftRadius: 16,
         borderTopLeftRadius: 16,
     },
-
     process: {
         position: 'relative',
         width: wp(40),
@@ -299,11 +262,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         bottom: 0,
-
-    }
-
-
-
+    },
 });
 
 export default MyCourse;

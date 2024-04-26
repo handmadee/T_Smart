@@ -2,9 +2,9 @@ import React from "react";
 import { Image, Text, View, Modal, TouchableOpacity } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontSize, FontFamily } from "../../GlobalStyles";
+import LottieView from 'lottie-react-native';
 
-
-export default function AlertNotification({ img, title, value, onPress, isVisible = false }) {
+export default function AlertNotification({ img, title, value, onPress, isVisible = false, isPress = false, onPress2, txtBtn1 = 'Mình đã hiểu', txtBtn2 = 'Thử sức lại', height = hp(40) }) {
     return (
         <Modal
             visible={isVisible}
@@ -14,19 +14,26 @@ export default function AlertNotification({ img, title, value, onPress, isVisibl
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }} >
                 <View style={{
                     backgroundColor: 'white', padding: 20, borderRadius: 10, width: wp(80),
-                    height: hp(40),
+                    height: height,
                     alignItems: 'center',
                     justifyContent: 'center'
 
                 }}>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: -hp(15),
+                            alignSelf: 'center'
+                        }}
+                    >
+                        <LottieView source={require('./../../assets/animationRobot.json')} autoPlay loop
+                            style={{ width: wp(70), height: hp(20) }}
+                        />
+                    </View>
                     <View style={{
                         flexDirection: 'column',
-                        alignItems: 'center'
+                        alignItems: 'center',
                     }}>
-                        <Image source={require('./../../assets/UserAI.png')}
-                            style={{ width: wp(20), height: hp(7) }}
-                            resizeMode="contain"
-                        />
                         <Text style={{
                             fontFamily: FontFamily.poppinsSemiBold,
                             fontSize: 23,
@@ -48,21 +55,44 @@ export default function AlertNotification({ img, title, value, onPress, isVisibl
                         >
                             {value}
                         </Text>
-                        <TouchableOpacity
-                            style={{
-                                width: wp(70),
-                                backgroundColor: Color.globalApp,
-                                padding: 15,
-                                borderRadius: 10,
-                                alignItems: 'center',
-                                marginTop: 20
-                            }}
-                            onPress={onPress}>
-                            <Text style={{
-                                color: Color.primaryWhite, fontSize: 20,
-                                fontFamily: FontFamily.mulishBold
-                            }}>Mình đã hiểu</Text>
-                        </TouchableOpacity>
+                        <View style={{
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}>
+                            <TouchableOpacity
+                                style={{
+                                    width: wp(70),
+                                    backgroundColor: Color.globalApp,
+                                    padding: 15,
+                                    borderRadius: 10,
+                                    alignItems: 'center',
+                                    marginTop: 20
+                                }}
+                                onPress={onPress}>
+                                <Text style={{
+                                    color: Color.primaryWhite, fontSize: 20,
+                                    fontFamily: FontFamily.mulishBold
+                                }}>{txtBtn1}</Text>
+                            </TouchableOpacity>
+                            {/* Onpress 2 */}
+                            {
+                                isPress && <TouchableOpacity
+                                    style={{
+                                        width: wp(70),
+                                        backgroundColor: Color.colorMediumslateblue,
+                                        padding: 15,
+                                        borderRadius: 10,
+                                        alignItems: 'center',
+                                        marginTop: 10
+                                    }}
+                                    onPress={onPress2}>
+                                    <Text style={{
+                                        color: Color.primaryWhite, fontSize: 20,
+                                        fontFamily: FontFamily.mulishBold
+                                    }}>{txtBtn2}</Text>
+                                </TouchableOpacity>
+                            }
+                        </View>
                     </View>
                 </View>
             </View>

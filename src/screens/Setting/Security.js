@@ -21,8 +21,8 @@ export default function Security({ navigation }) {
     const handlerChangePin = () => {
         Toast.show({
             type: 'info',
-            text1: 'Tính Nắng',
-            text2: 'Tính năng đang được phát triển  👋'
+            text1: 'Xin Lỗi',
+            text2: 'Tính năng này đang được phát triển  🔥🔥🔥'
         });
     }
     const toggleRemember = () => setIsRemember(previousState => !previousState);
@@ -41,7 +41,17 @@ export default function Security({ navigation }) {
                 </Pressable>
                 <Button title={"Change Password"} onPress={onHandleChange} />
             </View>
-            <Toast />
+            <Toast topOffset={5} visibilityTime={3500}
+                text1Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+                text2Style={{
+                    fontWeight: 'bold',
+                    fontSize: 14
+                }}
+
+            />
         </View>
     );
 }

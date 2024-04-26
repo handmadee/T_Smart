@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, Pressable, Image, TextInput, FlatList, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, Pressable, Image, TextInput, FlatList, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
@@ -13,7 +13,6 @@ import LoadingView from '../Auth/LoadingScreen';
 import { useSelector } from 'react-redux';
 import Modal2 from '../../components/Modal';
 
-
 const Home = ({ navigation }) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
@@ -23,25 +22,24 @@ const Home = ({ navigation }) => {
     const [imageCourse, setImageCourse] = useState([]);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const [open, setOpen] = useState(false);
+
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
                 setLoading(true);
-                const categoryResponse = await getCategory();
+                const [categoryResponse, courseResponse, imageResponse] = await Promise.all([
+                    getCategory(),
+                    getCourses(),
+                    getNotification()
+                ]);
                 setCategories(categoryResponse.data.data);
-                const courseResponse = await getCourses();
-                console.log(courseResponse.data.data.courses)
                 setCourses(courseResponse.data.data.courses);
-                const imageResponse = await getNotification();
-                console.log(imageCourse)
                 setImageCourse(imageResponse.data.data);
-                console.log(inforUser)
                 if (!inforUser) {
                     setOpen(true);
                 }
             } catch (error) {
                 console.error('Error fetching initial data:', error);
-                setLoading(false);
             } finally {
                 setLoading(false);
             }
@@ -51,43 +49,34 @@ const Home = ({ navigation }) => {
 
     const handleCategoryPress = useCallback(async (category) => {
         setTrackingCourse(category.nameCategory);
-        if (category.nameCategory === 'ALL') {
-            fetchInitialData();
-        } else {
-            try {
-                setLoading(true);
-                const response = await getCategoryById(category?._id);
-                setCourses(response.data.data.courses);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching courses by category:', error);
-            } finally {
-                setLoading(false);
-            }
+        try {
+            setLoading(true);
+            const response = category.nameCategory === 'ALL' ? await getCourses() : await getCategoryById(category?._id);
+            setCourses(response.data.data.courses);
+        } catch (error) {
+            console.error('Error fetching courses by category:', error);
+        } finally {
+            setLoading(false);
         }
     }, []);
+
     const handleCoursePress = (course) => {
         navigation.navigate('DetailCourse', { course });
     };
-    const handlerNotification = useCallback(async () => {
-        return navigation.navigate('NotificationOne');
-    })
+
+    const handlerNotification = useCallback(() => {
+        navigation.navigate('NotificationOne');
+    }, []);
+
     const Header = ({ name, onPress }) => (
         <RowComponent style={styles.header}>
             <View style={{ width: wp(60) }}>
-                <Text style={styles.titHeader}>{t('hi')}, {name}</Text>
+                <Text style={styles.titHeader}>{`${t('hi')}, ${name}`}</Text>
                 <Text style={styles.titDetail}>{t('today')}</Text>
             </View>
-            <Pressable onPress={onPress} >
+            <Pressable onPress={onPress}>
                 <Image source={require("./../../../assets/NOTIFICATIONS.png")} resizeMode='contain' />
-                <View style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: 'red',
-                    position: 'absolute',
-                    right: 0,
-                }} />
+                <View style={styles.notificationDot} />
             </Pressable>
         </RowComponent>
     );
@@ -104,13 +93,14 @@ const Home = ({ navigation }) => {
             <Image source={require('./../../../assets/FILTER.png')} />
         </RowComponent>
     );
+
     const TagList = () => (
         <FlatList
             bounces={false}
             showsHorizontalScrollIndicator={false}
             horizontal
             data={categories}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
                 <Tag
                     title={item.nameCategory}
@@ -120,58 +110,48 @@ const Home = ({ navigation }) => {
             )}
         />
     );
+
     const CourseList = ({ data }) => (
         <FlatList
             bounces={false}
             showsHorizontalScrollIndicator={false}
             horizontal
             data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => {
-                return (
-                    < CardCourse
-                        title={item.title}
-                        url={{ uri: item.imageCourse }}
-                        category={item.category_id?.nameCategory}
-                        onPress={() => handleCoursePress(item)}
-                    />
-                )
-            }
-
-            }
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+                <CardCourse
+                    title={item.title}
+                    url={{ uri: item.imageCourse }}
+                    category={item.category_id?.nameCategory}
+                    onPress={() => handleCoursePress(item)}
+                />
+            )}
         />
     );
+
     const CardCourse = React.memo(({ url, title, category, onPress, time = 145 }) => (
         <Pressable style={styles.card} onPress={onPress}>
-            <View>
-                <Image
-                    style={{ width: wp(55), height: hp(15) }}
-                    resizeMode='cover'
-                    source={url}
-                />
-            </View>
+            <Image
+                style={styles.courseImage}
+                resizeMode='cover'
+                source={url}
+            />
             <View style={styles.cardDetail}>
                 <Text style={styles.courseTitle}>{title}</Text>
-                <RowComponent style={{
-                    alginItems: 'center',
-                    padding: 0,
-                    height: hp(5),
-                    width: wp(55),
-                }}>
+                <RowComponent style={styles.courseMeta}>
                     <Text style={styles.textCategory}>{category}</Text>
-                    <View
-                        style={{ flexDirection: 'row', alignItems: 'flex-end' }}
-                    >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 20 }}>
+                    <View style={styles.metaInfo}>
+                        <View style={styles.metaItem}>
                             <Clock size={FontSize.buttonMedium_size} color={Color.globalApp} />
-                            <Text style={{ color: Color.colorDimgray_100, fontWeight: '600' }}>{`${time} hour`}</Text>
+                            <Text style={styles.metaText}>{`${time} hour`}</Text>
                         </View>
                         <SaveAdd size={FontSize.size_2xl} color={Color.globalApp} />
                     </View>
                 </RowComponent>
             </View>
         </Pressable>
-    ))
+    ));
+
     return (
         loading ? <LoadingView /> :
             <Container style={styles.container}>
@@ -188,17 +168,16 @@ const Home = ({ navigation }) => {
                     <TagList />
                     <CourseList data={courses} />
                     <Text style={styles.notification}>{t('notifications')}</Text>
-                    {
-                        imageCourse && imageCourse.length > 0 && <SlideShow dataImage={imageCourse} />
-                    }
+                    {imageCourse && imageCourse.length > 0 && <SlideShow dataImage={imageCourse} />}
                 </View>
-                <Modal2 title={'Cập nhật thông tin '} img={require('./../../../assets/Logo.png')}
+                <Modal2
+                    title={'Cập nhật thông tin '}
+                    img={require('./../../../assets/Logo.png')}
                     value={'Bạn cần phải cập nhật thông tin của mình để sử dụng app'}
                     onPress={() => {
                         setOpen(false);
-                        navigation.navigate('EditProfile')
-                    }
-                    }
+                        navigation.navigate('EditProfile');
+                    }}
                     isVisible={open}
                 />
             </Container>
@@ -220,7 +199,7 @@ const styles = StyleSheet.create({
     titHeader: {
         fontFamily: FontFamily.jostSemiBold,
         fontSize: FontSize.headingH4_size,
-        color: '#202244',
+        color: Color.colorBlack,
     },
     titDetail: {
         fontFamily: FontFamily.mulishBold,
@@ -228,12 +207,13 @@ const styles = StyleSheet.create({
         color: Color.colorDimgray_100,
     },
     input: {
-        width: wp(65),
+        flex: 1,
         height: hp(8),
         backgroundColor: Color.primaryWhite,
         borderRadius: 12,
         color: Color.colorDimgray_200,
         fontFamily: FontFamily.mulishBold,
+        marginLeft: 10,
     },
     search: {
         width: wp(90),
@@ -254,7 +234,6 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.mulishBold,
         fontSize: FontSize.size_smi,
         color: Color.colorOrangered,
-        marginTop: 10,
     },
     courseTitle: {
         fontFamily: FontFamily.jostSemiBold,
@@ -264,12 +243,16 @@ const styles = StyleSheet.create({
     card: {
         width: wp(55),
         height: hp(24),
-        borderColor: '#0000003b',
-        borderWidth: 1,
-        borderRadius: 20,
+        borderColor: Color.colorBlack,
+        borderWidth: .2,
+        borderRadius: 15,
         overflow: 'hidden',
         marginTop: 20,
-        marginRight: 20,
+        marginRight: 20
+    },
+    courseImage: {
+        width: wp(55),
+        height: hp(15),
     },
     cardDetail: {
         flexDirection: 'column',
@@ -296,12 +279,32 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    searchResultsContainer: {
+    notificationDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: 'red',
         position: 'absolute',
-        top: 100, // Adjust this value as needed
-        width: '100%',
-        backgroundColor: 'white',
-        zIndex: 1,
+        right: 0,
+    },
+    courseMeta: {
+        alignItems: 'center',
+        padding: 0,
+        width: '85%',
+        marginTop: 10
+    },
+    metaInfo: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+    },
+    metaItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 20,
+    },
+    metaText: {
+        color: Color.colorDimgray_100,
+        fontWeight: '600',
     },
 });
 
