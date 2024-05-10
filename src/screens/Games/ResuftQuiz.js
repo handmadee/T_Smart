@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Platform, Pressable } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
+import { PlaySound } from '../../contanst/PlaySound';
 
 
 const ResuftTest = ({ total = 10, score = 0, coins = 10, showAswer, handlerHome }) => {
+    useEffect(() => {
+        PlaySound('victory.mp3');
+    }, []);
     return (
         <View style={styles.container}>
             <View style={{

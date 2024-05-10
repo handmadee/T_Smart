@@ -1,10 +1,9 @@
-import { ApiClient } from "./axios.client";
-const axiosClient = ApiClient();
+import axiosClient from "./axios.client";;
 
 // Get all courses
 export const getCourses = async (page = 1, limit = 10) => {
     try {
-        const response = await axiosClient.get(`/course/?page=${page}&limit=${limit}`);
+        const response = await axiosClient().get(`/course/?page=${page}&limit=${limit}`);
         return response.data;
     } catch (error) {
         console.error('Failed to fetch courses:', error);
@@ -15,7 +14,7 @@ export const getCourses = async (page = 1, limit = 10) => {
 // Get course by id
 export const getCourseById = async (id) => {
     try {
-        const response = await axiosClient.get(`/course/${id}`);
+        const response = await axiosClient().get(`/course/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Failed to fetch course with id ${id}:`, error);
@@ -26,7 +25,7 @@ export const getCourseById = async (id) => {
 // Create a new course
 export const createCourse = async (courseData) => {
     try {
-        const response = await axiosClient.post('/course', courseData);
+        const response = await axiosClient().post('/course', courseData);
         return response.data;
     } catch (error) {
         console.error('Failed to create course:', error);
@@ -37,7 +36,7 @@ export const createCourse = async (courseData) => {
 // Update a course
 export const updateCourse = async (id, updatedData) => {
     try {
-        const response = await axiosClient.put(`/course/${id}`, updatedData);
+        const response = await axiosClient().put(`/course/${id}`, updatedData);
         return response.data;
     } catch (error) {
         console.error(`Failed to update course with id ${id}:`, error);
@@ -48,7 +47,7 @@ export const updateCourse = async (id, updatedData) => {
 // Delete a course
 export const removeCourse = async (id) => {
     try {
-        await axiosClient.delete(`/course/${id}`);
+        await axiosClient().delete(`/course/${id}`);
         return true; // Indicate success if the request succeeds
     } catch (error) {
         console.error(`Failed to delete course with id ${id}:`, error);
@@ -56,10 +55,12 @@ export const removeCourse = async (id) => {
     }
 };
 
+
+
 // Search for courses
 export const searchCourse = async (keyword) => {
     try {
-        const response = await axiosClient.get('/search', {
+        const response = await axiosClient().get('/search', {
             params: {
                 q: keyword
             }
@@ -71,10 +72,21 @@ export const searchCourse = async (keyword) => {
     }
 };
 
+// Get page course 
+export const getPageCourse = async (page = 1) => {
+    try {
+        const response = await axiosClient().get(`/course/?page=${page}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch page course:', error);
+        throw error;
+    }
+};
+
 // Get all categories
 export const getCategory = async () => {
     try {
-        const response = await axiosClient.get('/category');
+        const response = await axiosClient().get('/category');
         return response.data;
     } catch (error) {
         console.error('Failed to fetch categories:', error);
@@ -85,7 +97,7 @@ export const getCategory = async () => {
 // Get category by id
 export const getCategoryById = async (id) => {
     try {
-        const response = await axiosClient.get(`/category/${id}`);
+        const response = await axiosClient().get(`/category/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Failed to fetch category with id ${id}:`, error);
@@ -96,7 +108,7 @@ export const getCategoryById = async (id) => {
 // Get notifications
 export const getNotification = async () => {
     try {
-        const response = await axiosClient.get('/notificationList');
+        const response = await axiosClient().get('/notificationList');
         return response.data;
     } catch (error) {
         console.error('Failed to fetch notifications:', error);
@@ -107,7 +119,7 @@ export const getNotification = async () => {
 // Get user information by id
 export const checkInforUser = async (id) => {
     try {
-        const response = await axiosClient.get(`/auth/user/${id}`);
+        const response = await axiosClient().get(`/auth/user/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Failed to fetch user information for user with id ${id}:`, error);
@@ -123,7 +135,7 @@ export const importInfor = async (userData) => {
         }
     };
     try {
-        const response = await axiosClient.post('/user', userData, config);
+        const response = await axiosClient().post('/user', userData, config);
         return response.data;
     } catch (error) {
         console.error('Failed to import user information:', error);
@@ -139,10 +151,21 @@ export const editInfor = async (id, userData) => {
         }
     };
     try {
-        const response = await axiosClient.put(`/user/${id}`, userData, config);
+        const response = await axiosClient().put(`/user/${id}`, userData, config);
         return response.data;
     } catch (error) {
         console.error(`Failed to edit user information for user with id ${id}:`, error);
+        throw error;
+    }
+};
+
+// get popup 
+export const getPopup = async () => {
+    try {
+        const response = await axiosClient().get('/popup');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch popup:', error);
         throw error;
     }
 };

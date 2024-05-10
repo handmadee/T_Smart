@@ -36,9 +36,9 @@ export default function SignUp({ navigation }) {
             }
             dispatch(addAuth(account));
             await AsyncStorage.setItem('auth',
-                check ? JSON.stringify(account) : data.userName
+                JSON.stringify(account)
             )
-            navigation.navigate('');
+            navigation.navigate('Home');
         } catch (error) {
             console.log(error)
             setIsVisible(true);

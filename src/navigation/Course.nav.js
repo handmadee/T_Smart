@@ -17,6 +17,8 @@ import CartificateCourse from '../screens/Course/CertificateCourse';
 import SearchCourse from '../screens/Course/SearchCourse.js';
 import EditProfile from '../screens/Setting/EditProfile.js';
 import Notification12 from '../screens/Services/Notification.js';
+import SeeCourse from '../screens/Course/SeeAll.js';
+
 
 
 
@@ -34,8 +36,10 @@ const CourseNav = React.memo(() => {
                     </SafeAreaView>
                 ),
                 gestureEnabled: false
+            }}
 
-            }}>
+
+        >
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="DetailCourse" component={DetailCourse} options={{ headerShown: true }} />
             <Stack.Screen name="Quiz" component={Quiz} options={{ headerShown: false }} />
@@ -43,6 +47,7 @@ const CourseNav = React.memo(() => {
             <Stack.Screen name="ShowAnswer" component={ShowAnswer} options={{ headerShown: true }} />
             <Stack.Screen name="LessonCourse" component={LessonCourse} options={{ headerShown: true }} />
             <Stack.Screen name="SearchCourse" component={SearchCourse} options={{ headerShown: true }} />
+            <Stack.Screen name="SeeCourse" component={SeeCourse} options={{ headerShown: true }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: true }} />
             <Stack.Screen name="NotificationOne" component={Notification12} options={{ headerShown: true }} />
         </Stack.Navigator >

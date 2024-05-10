@@ -45,6 +45,8 @@ export default function TopicSet({ navigation, route }) {
             let response;
             if (selectedLevel == 999) {
                 response = await getQuizByCategory(initialData?.id);
+                console.log(response)
+                console.log(response?.data?.data?.quizes)
                 setData(response?.data?.data?.quizes || []);
             } else {
                 response = await getQuizByLevel(initialData?.id, selectedLevel);
@@ -71,7 +73,9 @@ export default function TopicSet({ navigation, route }) {
                         quizID: data?.id,
                     })
                     const quizData = response?.data?.data?.questionQuiz;
-                    return navigation.navigate('Exam', { id: data?.id, quizData });
+                    const timeQuiz = response?.data?.data?.time || 15;
+                    const points = response?.data?.data?.points || 0;
+                    return navigation.navigate('Exam', { id: data?.id, quizData, timeQuiz, points });
                 } catch (error) {
                     setQuizNow(data?.id);
                     setIsContain(true);
@@ -89,7 +93,9 @@ export default function TopicSet({ navigation, route }) {
             setLoading(true);
             const response = await getQuestion(quizNow);
             const quizData = response?.data?.data?.questionQuiz;
-            return navigation.navigate('Exam', { id: quizNow, quizData });
+            const timeQuiz = response?.data?.data?.time || 15;
+            const points = response?.data?.data?.points || 0;
+            return navigation.navigate('Exam', { id: quizNow, quizData, timeQuiz, points });
         } catch (error) {
             console.log(error)
         } finally {
@@ -99,7 +105,6 @@ export default function TopicSet({ navigation, route }) {
     }, [quizNow]);
 
     const renderQuizItem = ({ item }) => {
-        console.log(item)
         return (
             <Pressable
                 style={styles.quizItemContainer}

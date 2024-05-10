@@ -28,7 +28,7 @@ const authSlice = createSlice({
             state.authData = initialState;
         },
         updateInfor: (state, action) => {
-            state.authData.infor = action.payload;
+            state.authData.infor = { ...state.authData.infor, ...action.payload };
         }
     },
 });

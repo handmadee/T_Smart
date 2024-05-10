@@ -55,7 +55,7 @@ const ProfileSetting = ({ navigation }) => {
     ];
     const handlerSetLanguage = () => {
         setVN(!vn);
-        i18n.changeLanguage(vn ? 'en' : 'vn');
+        i18n.changeLanguage(vn ? 'vn' : 'en');
     }
     const togglesetDarktheme = useCallback(() => {
         setTheme(!dark);

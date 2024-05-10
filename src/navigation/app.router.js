@@ -12,16 +12,18 @@ const AppRouters = () => {
     const { getItem } = useAsyncStorage('auth');
     const auth = useSelector(authSelector);
     const dispatch = useDispatch();
-
     // Check token 
     const checkLogin = async () => {
         try {
             const res = await getItem();
+            console.log("Hello")
+            console.log(res)
             if (res) {
                 const token = JSON.parse(res)?.accesstoken;
                 if (token) {
                     const isToken = await checkToken(token);
-                    if (isToken?.data?.isValid) {
+                    console.log(isToken)
+                    if (isToken) {
                         dispatch(addAuth(JSON.parse(res)));
                     }
                 }

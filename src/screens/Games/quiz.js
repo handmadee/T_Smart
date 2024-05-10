@@ -1,22 +1,22 @@
 'use strict';
 
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, ToastAndroid, View } from "react-native";
+import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../../../GlobalStyles";
 import { Container } from "../../components/Container";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { dataQuiz } from '../../data/data';
 import ResuftTest from './ResuftQuiz';
-import Button from "../../components/Button";
+import { PlaySound } from "../../contanst/PlaySound";
+
 
 const Quiz = ({ navigation, route }) => {
     const quizData = route.params.quizData;
-
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
-
+    // Sound mp3 
+    const SELECT_SOUND = 'select.mp3';
     useEffect(() => {
         const timer = setTimeout(() => {
             if (timeLeft > 0) {
@@ -35,6 +35,7 @@ const Quiz = ({ navigation, route }) => {
     }, [currentQuestion, timeLeft]);
 
     const handleAnswer = (selectedOption) => {
+        PlaySound(SELECT_SOUND)
         if (selectedOption?.isCorrect) {
             setScore(score + 1);
         }

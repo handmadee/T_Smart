@@ -20,7 +20,9 @@ const IMAGES = {
 // Component nhỏ hơn
 const UserInfo = ({ avatar, fullname }) => (
     <View style={styles.userInfoContainer}>
-        <Image source={{ uri: avatar }} style={styles.avatar} />
+        <Image source={
+            avatar ? { uri: avatar } : require('./../../../assets/avatar.png')
+        } style={styles.avatar} />
         <Text style={styles.fullName}>{fullname}</Text>
     </View>
 );

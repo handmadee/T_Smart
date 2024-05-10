@@ -18,23 +18,24 @@ import Button from "./src/components/Button";
 import PlayQuiz from "./src/screens/Quiz/PlayQuiz";
 import SelectGames from "./src/screens/Quiz/HomeQuiz";
 import ResuftQuiz from "./src/screens/Quiz/ResuftGameQuiz";
+import PopupImage from './src/screens/Popup/mainPop';
+import SeeCourse from "./src/screens/Course/SeeAll";
+//  react-native-gesture-handler
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Modalize } from 'react-native-modalize';
 
 
 
 const App = () => {
-  const [currentPass, setCurrentPass] = useState('');
-  const [newPass, setNewPass] = useState('')
-  const [confirmPass, setConfirmPass] = useState('')
   return (
     <Provider store={store}>
-      <View style={{ flex: 1 }}>
-        <AppRouters />
-      </View>
+      <GestureHandlerRootView>
+        <View style={{ flex: 1 }}>
+          <AppRouters />
+        </View>
+      </GestureHandlerRootView>
     </Provider>
-
-
-
-
 
   );
 };

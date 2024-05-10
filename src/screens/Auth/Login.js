@@ -13,7 +13,7 @@ import { login } from "../../apis/authApi";
 import LoadingView from "./LoadingScreen";
 import Modal2 from "../../components/Modal";
 import { addAuth } from "../../redux/token/slice.token";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { checkInforUser } from "../../apis/courseApi";
 
@@ -26,7 +26,6 @@ export default function Login({ navigation }) {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isVisible, setIsVisible] = React.useState(false);
     const [check, setCheck] = React.useState(false);
-    const [image, setImage] = React.useState('');
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
 
     const onSubmit = async (data) => {
@@ -36,15 +35,7 @@ export default function Login({ navigation }) {
                 username: data.userName,
                 password: data.pass
             })
-            console.log(client?.data.data.user_id)
-
-            const infor = await checkInforUser(client?.data.data.user_id);
-
-
-            console.log({
-                infor: infor
-            })
-
+            const infor = await checkInforUser(client?.data.data?.user_id);
             const account = {
                 id: client.data.data.user_id,
                 accesstoken: client.data.data.accessToken,
@@ -52,9 +43,8 @@ export default function Login({ navigation }) {
                 infor: infor.data.data?.info
             }
             dispatch(addAuth(account));
-            await AsyncStorage.setItem('auth',
-                check ? JSON.stringify(account) : data.userName
-            )
+            console.log(check)
+            check && await AsyncStorage.setItem('auth', JSON.stringify(account));
             navigation.navigate('HomeNav');
         } catch (error) {
             console.log(error)
@@ -63,6 +53,8 @@ export default function Login({ navigation }) {
             setIsLoading(false);
         }
     };
+
+
     const handlerSignUp = () => navigation.navigate('SignUp');
     const handlerForgot = () => navigation.navigate('Forgot');
     const handlerCheck = () => setCheck(!check);

@@ -6,22 +6,29 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { PlaySound } from "../../contanst/PlaySound";
 import LoadingView from "../Auth/LoadingScreen";
 import { FinishQuiz } from "../../apis/trackingQuiz";
+import Sound from 'react-native-sound';
 import { useSelector } from "react-redux";
 
 const PlayQuiz = ({ navigation, route }) => {
-    const selectSound = 'select.mp3';
-    const correctSound = 'is_correct.mp3';
-    const incorrectSound = 'is_wrong.mp3';
+    const SELECT_SOUND = 'select.mp3';
+    const CORRECT_SOUND = 'is_correct.mp3';
+    const INCORRECT_SOUND = 'is_wrong.mp3';
+
     const idUser = useSelector(state => state.authReducer?.authData?.id);
-    const { id } = route.params;
+    const { id, timeQuiz, points } = route.params;
     const quizData = route.params?.quizData;
+
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(10);
+    const [point, setPoint] = useState(Math.floor(points / quizData.length));
+    console.log(point)
+    const [timeLeft, setTimeLeft] = useState(Math.floor(timeQuiz * 60 / quizData.length));
+    console.log(timeLeft)
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [loading, SetLoadding] = useState(false);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -31,7 +38,7 @@ const PlayQuiz = ({ navigation, route }) => {
                 if (currentQuestion < quizData.length - 1) {
                     handleNext();
                     setShowAnswer(true);
-                    setTimeLeft(10);
+                    setTimeLeft(timeLeft);
                 } else {
                     setShowAnswer(true);
                 }
@@ -41,10 +48,10 @@ const PlayQuiz = ({ navigation, route }) => {
         return () => clearTimeout(timer);
     }, [currentQuestion, timeLeft]);
 
-    const handleAnswer = (selectedOption) => {
-        PlaySound(selectSound);
+    const handleAnswer = useCallback((selectedOption) => {
+        PlaySound(SELECT_SOUND);
         setSelectedAnswer(selectedOption);
-    };
+    });
 
     const handleResult = async (data) => {
         console.log(data)
@@ -62,16 +69,16 @@ const PlayQuiz = ({ navigation, route }) => {
             SetLoadding(true)
         }
     };
-
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         if (selectedAnswer?.isCorrect) {
-            PlaySound(correctSound);
-            setScore(score + 1);
+            PlaySound(CORRECT_SOUND);
+            setScore((prev) => (prev + point));
+
         } else {
-            PlaySound(incorrectSound);
+            PlaySound(INCORRECT_SOUND);
         }
         setShowAnswer(true);
-    };
+    }, [selectedAnswer, point]);
 
     const MemoizedQuestion = React.memo(({ image, question, manyAnswers, current, end }) => {
         return (
@@ -113,7 +120,7 @@ const PlayQuiz = ({ navigation, route }) => {
                 setShowAnswer(false);
                 if (currentQuestion < quizData.length - 1) {
                     setCurrentQuestion(currentQuestion + 1);
-                    setTimeLeft(10);
+                    setTimeLeft(timeLeft);
                 } else {
                     handleResult({
                         id,

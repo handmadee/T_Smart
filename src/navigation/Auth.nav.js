@@ -19,6 +19,7 @@ const AuthNav = React.memo(() => {
     // Notification 
     const Stack = createNativeStackNavigator();
     return (
+
         <NavigationContainer >
             <Stack.Navigator
                 initialRouteName='LetsAuth'

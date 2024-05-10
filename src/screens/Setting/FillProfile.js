@@ -64,7 +64,6 @@ export default function FillProfile() {
             };
             formData.append('avatar', imageBlob);
         }
-
         try {
             console.log(inforUser)
             setLoading(true);
