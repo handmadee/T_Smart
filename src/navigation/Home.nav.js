@@ -2,10 +2,9 @@
 /* eslint-disable prettier/prettier */
 import React, { useCallback, useEffect } from 'react';
 import { View, Text, Pressable, SafeAreaView, Platform } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Color, FontFamily, FontSize } from '../../GlobalStyles.js';
-import HomeScreen from '../screens/Home/Home.js';
 import { ArrowLeft, Home, Book, Message, User, Game } from 'iconsax-react-native';
 import CourseNav from './Course.nav.js';
 import SettingNav from './Setting.nav';
@@ -15,8 +14,6 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import MyCourse from '../screens/Course/MyCourse.js';
-import HightScores from '../screens/Games/HightScros.js';
-import SelectGames from '../screens/Quiz/HomeQuiz.js';
 import GameNav from './Game.nav.js';
 import { useTranslation } from 'react-i18next';
 import LeaderBoard from '../screens/Rank/Leaderboard.js';

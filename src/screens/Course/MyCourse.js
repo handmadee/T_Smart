@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Pressable } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
@@ -42,10 +42,19 @@ const MyCourse = ({ navigation }) => {
         setOnGo(!onGo);
     }, [onGo]);
 
-    const CourseSuccess = ({ image = '', title = '', category = '', time = 0, date = '20/10/2024' }) => {
+    // handlerPressCourse
+    const handlerPressCourse = (id) => {
+        navigation.navigate('LessonCourse', { courseID: id });
+    };
+
+
+
+    const CourseSuccess = ({ image = '', title = '', category = '', time = 0, date = '20/10/2024', onPress }) => {
         const day = new Date(date).getDate() + '/' + (new Date(date).getMonth() + 1) + '/' + new Date(date).getFullYear();
         return (
-            <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
+            <Pressable
+                onPress={onPress}
+                style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
                 <LazyImage url={image} width={wp(35)} height={'100%'} style={styles.lazy} resize={'cover'} />
                 <View style={{ paddingRight: 15, width: wp(45) }}>
                     <Text style={[styles.cardCategory]}>{category}</Text>
@@ -65,12 +74,12 @@ const MyCourse = ({ navigation }) => {
                     </Text>
                     <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
                 </View>
-            </View>
+            </Pressable>
         );
     };
 
-    const CourseGoing = ({ image = '', category = '', title = '', time = 90, learned = 0, totalCourse = 0 }) => (
-        <View style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
+    const CourseGoing = ({ image = '', category = '', title = '', time = 90, learned = 0, totalCourse = 0, onPress }) => (
+        <Pressable onPress={onPress} style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
             <LazyImage url={image} width={wp(30)} height={'100%'} style={styles.lazy} resize={'cover'} />
             <View style={{ paddingRight: 15 }}>
                 <Text style={[styles.cardCategory]}>{title}</Text>
@@ -85,7 +94,7 @@ const MyCourse = ({ navigation }) => {
                 <LineProcess w={wp(34)} h={hp(1)} on={learned} total={totalCourse} />
                 <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
             </View>
-        </View>
+        </Pressable>
     );
 
     const RenderCourseSuccess = () => (
@@ -98,9 +107,11 @@ const MyCourse = ({ navigation }) => {
                     title={item?.courseID?.title}
                     time={item?.courseID?.totalLesson}
                     date={item?.updatedAt}
+                    onPress={() => handlerPressCourse(item?.courseID?._id)}
                 />
             )}
             keyExtractor={(item) => item?._id}
+
         />
     );
 
@@ -114,6 +125,7 @@ const MyCourse = ({ navigation }) => {
                     title={item?.courseID?.title}
                     learned={item?.completedLessonsCount}
                     totalCourse={item?.courseID?.totalLesson}
+                    onPress={() => handlerPressCourse(item?.courseID?._id)}
                     time={112}
                 />
             )}

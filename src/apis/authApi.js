@@ -1,13 +1,11 @@
 // authApi.js
-import axios from 'axios';
-
-import { ApiClient } from "./axios.client";
+import axiosClient from "./axios.client";;
 import { common } from '../utils/utils';
-const axiosClient = ApiClient();
+
 // Đăng nhập
 export const login = async (credentials) => {
     try {
-        const response = await axiosClient.post('/auth/login', credentials);
+        const response = await axiosClient().post('/auth/login', credentials);
         return response.data;
     } catch (error) {
         console.log(error)
@@ -18,7 +16,7 @@ export const login = async (credentials) => {
 // Đăng ký
 export const register = async (userData) => {
     try {
-        const response = await axiosClient.post('/auth/signup', userData);
+        const response = await axiosClient().post('/auth/signup', userData);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.data?.message || 'Registration failed');
@@ -46,7 +44,7 @@ export const checkToken = async (token) => {
 // Làm mới token
 export const refreshToken = async (refreshToken) => {
     try {
-        const response = await axiosClient.post('/auth/refresh-token', { refreshToken });
+        const response = await axiosClient().post('/auth/refresh-token', { refreshToken });
         return response.data;
     } catch (error) {
         console.log(error)
@@ -57,7 +55,7 @@ export const refreshToken = async (refreshToken) => {
 // Logout
 export const logout = async (refreshToken) => {
     try {
-        const response = await axiosClient.post('/auth/logout', { refreshToken });
+        const response = await axiosClient().post('/auth/logout', { refreshToken });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.da?.data?.message || 'Logout failed');
@@ -68,7 +66,7 @@ export const logout = async (refreshToken) => {
 
 export const changePassword = async (data) => {
     try {
-        const response = await axiosClient.put('/auth/changePassword', data);
+        const response = await axiosClient().put('/auth/changePassword', data);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.data?.message || 'Change password failed');
@@ -79,7 +77,7 @@ export const changePassword = async (data) => {
 
 export const findUserByUserName = async (data) => {
     try {
-        const response = await axiosClient.get(`/findUserName/${data}`);
+        const response = await axiosClient().get(`/findUserName/${data}`);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.data?.message || 'Find user failed');
@@ -89,7 +87,7 @@ export const findUserByUserName = async (data) => {
 // changePasswordByUserName 
 export const changePassByUserName = async (data) => {
     try {
-        const response = await axiosClient.put('/authChangeUser', data);
+        const response = await axiosClient().put('/authChangeUser', data);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.data?.message || 'Change password failed');

@@ -169,14 +169,6 @@ const LessonCourse = ({ navigation, route }) => {
     return (
         loading ? <LoadingView /> : <SafeAreaView style={styles.container}>
             <Container style={styles.content}>
-                {!video && (
-                    <LazyImage
-                        url={'https://www.georgeanimatrix.com/blog/wp-content/uploads/2023/08/jpeg-optimizer_14-1.jpg'}
-                        width={'100%'}
-                        height={hp(20)}
-                        style={{ borderRadius: 16 }}
-                    />
-                )}
                 {video && (
                     <Video
                         width={'100%'}
@@ -186,7 +178,16 @@ const LessonCourse = ({ navigation, route }) => {
                     />
                 )}
                 <Container style={styles.viewLesson}>
-                    <RenderCourse />
+                    {
+                        dataLesson && dataLesson.length > 0 ? <RenderCourse /> : <Text
+                            style={{
+                                alignSelf: 'center',
+                                fontSize: FontSize.size_xl,
+                                fontFamily: FontFamily.mulishBold,
+                                marginTop: 20
+                            }}
+                        >Bài học đang được cập nhật</Text>
+                    }
                 </Container>
             </Container>
         </SafeAreaView>

@@ -7,37 +7,51 @@ import { ArrowRight2, SearchNormal1, SaveAdd, Clock } from 'iconsax-react-native
 import { RowComponent } from '../../components/RowComponent';
 import { Container } from '../../components/Container';
 import { Tag } from '../../contanst/tag';
-import { getCategory, getCourses, getCategoryById, getNotification, checkInforUser } from '../../apis/courseApi';
+import { getCategory, getCourses, getCategoryById, getNotification, checkInforUser, getPopup } from '../../apis/courseApi';
 import SlideShow from '../../contanst/Slide';
 import LoadingView from '../Auth/LoadingScreen';
 import { useSelector } from 'react-redux';
 import Modal2 from '../../components/Modal';
+import PopupImage from '../Popup/mainPop';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = ({ navigation }) => {
+
+const Home = () => {
+    const navigation = useNavigation();
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [popup, setPopup] = useState(false);
+    const [imagePopup, setImagePopup] = useState('');
     const [courses, setCourses] = useState([]);
     const [trackingCourse, setTrackingCourse] = useState('ALL');
     const [imageCourse, setImageCourse] = useState([]);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const [open, setOpen] = useState(false);
 
+
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
                 setLoading(true);
-                const [categoryResponse, courseResponse, imageResponse] = await Promise.all([
+                const [categoryResponse, courseResponse, imageResponse, imagePopup] = await Promise.all([
                     getCategory(),
                     getCourses(),
-                    getNotification()
+                    getNotification(),
+                    getPopup()
+
                 ]);
                 setCategories(categoryResponse.data.data);
                 setCourses(courseResponse.data.data.courses);
                 setImageCourse(imageResponse.data.data);
+                setImagePopup(imagePopup.data.data);
+                console.log(imagePopup?.data?.data)
                 if (!inforUser) {
                     setOpen(true);
                 }
+                setTimeout(() => {
+                    setPopup(true);
+                }, 10000);
             } catch (error) {
                 console.error('Error fetching initial data:', error);
             } finally {
@@ -93,6 +107,10 @@ const Home = ({ navigation }) => {
             <Image source={require('./../../../assets/FILTER.png')} />
         </RowComponent>
     );
+
+    const handlerSellAll = useCallback(() => {
+        navigation.navigate('SeeCourse');
+    }, []);
 
     const TagList = () => (
         <FlatList
@@ -157,11 +175,14 @@ const Home = ({ navigation }) => {
             <Container style={styles.container}>
                 <Header name={inforUser?.fullname} onPress={handlerNotification} />
                 <Search />
-                <View>
+                <View style={{
+                    marginTop: hp(1)
+                }}>
                     <RowComponent style={styles.row}>
                         <Text style={styles.popular}>{t('popular')}</Text>
                         <Pressable style={styles.pressable}>
-                            <Text style={styles.sellAll}>{t('sell')}</Text>
+                            {/* Sell */}
+                            <Text onPress={handlerSellAll} style={styles.sellAll}>{t('sell')}</Text>
                             <ArrowRight2 size={FontSize.size_lg} color={Color.globalApp} />
                         </Pressable>
                     </RowComponent>
@@ -180,6 +201,19 @@ const Home = ({ navigation }) => {
                     }}
                     isVisible={open}
                 />
+                {
+                    imagePopup && imagePopup.length > 0 && <PopupImage imageUri={imagePopup[
+                        Math.random() * imagePopup.length | 0
+                    ]?.popupImage}
+                        isVisible={popup}
+                        toggleModal={() => setPopup(false)}
+                    />
+                }
+
+                {/* <PopupImage imageUri={'https://mdcop.vn/wp-content/uploads/2020/02/pop-up-l%C3%A0-g%C3%AC.jpg'}
+                    isVisible={popup}
+                    toggleModal={() => setPopup(false)}
+                /> */}
             </Container>
     );
 };
@@ -229,6 +263,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: wp(90),
         padding: 0,
+        marginBottom: hp(2)
     },
     textCategory: {
         fontFamily: FontFamily.mulishBold,

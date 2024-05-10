@@ -29,7 +29,6 @@ export default function EditProfile({ navigation }) {
     const [open, setOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState(null);
 
-    console.log(idUser)
     const selectImage = useCallback(() => {
         const options = {
             title: "Select Avatar",
@@ -38,6 +37,7 @@ export default function EditProfile({ navigation }) {
                 path: "images",
             },
         };
+
         launchImageLibrary(options, (response) => {
             if (response.didCancel) {
                 console.log('User cancelled image picker');
@@ -47,12 +47,12 @@ export default function EditProfile({ navigation }) {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                console.log(response)
+                console.log(image)
                 setImage(response?.assets[0]);
-                // Set the preview image
                 setPreviewImage(response?.assets[0]?.uri);
             }
         });
+
     }, []);
 
     const onSubmit = async (data) => {
@@ -72,8 +72,14 @@ export default function EditProfile({ navigation }) {
 
         try {
             setLoading(true);
-            await importInfor(formData)
-            await dispatch(updateInfor({ ...inforUser, id: data?._id, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
+            await importInfor(formData);
+            await dispatch(updateInfor({
+                id: data?._id,
+                fullname: data.fullName,
+                email: data.userName,
+                phone: data.phoneNumber,
+                ...(image && { avatar: image.uri })
+            }));
             setOpen(true);
         } catch (error) {
             console.log(error);

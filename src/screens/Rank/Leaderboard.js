@@ -63,6 +63,7 @@ const LeaderBoard = () => {
                 <TouchableOpacity style={[styles.tabButton, tab && styles.tabButtonSelected]} onPress={toggleTab}>
                     <Text style={[styles.tabButtonText, tab && styles.tabButtonTextActive]}>{t('Weekly')}</Text>
                 </TouchableOpacity>
+
             </View>
             {tab ? (
                 loading ? <LoadingView /> : <Container width={wp(97)} height={hp(85)} style={styles.content}>

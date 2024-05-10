@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, Platform, Pressable } from 'react-native
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import LottieView from 'lottie-react-native';
-import Sound from 'react-native-sound';
 import { PlaySound } from '../../contanst/PlaySound';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -18,9 +17,9 @@ const ResuftQuiz = ({ mark = 10 }) => {
         total
     } = route.params?.data;
     useEffect(() => {
-        PlaySound('victory_a.mp3');
+        PlaySound('victory.mp3');
     }, []);
-    const myScore = score * mark;
+    const myScore = score;
     const showAswer = useCallback(() => {
         navigation.navigate('viewAnswer', {
             data: quizData
