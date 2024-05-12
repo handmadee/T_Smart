@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
@@ -8,6 +8,7 @@ import * as Progress from 'react-native-progress';
 import { useSelector } from 'react-redux';
 import { getQuizbyUser, getRankUser, getScoreUser } from '../../apis/trackingQuiz';
 import LoadingView from '../Auth/LoadingScreen';
+
 
 // Constants hoặc enums
 const IMAGES = {
@@ -88,7 +89,6 @@ export const Rank = () => {
     return (
         loading ? <LoadingView /> : <Container width={wp(97)} height={hp(85)} style={styles.container}>
             <UserInfo avatar={infor?.avatar} fullname={infor?.fullname} />
-
             <View style={styles.cardView}>
                 <RankItem icon={IMAGES.POINS} label="POINS" rank={poin} />
                 <RankItem icon={IMAGES.WORLD_RANK} label="Play Rank" rank={game} />
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Color.colorGhostwhite,
         borderRadius: wp(5),
-        height: hp(80),
+        height: Platform.OS === 'ios' ? hp(70) : hp(80),
     },
     userInfoContainer: {
         alignItems: 'center',

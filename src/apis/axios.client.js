@@ -85,65 +85,123 @@
 
 
 
+// import axios from 'axios';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { common } from '../utils/utils';
+
+// const API_URL = common.BASE_URL;
+
+// const axiosInstance = () => {
+//     const instance = axios.create({
+//         baseURL: API_URL,
+//         timeout: 10000,
+//     });
+
+//     const setAuthToken = async (config) => {
+//         const token = await AsyncStorage.getItem("auth");
+//         if (token) {
+//             const { accesstoken } = JSON.parse(token);
+//             if (accesstoken) {
+//                 config.headers.authorization = `Bearer ${accesstoken}`;
+//             }
+//         }
+//         return config;
+//     };
+
+
+//     instance.interceptors.request.use(
+//         async (config) => await setAuthToken(config),
+//         (error) => Promise.reject(error)
+//     );
+
+//     instance.interceptors.response.use(
+//         (response) => response,
+//         async (error) => {
+//             if (error.response && error.response.status === 401) {
+//                 const interceptor = instance.interceptors.response.eject(error.config);
+//                 try {
+//                     const token = await AsyncStorage.getItem("auth");
+//                     const { refreshtoken } = JSON.parse(token);
+//                     const url = `${API_URL}/auth/refresh-token`;
+//                     const body = `refreshToken=${refreshtoken}`;
+//                     const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+//                     const refreshResponse = await axios.post(url, body, { headers });
+//                     const newAuth = { ...JSON.parse(token), accesstoken: refreshResponse.data.data.accessToken };
+//                     await AsyncStorage.setItem('auth', JSON.stringify(newAuth));
+//                     error.response.config.headers.Authorization = `Bearer ${refreshResponse.data.data.accessToken}`;
+//                     return axios(error.response.config);
+//                 } catch (err) {
+//                     if (err.response && err.response.status === 400) {
+//                         throw { response: { status: 401 } };
+//                     }
+//                     return Promise.reject(err);
+//                 } finally {
+//                     instance.interceptors.response.use(interceptor);
+//                 }
+//             }
+//             return Promise.reject(error);
+//         }
+//     );
+
+//     return instance;
+// };
+
+// export default axiosInstance;
+
+
+
+// Config 3 
+
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { common } from '../utils/utils';
 
 const API_URL = common.BASE_URL;
 
-const axiosInstance = () => {
-    const instance = axios.create({
-        baseURL: API_URL,
-        timeout: 10000,
-    });
+const axiosInstance = axios.create({
+    baseURL: API_URL,
+    timeout: 10000,
+});
 
-    const setAuthToken = async (config) => {
+axiosInstance.interceptors.request.use(
+    async (config) => {
         const token = await AsyncStorage.getItem("auth");
         if (token) {
             const { accesstoken } = JSON.parse(token);
             if (accesstoken) {
-                config.headers.authorization = `Bearer ${accesstoken}`;
+                config.headers.Authorization = `Bearer ${accesstoken}`;
             }
         }
         return config;
-    };
+    },
+    (error) => Promise.reject(error)
+);
 
-
-    instance.interceptors.request.use(
-        async (config) => await setAuthToken(config),
-        (error) => Promise.reject(error)
-    );
-
-    instance.interceptors.response.use(
-        (response) => response,
-        async (error) => {
-            if (error.response && error.response.status === 401) {
-                const interceptor = instance.interceptors.response.eject(error.config);
-                try {
-                    const token = await AsyncStorage.getItem("auth");
-                    const { refreshtoken } = JSON.parse(token);
-                    const url = `${API_URL}/auth/refresh-token`;
-                    const body = `refreshToken=${refreshtoken}`;
-                    const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-                    const refreshResponse = await axios.post(url, body, { headers });
-                    const newAuth = { ...JSON.parse(token), accesstoken: refreshResponse.data.data.accessToken };
-                    await AsyncStorage.setItem('auth', JSON.stringify(newAuth));
-                    error.response.config.headers.Authorization = `Bearer ${refreshResponse.data.data.accessToken}`;
-                    return axios(error.response.config);
-                } catch (err) {
-                    if (err.response && err.response.status === 400) {
-                        throw { response: { status: 401 } };
-                    }
-                    return Promise.reject(err);
-                } finally {
-                    instance.interceptors.response.use(interceptor);
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.response && error.response.status === 401) {
+            const originalRequest = error.config;
+            try {
+                const token = await AsyncStorage.getItem("auth");
+                const { refreshtoken } = JSON.parse(token);
+                const refreshResponse = await axios.post(`${API_URL}/auth/refresh-token`, {
+                    refreshToken: refreshtoken
+                });
+                const newAuth = { ...JSON.parse(token), accesstoken: refreshResponse.data.data.accessToken };
+                await AsyncStorage.setItem('auth', JSON.stringify(newAuth));
+                originalRequest.headers.Authorization = `Bearer ${refreshResponse.data.data.accessToken}`;
+                return axios(originalRequest);
+            } catch (err) {
+                if (err.response && err.response.status === 400) {
+                    throw { response: { status: 401 } };
                 }
+                return Promise.reject(err);
             }
-            return Promise.reject(error);
         }
-    );
-
-    return instance;
-};
+        return Promise.reject(error);
+    }
+);
 
 export default axiosInstance;
+

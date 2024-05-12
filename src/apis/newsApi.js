@@ -1,6 +1,6 @@
 // news API 
-import ApiClient from "./axios.client";
-const axiosClient = ApiClient();
+import axiosClient from "./axios.client";
+// const axiosClient = ApiClient();
 
 export const getNewsPage = async (page = 1, limit = 10) => {
     try {

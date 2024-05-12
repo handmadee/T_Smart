@@ -39,7 +39,7 @@ const HomeNav = React.memo(() => {
     const IconTab = ({ focused, children, name }) => (
         <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
             {children}
-            <Text style={{ color: focused ? Color.globalApp : Color.colorGray_100, fontWeight: '700', marginTop: 5 }}>{name}</Text>
+            <Text style={{ color: focused ? Color.globalApp : Color.colorGray_100, fontWeight: '700', marginTop: 5, fontSize: 12 }}>{name}</Text>
         </View>
     );
     const Tab = createBottomTabNavigator();

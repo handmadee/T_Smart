@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Image, Text, View, Modal, TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
+import { Image, Text, View, Modal, TouchableOpacity, ImageBackground, SafeAreaView, Platform } from "react-native";
 import AuthNav from "./src/navigation/Auth.nav";
 import Splash from "./Splash";
 import LoadingView from "./src/screens/Auth/LoadingScreen";
@@ -24,17 +24,22 @@ import SeeCourse from "./src/screens/Course/SeeAll";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
-
-
+import { enableScreens } from "react-native-screens";
 
 const App = () => {
+  useEffect(() => {
+    Platform.OS === 'ios' && enableScreens(false);
+  }, []);
+
   return (
     <Provider store={store}>
-      <GestureHandlerRootView>
-        <View style={{ flex: 1 }}>
-          <AppRouters />
-        </View>
-      </GestureHandlerRootView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
+        <GestureHandlerRootView>
+          <View style={{ flex: 1 }}>
+            <AppRouters />
+          </View>
+        </GestureHandlerRootView>
+      </SafeAreaView>
     </Provider>
 
   );

@@ -1,5 +1,5 @@
-import ApiClient from "./axios.client";
-const axiosClient = ApiClient();
+import axiosClient from "./axios.client";
+// const axiosClient = ApiClient();
 
 export const getCategoryQuiz = async (data) => {
     const respomse = await axiosClient.get(`/categoryQuiz`);

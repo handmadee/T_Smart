@@ -11,12 +11,16 @@ import { PlaySound } from "../../contanst/PlaySound";
 
 const Quiz = ({ navigation, route }) => {
     const quizData = route.params.quizData;
+    const time = route.params.time || 10;
+    const timlet = Math.floor((time * 60) / quizData.length);
+    console.log(quizData)
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(10);
+    const [timeLeft, setTimeLeft] = useState(timlet);
     // Sound mp3 
     const SELECT_SOUND = 'select.mp3';
+
     useEffect(() => {
         const timer = setTimeout(() => {
             if (timeLeft > 0) {
@@ -24,7 +28,7 @@ const Quiz = ({ navigation, route }) => {
             } else {
                 if (currentQuestion < quizData.length - 1) {
                     setCurrentQuestion(currentQuestion + 1);
-                    setTimeLeft(10);
+                    setTimeLeft(timlet);
                 } else {
                     setQuizCompleted(true);
                 }
@@ -41,7 +45,7 @@ const Quiz = ({ navigation, route }) => {
         }
         if (currentQuestion < quizData.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
-            setTimeLeft(10);
+            setTimeLeft(timlet);
         } else {
             setQuizCompleted(true);
         }
@@ -51,7 +55,7 @@ const Quiz = ({ navigation, route }) => {
         setCurrentQuestion(0);
         setScore(0);
         setQuizCompleted(false);
-        setTimeLeft(10);
+        setTimeLeft(60);
     };
 
     const handlerShowAnswer = () => {
@@ -95,12 +99,16 @@ const Quiz = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <Container style={styles.viewContain}>
-                <MemoizedQuestion
-                    question={quizData[currentQuestion].question}
-                    manyAnswers={quizData[currentQuestion].answers}
-                    current={currentQuestion}
-                    end={quizData.length}
-                />
+                {
+                    quizData && quizData.length ? (
+                        <MemoizedQuestion
+                            question={quizData[currentQuestion].question}
+                            manyAnswers={quizData[currentQuestion].answers}
+                            current={currentQuestion}
+                            end={quizData.length}
+                        />
+                    ) : <Text>Dữ liệu bài kiểm tra đang được cập nhật</Text>
+                }
             </Container>
             {quizCompleted && <ResuftTest score={score}
                 total={quizData.length}
