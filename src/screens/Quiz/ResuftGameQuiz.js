@@ -14,6 +14,7 @@ const ResuftQuiz = ({ mark = 10 }) => {
     const { id,
         quizData,
         score,
+        answer,
         total
     } = route.params?.data;
     useEffect(() => {
@@ -99,7 +100,7 @@ const ResuftQuiz = ({ mark = 10 }) => {
                         ]}>
                             <Text
                                 style={[styles.txtItem]}
-                            >{total - score}</Text>
+                            >{total - answer}</Text>
                             <Text
                                 style={{
                                     color: '#fff',

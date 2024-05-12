@@ -8,15 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* T_SmartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* T_SmartTests.m */; };
+		0A021C19338CCB7B084F2CAB /* libPods-T_Smart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 155C9FB222CAF6ED681F6976 /* libPods-T_Smart.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		17DA6912541861E9FAEB082D /* Pods_T_Smart_T_SmartTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F43478FC7971013EA5D2EBA4 /* Pods_T_Smart_T_SmartTests.framework */; };
 		35CFA77AF6C74E158DEF2C4F /* Mulish-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDC12BF017864C028CF25D40 /* Mulish-SemiBold.ttf */; };
-		4FE5BC003665CF0F22077469 /* Pods_T_Smart.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBACE5727CC63AC754158400 /* Pods_T_Smart.framework */; };
 		6187F92D4D8B43D0BD29CC14 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 34CAFB0064324182BB67AD52 /* Roboto-Regular.ttf */; };
+		630BAC53E1DFFA310A865281 /* libPods-T_Smart-T_SmartTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCDC0F7DD1FDF912B223440E /* libPods-T_Smart-T_SmartTests.a */; };
 		731354B2BDC4426C9CE4C865 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B49735364FD842F1AF61FDD2 /* Poppins-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		84C91CAF2BEF601300279CBA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CAE2BEF601300279CBA /* GoogleService-Info.plist */; };
+		84C91CB62BEFCE1200279CBA /* is_correct.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB02BEFCE1200279CBA /* is_correct.mp3 */; };
+		84C91CB72BEFCE1200279CBA /* select.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB12BEFCE1200279CBA /* select.mp3 */; };
+		84C91CB82BEFCE1200279CBA /* winner_v1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB22BEFCE1200279CBA /* winner_v1.mp3 */; };
+		84C91CB92BEFCE1200279CBA /* second.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB32BEFCE1200279CBA /* second.mp3 */; };
+		84C91CBA2BEFCE1200279CBA /* victory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB42BEFCE1200279CBA /* victory.mp3 */; };
+		84C91CBB2BEFCE1200279CBA /* is_wrong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84C91CB52BEFCE1200279CBA /* is_wrong.mp3 */; };
 		92AFD554A6E14C81AB1252ED /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5152F77F774473C99BF84A3 /* Rubik-Medium.ttf */; };
 		94E24DCE397041468C6218F3 /* Aubrey-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6900E83418BE4D98AD10679A /* Aubrey-Regular.ttf */; };
 		9CEABBDD740F4F5AB5EB3723 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43224D697A2849F1A7040565 /* Inter-Medium.ttf */; };
@@ -48,6 +55,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = T_Smart/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = T_Smart/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = T_Smart/main.m; sourceTree = "<group>"; };
+		155C9FB222CAF6ED681F6976 /* libPods-T_Smart.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-T_Smart.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CAFB0064324182BB67AD52 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		37A3CAB28D404EAD9DEEDFBC /* Mulish-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-ExtraBold.ttf"; path = "../assets/fonts/Mulish-ExtraBold.ttf"; sourceTree = "<group>"; };
 		38871CB4ABB34FBB815E96B3 /* Jost-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-SemiBold.ttf"; path = "../assets/fonts/Jost-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -58,17 +66,22 @@
 		5B7EB9410499542E8C5724F5 /* Pods-T_Smart-T_SmartTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-T_Smart-T_SmartTests.debug.xcconfig"; path = "Target Support Files/Pods-T_Smart-T_SmartTests/Pods-T_Smart-T_SmartTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6900E83418BE4D98AD10679A /* Aubrey-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Aubrey-Regular.ttf"; path = "../assets/fonts/Aubrey-Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = T_Smart/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		840A04E82BC7538300FE69B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		848960FB2BB7EEF200FBF037 /* T_Smart.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = T_Smart.entitlements; path = T_Smart/T_Smart.entitlements; sourceTree = "<group>"; };
+		84C91CAE2BEF601300279CBA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		84C91CB02BEFCE1200279CBA /* is_correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = is_correct.mp3; sourceTree = "<group>"; };
+		84C91CB12BEFCE1200279CBA /* select.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = select.mp3; sourceTree = "<group>"; };
+		84C91CB22BEFCE1200279CBA /* winner_v1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winner_v1.mp3; sourceTree = "<group>"; };
+		84C91CB32BEFCE1200279CBA /* second.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = second.mp3; sourceTree = "<group>"; };
+		84C91CB42BEFCE1200279CBA /* victory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = victory.mp3; sourceTree = "<group>"; };
+		84C91CB52BEFCE1200279CBA /* is_wrong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = is_wrong.mp3; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-T_Smart-T_SmartTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-T_Smart-T_SmartTests.release.xcconfig"; path = "Target Support Files/Pods-T_Smart-T_SmartTests/Pods-T_Smart-T_SmartTests.release.xcconfig"; sourceTree = "<group>"; };
 		99A07813499841D8BF5F9B23 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		9A6688DC5A064F23B7FA8DAA /* Jost-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Jost-Bold.ttf"; path = "../assets/fonts/Jost-Bold.ttf"; sourceTree = "<group>"; };
 		B49735364FD842F1AF61FDD2 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
-		CBACE5727CC63AC754158400 /* Pods_T_Smart.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_T_Smart.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5152F77F774473C99BF84A3 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Medium.ttf"; path = "../assets/fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F43478FC7971013EA5D2EBA4 /* Pods_T_Smart_T_SmartTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_T_Smart_T_SmartTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB8AF053FCA140E782D1F4FE /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		FCDC0F7DD1FDF912B223440E /* libPods-T_Smart-T_SmartTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-T_Smart-T_SmartTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDC12BF017864C028CF25D40 /* Mulish-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Mulish-SemiBold.ttf"; path = "../assets/fonts/Mulish-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17DA6912541861E9FAEB082D /* Pods_T_Smart_T_SmartTests.framework in Frameworks */,
+				630BAC53E1DFFA310A865281 /* libPods-T_Smart-T_SmartTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FE5BC003665CF0F22077469 /* Pods_T_Smart.framework in Frameworks */,
+				0A021C19338CCB7B084F2CAB /* libPods-T_Smart.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				CBACE5727CC63AC754158400 /* Pods_T_Smart.framework */,
-				F43478FC7971013EA5D2EBA4 /* Pods_T_Smart_T_SmartTests.framework */,
+				155C9FB222CAF6ED681F6976 /* libPods-T_Smart.a */,
+				FCDC0F7DD1FDF912B223440E /* libPods-T_Smart-T_SmartTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -143,7 +156,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				840A04E82BC7538300FE69B6 /* GoogleService-Info.plist */,
+				84C91CB02BEFCE1200279CBA /* is_correct.mp3 */,
+				84C91CB52BEFCE1200279CBA /* is_wrong.mp3 */,
+				84C91CB32BEFCE1200279CBA /* second.mp3 */,
+				84C91CB12BEFCE1200279CBA /* select.mp3 */,
+				84C91CB42BEFCE1200279CBA /* victory.mp3 */,
+				84C91CB22BEFCE1200279CBA /* winner_v1.mp3 */,
+				84C91CAE2BEF601300279CBA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* T_Smart */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* T_SmartTests */,
@@ -293,15 +312,22 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				84C91CAF2BEF601300279CBA /* GoogleService-Info.plist in Resources */,
 				94E24DCE397041468C6218F3 /* Aubrey-Regular.ttf in Resources */,
 				9CEABBDD740F4F5AB5EB3723 /* Inter-Medium.ttf in Resources */,
+				84C91CBA2BEFCE1200279CBA /* victory.mp3 in Resources */,
 				B7FDBA2311454423A81D83CE /* Jost-Bold.ttf in Resources */,
+				84C91CB82BEFCE1200279CBA /* winner_v1.mp3 in Resources */,
+				84C91CBB2BEFCE1200279CBA /* is_wrong.mp3 in Resources */,
 				9F3BE502BAB942CE9FDBB521 /* Jost-SemiBold.ttf in Resources */,
 				EE76973965BB4CAC81B231F2 /* Mulish-Bold.ttf in Resources */,
+				84C91CB92BEFCE1200279CBA /* second.mp3 in Resources */,
 				A25E372E13A44F78A5F89532 /* Mulish-ExtraBold.ttf in Resources */,
+				84C91CB62BEFCE1200279CBA /* is_correct.mp3 in Resources */,
 				35CFA77AF6C74E158DEF2C4F /* Mulish-SemiBold.ttf in Resources */,
 				BE33C99DF50F4DB8B758185A /* Poppins-Bold.ttf in Resources */,
 				731354B2BDC4426C9CE4C865 /* Poppins-SemiBold.ttf in Resources */,
+				84C91CB72BEFCE1200279CBA /* select.mp3 in Resources */,
 				6187F92D4D8B43D0BD29CC14 /* Roboto-Regular.ttf in Resources */,
 				92AFD554A6E14C81AB1252ED /* Rubik-Medium.ttf in Resources */,
 				DA3DB7D6030A49F4982C42BC /* Rubik-Regular.ttf in Resources */,
@@ -544,6 +570,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = T_Smart/T_Smart.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M98GVL826S;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = T_Smart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -572,6 +599,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = T_Smart/T_Smart.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M98GVL826S;
 				INFOPLIST_FILE = T_Smart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -623,7 +651,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -663,10 +691,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -674,10 +699,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -717,7 +739,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 i386";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -749,10 +771,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_CFLAGS = "$(inherited)  ";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -760,10 +779,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

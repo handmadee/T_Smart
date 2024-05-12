@@ -20,6 +20,7 @@ const PlayQuiz = ({ navigation, route }) => {
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
+    const [qAnswer, setQAnswer] = useState(0);
     const [point, setPoint] = useState(Math.floor(points / quizData.length));
     console.log(point)
     const [timeLeft, setTimeLeft] = useState(Math.floor(timeQuiz * 60 / quizData.length));
@@ -73,6 +74,7 @@ const PlayQuiz = ({ navigation, route }) => {
         if (selectedAnswer?.isCorrect) {
             PlaySound(CORRECT_SOUND);
             setScore((prev) => (prev + point));
+            setQAnswer((prev) => (prev + 1));
 
         } else {
             PlaySound(INCORRECT_SOUND);
@@ -126,6 +128,7 @@ const PlayQuiz = ({ navigation, route }) => {
                         id,
                         quizData,
                         score,
+                        answer: qAnswer,
                         total: quizData.length
                     });
                 }

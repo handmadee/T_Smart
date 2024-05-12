@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
@@ -55,7 +55,7 @@ const LeaderBoard = () => {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.headerTab}>
                 <TouchableOpacity style={[styles.tabButton, !tab && styles.tabButtonSelected]} onPress={toggleTab}>
                     <Text style={[styles.tabButtonText, !tab && styles.tabButtonTextActive]}>{t('Badge')}</Text>
@@ -66,18 +66,20 @@ const LeaderBoard = () => {
 
             </View>
             {tab ? (
-                loading ? <LoadingView /> : <Container width={wp(97)} height={hp(85)} style={styles.content}>
+                loading ? <LoadingView /> : <Container width={wp(97)} height={Platform.OS === 'ios' ? hp(80) : hp(90)} style={styles.content}>
                     {/* Render ranking list */}
-                    <FlatList
-                        data={data}
-                        renderItem={({ item, index }) => <PlayerItem player={item} index={index} />}
-                        keyExtractor={(item) => item?.userID.toString()}
-                    />
+                    {
+                        data && data.length > 0 ? (<FlatList
+                            data={data}
+                            renderItem={({ item, index }) => <PlayerItem player={item} index={index} />}
+                            keyExtractor={(item) => item?.userID.toString()}
+                        />) : <Text style={{ textAlign: 'center', marginTop: 20, fontFamily: FontFamily.Medium, fontSize: FontSize.size_mini }}>{"Nếu bạn là người làm bài kiểm tra bạn sẽ được top 1"}</Text>
+                    }
                 </Container>
             ) : (
                 <Rank />
             )}
-        </SafeAreaView>
+        </View>
     );
 };
 

@@ -1,5 +1,5 @@
-import ApiClient from "./axios.client";
-const axiosClient = ApiClient();
+import axiosClient from "./axios.client";
+// const axiosClient = ApiClient();
 
 export const trackingCourseLearn = async (data) => {
     return await axiosClient.get(`/trackingLearn/${data}`);

@@ -54,8 +54,8 @@ const LessonCourse = ({ navigation, route }) => {
         }
     };
 
-    const handlerQuizTest = useCallback((data) => {
-        navigation.navigate('Quiz', { quizData: data });
+    const handlerQuizTest = useCallback((data, time) => {
+        navigation.navigate('Quiz', { quizData: data, time });
     }, [navigation]);
 
     const RenderItem = ({ id, index = 1, status = false, title = '', duration = 10, onPress }) => (
@@ -156,7 +156,8 @@ const LessonCourse = ({ navigation, route }) => {
                                 title={test?.title}
                                 duration={test?.time}
                                 status={test?.status}
-                                onPress={() => handlerQuizTest(test?.question)}
+                                onPress={() => handlerQuizTest(test?.question, test?.time)}
+
                             />
                         ))}
                     </View>

@@ -29,7 +29,10 @@ export default function Security({ navigation }) {
     const toggleBiometric = () => setBiometric(previousState => !previousState);
     const toggleFace = () => setIsFace(previousState => !previousState);
     return (
-        <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', flex: 1 }}>
+        <View style={{
+            flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', flex: 1,
+            backgroundColor: Color.colorGhostwhite
+        }}>
             <View>
                 <SpecialOfferSwitch title={'Remember Me'} status={Remember} toggleSwitch={toggleRemember} />
                 <SpecialOfferSwitch title={'Biometric ID'} status={Biometric} toggleSwitch={toggleBiometric} />

@@ -172,49 +172,54 @@ const Home = () => {
 
     return (
         loading ? <LoadingView /> :
-            <Container style={styles.container}>
-                <Header name={inforUser?.fullname} onPress={handlerNotification} />
-                <Search />
-                <View style={{
-                    marginTop: hp(1)
-                }}>
-                    <RowComponent style={styles.row}>
-                        <Text style={styles.popular}>{t('popular')}</Text>
-                        <Pressable style={styles.pressable}>
-                            {/* Sell */}
-                            <Text onPress={handlerSellAll} style={styles.sellAll}>{t('sell')}</Text>
-                            <ArrowRight2 size={FontSize.size_lg} color={Color.globalApp} />
-                        </Pressable>
-                    </RowComponent>
-                    <TagList />
-                    <CourseList data={courses} />
-                    <Text style={styles.notification}>{t('notifications')}</Text>
-                    {imageCourse && imageCourse.length > 0 && <SlideShow dataImage={imageCourse} />}
-                </View>
-                <Modal2
-                    title={'Cập nhật thông tin '}
-                    img={require('./../../../assets/Logo.png')}
-                    value={'Bạn cần phải cập nhật thông tin của mình để sử dụng app'}
-                    onPress={() => {
-                        setOpen(false);
-                        navigation.navigate('EditProfile');
-                    }}
-                    isVisible={open}
-                />
-                {
-                    imagePopup && imagePopup.length > 0 && <PopupImage imageUri={imagePopup[
-                        Math.random() * imagePopup.length | 0
-                    ]?.popupImage}
-                        isVisible={popup}
-                        toggleModal={() => setPopup(false)}
+            <View style={{
+                flex: 1,
+                backgroundColor: Color.colorGhostwhite,
+            }}>
+                <Container style={styles.container}>
+                    <Header name={inforUser?.fullname} onPress={handlerNotification} />
+                    <Search />
+                    <View style={{
+                        marginTop: hp(1)
+                    }}>
+                        <RowComponent style={styles.row}>
+                            <Text style={styles.popular}>{t('popular')}</Text>
+                            <Pressable style={styles.pressable}>
+                                {/* Sell */}
+                                <Text onPress={handlerSellAll} style={styles.sellAll}>{t('sell')}</Text>
+                                <ArrowRight2 size={FontSize.size_lg} color={Color.globalApp} />
+                            </Pressable>
+                        </RowComponent>
+                        <TagList />
+                        <CourseList data={courses} />
+                        <Text style={styles.notification}>{t('notifications')}</Text>
+                        {imageCourse && imageCourse.length > 0 && <SlideShow dataImage={imageCourse} />}
+                    </View>
+                    <Modal2
+                        title={'Cập nhật thông tin '}
+                        img={require('./../../../assets/Logo.png')}
+                        value={'Bạn cần phải cập nhật thông tin của mình để sử dụng app'}
+                        onPress={() => {
+                            setOpen(false);
+                            navigation.navigate('EditProfile');
+                        }}
+                        isVisible={open}
                     />
-                }
+                    {
+                        imagePopup && imagePopup.length > 0 && <PopupImage imageUri={imagePopup[
+                            Math.random() * imagePopup.length | 0
+                        ]?.popupImage}
+                            isVisible={popup}
+                            toggleModal={() => setPopup(false)}
+                        />
+                    }
 
-                {/* <PopupImage imageUri={'https://mdcop.vn/wp-content/uploads/2020/02/pop-up-l%C3%A0-g%C3%AC.jpg'}
+                    {/* <PopupImage imageUri={'https://mdcop.vn/wp-content/uploads/2020/02/pop-up-l%C3%A0-g%C3%AC.jpg'}
                     isVisible={popup}
                     toggleModal={() => setPopup(false)}
                 /> */}
-            </Container>
+                </Container>
+            </View>
     );
 };
 
@@ -223,8 +228,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: wp(90),
         alignSelf: 'center',
-        backgroundColor: 'transparent',
-        paddingTop: Platform.OS === 'ios' ? 20 : 0,
+        backgroundColor: Color.colorGhostwhite
     },
     header: {
         justifyContent: 'space-between',
