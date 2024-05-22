@@ -25,18 +25,25 @@ import SeeCourse from "./src/screens/Course/SeeAll";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
 import { enableScreens } from "react-native-screens";
+import ResuftTest from "./src/screens/Games/ResuftQuiz";
+import PermissionCourse from "./src/screens/Course/Permision/permissionCourse";
+import Introduce from "./src/screens/Introduce";
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from "react-native-push-notification";
 
 const App = () => {
   useEffect(() => {
     Platform.OS === 'ios' && enableScreens(false);
   }, []);
-
+  // AppNotification 
   return (
     <Provider store={store}>
       <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>
         <GestureHandlerRootView>
           <View style={{ flex: 1 }}>
             <AppRouters />
+
+
           </View>
         </GestureHandlerRootView>
       </SafeAreaView>

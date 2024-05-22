@@ -87,6 +87,8 @@ export default function EditProfile({ navigation }) {
             setLoading(false);
         }
     };
+
+
     return (
         loading ? <LoadingView /> :
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorGhostwhite }}>

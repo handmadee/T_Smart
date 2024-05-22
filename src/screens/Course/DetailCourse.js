@@ -1,6 +1,6 @@
 'use strict';
 import React, { useMemo, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, TextInput, ScrollView, Platform, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, TextInput, ScrollView, Platform, FlatList, Alert } from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -15,12 +15,16 @@ import { createTracking } from '../../apis/trackingCourse';
 import Modal2 from '../../components/Modal';
 import { useSelector } from 'react-redux';
 import LoadingView from '../Auth/LoadingScreen';
+import { getCourseById } from '../../apis/courseApi';
+import notificationServiceCourse from './notificationCourse';
+
 
 export default function DetailCourse({ navigation, route }) {
     const course = route.params?.course;
     const idUser = useSelector(sate => sate?.authReducer?.authData?.id);
     const [readMore, setReadMore] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
     const [isShowModal, setIsShowModal] = useState(false);
     const RenderIntructor = React.memo(() => {
         return (
@@ -46,7 +50,7 @@ export default function DetailCourse({ navigation, route }) {
                 </RowComponent>
             </Container>
         )
-    })
+    });
     const RenderIcon = React.memo(({ icon, text }) => {
         return (
             <View style={[styles.row1, { marginVertical: 20 }]}>
@@ -143,23 +147,44 @@ export default function DetailCourse({ navigation, route }) {
             </Container>
         )
     })
+
     const handlerLearing = async () => {
-        // return navigation.navigate('LessonCourse', { courseID: course?._id });
+        console.log(course)
+        // Step 1: Check if the course ID is valid
+        const courseId = course?._id;
+        console.log(courseId);
+        if (!courseId) {
+            console.log('Course ID is undefined or null');
+            return;
+        }
+        let courseDetails;
+        try {
+            setLoading(true);
+            courseDetails = await getCourseById(courseId);
+            console.log('Course details:', courseDetails);
+        } catch (error) {
+            notificationServiceCourse.createRegisterCourseNotification();
+            setOpen(true);
+            return;
+        } finally {
+            setLoading(false);
+        }
         try {
             setLoading(true);
             const tracking = await createTracking({ idAccount: idUser, idCourse: course?._id });
-            if (tracking) {
-                setIsShowModal(true);
-            }
+            notificationServiceCourse.createCourseNotification(course?.title)
+            setIsShowModal(true);
+            console.log('Tracking created:', tracking);
         } catch (error) {
-            navigation.navigate('LessonCourse', { courseID: course?._id });
-            console.log('Failed to tracking course:', error);
+            navigation.navigate('LessonCourse', { courseID: course?._id, total: course?.totalLesson });
         } finally {
             setLoading(false);
         }
 
 
-    }
+
+    };
+
     return (
         loading ? <LoadingView /> : (<SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>
             <ScrollView
@@ -197,6 +222,18 @@ export default function DetailCourse({ navigation, route }) {
                     setIsShowModal(!isShowModal);
                     navigation.navigate('LessonCourse', { courseID: course?._id });
                 }}
+            />
+            <Modal2
+                style={{
+                    height: hp(35),
+                }}
+                title={'Tài khoản của bạn chưa có quyền truy cập'}
+                img={require('./../../../assets/Logo.png')}
+                value={'Vui lòng liên hệ giảng viên để kích hoạt tài khoản của bạn'}
+                onPress={() => {
+                    setOpen(false);
+                }}
+                isVisible={open}
             />
 
         </SafeAreaView >)

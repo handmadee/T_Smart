@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { View, FlatList, Text, StyleSheet } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { dataQuiz } from '../../data/data'
 import Button from '../../components/Button'
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles'
 
@@ -32,13 +31,12 @@ export const ShowAnswer = ({ navigation, route }) => {
                         }</Text>
                     </View>
                 )}
-                keyExtractor={(item, index) => item.question}
+                keyExtractor={(item, index) => index.toString()}
             />
             <Button title={'Back'} onPress={handlerBack} />
         </View>
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

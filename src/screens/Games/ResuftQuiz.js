@@ -1,51 +1,76 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet, Platform, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { PlaySound } from '../../contanst/PlaySound';
+import { useTranslation } from 'react-i18next';
 
 
-const ResuftTest = ({ total = 10, score = 0, coins = 10, showAswer, handlerHome }) => {
+const ResuftTest = ({ navigation, route }) => {
+
+    const { total, score, coins, data } = route.params;
     useEffect(() => {
         PlaySound('victory.mp3');
     }, []);
+    const { t } = useTranslation();
+    const showAswer = () => {
+        navigation.navigate('ShowAnswer', { data });
+    };
+    const handlerHome = () => {
+        navigation.pop(2)
+    };
+
     return (
         <View style={styles.container}>
-            <View style={{
-                backgroundColor: Color.primaryWhite,
-                width: wp(95),
-                borderRadius: 20,
-                paddingVertical: 20
-            }}>
-                <Text style={[styles.title, { fontSize: 30, color: Color.colorOrangered, marginVertical: 10 }]}>Quiz Result</Text>
-                <View style={styles.content}>
-                    <Image style={styles.champion} source={require('./../../../assets/Champion.png')} />
-                    <Text style={[styles.answer, { fontSize: 22, marginVertical: 20 }]}>Congratulations!</Text>
-                    <Text style={[styles.answer, { fontSize: 18, textAlign: 'center', width: '80%' }]}>
-                        Congratulations on completing the test ^_^
-                    </Text>
-                    <Text style={[styles.title, { fontSize: 18, fontFamily: FontFamily.mulishExtraBold, width: '80%', textAlign: 'center', marginVertical: 15 }]}>
-                        YOUR SCORE
-                    </Text>
-                    <View style={styles.row}>
-                        <Text style={[styles.score, { color: Color.colorOrangered }]}>{score}</Text>
-                        <Text style={styles.score}> / {total}</Text>
-                    </View>
-                    <Text style={[styles.answer, { fontSize: 20, marginTop: 10 }]}>Receive coins</Text>
-                    <View style={[styles.row, { marginTop: 20 }]}>
-                        <Text style={styles.coinAmount}>{coins * score}</Text>
-                        <Image style={styles.coinImage} resizeMode='contain' source={require('./../../../assets/Coin.png')} />
-                    </View>
+            <Text style={[styles.title, { fontSize: 30, color: Color.colorOrangered, marginVertical: 10 }]}>{t("courseTest")}</Text>
+            <View style={styles.content}>
+                <Image style={styles.champion} source={require('./../../../assets/Champion.png')} />
+                <Text style={[styles.answer, { fontSize: 22, marginVertical: 20 }]}>{
+                    t("happy")
+                }</Text>
+                <Text style={[styles.answer, { fontSize: 18, textAlign: 'center', width: '80%' }]}>
+                    {
+                        t("congratulations")
+                    }
+                </Text>
+                <Text style={[styles.title, { fontSize: 18, fontFamily: FontFamily.mulishExtraBold, width: '80%', textAlign: 'center', marginVertical: 15 }]}>
+                    {
+                        t("score")
+                    }      </Text>
+                <View style={styles.row}>
+                    <Text style={[styles.score, { color: Color.colorOrangered }]}>{score}</Text>
+                    <Text style={styles.score}> / {total}</Text>
                 </View>
-                {/* Handler */}
-                <View style={styles.ctnBtn}>
-                    <Pressable style={styles.btnContai} onPress={showAswer}>
-                        <Text style={styles.answer}>Show Answer</Text>
-                    </Pressable>
-                    <Pressable style={[styles.btnContai, { backgroundColor: Color.globalApp }]} onPress={handlerHome}>
-                        <Text style={styles.answer}>Home</Text>
-                    </Pressable>
+                <Text style={[styles.answer, { fontSize: 20, marginTop: 10 }]}>
+                    {
+                        t("point")
+                    }
+                </Text>
+                <View style={[styles.row, { marginTop: 20 }]}>
+                    <Text style={styles.coinAmount}>{coins * score}</Text>
+                    <Image style={styles.coinImage} resizeMode='contain' source={require('./../../../assets/Coin.png')} />
                 </View>
+            </View>
+            {/* Handler */}
+            <View style={styles.ctnBtn}>
+                <Pressable style={styles.btnContai} onPress={showAswer}>
+                    <Text style={[
+                        styles.answer, { color: '#141a46' }
+                    ]}>
+                        {
+                            t("seeAnswer")
+                        }
+                    </Text>
+                </Pressable>
+                <Pressable style={[styles.btnContai, { backgroundColor: Color.globalApp }]} onPress={handlerHome}>
+                    <Text style={[
+                        styles.answer, { color: Color.primaryWhite }
+                    ]}>
+                        {
+                            t("goBack")
+                        }
+                    </Text>
+                </Pressable>
             </View>
         </View>
     );
@@ -54,12 +79,8 @@ const ResuftTest = ({ total = 10, score = 0, coins = 10, showAswer, handlerHome 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        position: 'absolute',
-        width: '100%',
-        height: '113%',
-        backgroundColor: '#131212c8',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: Color.colorGhostwhite,
+        paddingTop: hp(5)
     },
     content: {
         width: '100%',

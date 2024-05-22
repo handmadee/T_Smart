@@ -4,20 +4,20 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Color, FontSize, FontFamily } from "../../GlobalStyles";
 
 
-export default function Modal2({ img, title, value, onPress, isVisible = false }) {
+export default function Modal2({ img, title, value, onPress, isVisible = false, style = {} }) {
     return (
         <Modal
             visible={isVisible}
             transparent={true}
             animationType="fade"
         >
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }} >
+            <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }]} >
                 <View style={{
                     backgroundColor: 'white', padding: 20, borderRadius: 10, width: wp(80),
                     height: hp(30),
                     flexDirection: 'column',
                     alignItems: 'center',
-
+                    ...style
                 }}>
                     <Image source={img}
                         style={{ width: wp(20), height: hp(7) }}
@@ -25,10 +25,11 @@ export default function Modal2({ img, title, value, onPress, isVisible = false }
                     />
                     <Text style={{
                         fontFamily: FontFamily.robotoRegular,
-                        fontSize: 25,
+                        fontSize: 22,
                         marginLeft: 10,
                         fontWeight: 'bold',
-                        color: Color.colorOrangered
+                        color: Color.colorOrangered,
+                        textAlign: 'center'
                     }}>
                         {title}
                     </Text>

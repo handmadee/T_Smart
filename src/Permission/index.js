@@ -1,6 +1,16 @@
 import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { check, PERMISSIONS, request } from 'react-native-permissions';
+import PushNotificationService from './../services/notifications/PushNotificationService';
+const notificationService = new PushNotificationService();
 
+export async function requestPermissionVip() {
+    notificationService.createChannel('default');
+    notificationService.createChannel('course');
+    notificationService.createChannel('application');
+    notificationService.localNotification('default', 'Chúc mừng bạn có 1 buổi học trên app thật là vui vẻ 😍');
+    notificationService.messagingNotification();
+}
 async function requestNotificationPermission() {
     if (Platform.OS === 'android') {
         try {
@@ -15,7 +25,7 @@ async function requestNotificationPermission() {
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('Quyền thông báo đã được cấp');
+                requestPermissionVip();
             } else {
                 console.log('Quyền thông báo bị từ chối');
             }
@@ -24,20 +34,19 @@ async function requestNotificationPermission() {
         }
     }
 }
-
-
 async function requestNetworkPermission() {
     if (Platform.OS === 'ios') {
         messaging()
             .requestPermission()
             .then((authStatus) => {
-                console.log('Quyền thông báo đã được cấp', authStatus);
+                requestPermissionVip();
             })
             .catch((err) => {
                 console.log('Quyền thông báo bị từ chối', err);
             });
     }
 }
+
 
 export async function requestPermission() {
     await requestNotificationPermission();

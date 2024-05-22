@@ -36,7 +36,6 @@ export const checkToken = async (token) => {
         return data.data;
     } catch (error) {
         console.log(error)
-        console.error('Token Validate Error:', error);
         throw error;
     }
 };

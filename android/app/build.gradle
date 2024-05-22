@@ -79,7 +79,6 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-
     namespace "com.t_smart"
     defaultConfig {
         applicationId "com.t_smart"
@@ -108,6 +107,11 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    // // New Opition android min 7 
+    // packagingOptions {
+    //     pickFirst '**/libc++_shared.so'
+    //     pickFirst '**/libfbjni.so'
+    // }
 }
 
 dependencies {
@@ -126,6 +130,7 @@ project.ext.react = [
 ]
 
 // Phiên bản mặc định của các thư viện
+// call child conponents
 ext {
     buildToolsVersion = "30.0.3"
     minSdkVersion = 21

@@ -24,7 +24,9 @@ const AppRouters = () => {
                     const isToken = await checkToken(token);
                     console.log(isToken)
                     if (isToken) {
+                        console.log(res)
                         dispatch(addAuth(JSON.parse(res)));
+
                     }
                 }
             }
@@ -32,7 +34,6 @@ const AppRouters = () => {
             console.log(error)
         }
     };
-
     useEffect(() => {
         checkLogin();
         setTimeout(() => {

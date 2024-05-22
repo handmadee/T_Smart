@@ -13,13 +13,8 @@ export const getCourses = async (page = 1, limit = 10) => {
 
 // Get course by id
 export const getCourseById = async (id) => {
-    try {
-        const response = await axiosClient.get(`/course/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Failed to fetch course with id ${id}:`, error);
-        throw error;
-    }
+    const response = await axiosClient.get(`/course/${id}`);
+    return response.data;
 };
 
 // Create a new course

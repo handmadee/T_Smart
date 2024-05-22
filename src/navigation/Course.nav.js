@@ -3,7 +3,7 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, Pressable, StyleSheet, SafeAreaView } from 'react-native'
+import { StyleSheet, SafeAreaView } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color, FontFamily, FontSize } from '../../GlobalStyles.js';
 import { Container } from '../components/Container.js';
@@ -18,6 +18,7 @@ import SearchCourse from '../screens/Course/SearchCourse.js';
 import EditProfile from '../screens/Setting/EditProfile.js';
 import Notification12 from '../screens/Services/Notification.js';
 import SeeCourse from '../screens/Course/SeeAll.js';
+import ResuftTest from '../screens/Games/ResuftQuiz.js';
 
 
 
@@ -44,6 +45,7 @@ const CourseNav = React.memo(() => {
             <Stack.Screen name="DetailCourse" component={DetailCourse} options={{ headerShown: true }} />
             <Stack.Screen name="Quiz" component={Quiz} options={{ headerShown: false }} />
             <Stack.Screen name="CartificateCourse" component={CartificateCourse} options={{ headerShown: true }} />
+            <Stack.Screen name="ResuftTest" component={ResuftTest} options={{ headerShown: false }} />
             <Stack.Screen name="ShowAnswer" component={ShowAnswer} options={{ headerShown: true }} />
             <Stack.Screen name="LessonCourse" component={LessonCourse} options={{ headerShown: true }} />
             <Stack.Screen name="SearchCourse" component={SearchCourse} options={{ headerShown: true }} />
