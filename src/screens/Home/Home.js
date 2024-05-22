@@ -13,7 +13,7 @@ import LoadingView from '../Auth/LoadingScreen';
 import { useSelector } from 'react-redux';
 import Modal2 from '../../components/Modal';
 import PopupImage from '../Popup/mainPop';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
@@ -28,7 +28,6 @@ const Home = () => {
     const [imageCourse, setImageCourse] = useState([]);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const [open, setOpen] = useState(false);
-
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -222,6 +221,7 @@ const Home = () => {
             </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {

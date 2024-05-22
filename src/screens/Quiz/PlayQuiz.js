@@ -1,35 +1,46 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../../../GlobalStyles";
 import { Container } from "../../components/Container";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { PlaySound } from "../../contanst/PlaySound";
 import LoadingView from "../Auth/LoadingScreen";
 import { FinishQuiz } from "../../apis/trackingQuiz";
-import Sound from 'react-native-sound';
 import { useSelector } from "react-redux";
+import * as Progress from 'react-native-progress';
+import { BackHandler } from 'react-native';
+import AlertNotification from "../../components/AlertNotification";
+
+
 
 const PlayQuiz = ({ navigation, route }) => {
     const SELECT_SOUND = 'select.mp3';
     const CORRECT_SOUND = 'is_correct.mp3';
     const INCORRECT_SOUND = 'is_wrong.mp3';
-
     const idUser = useSelector(state => state.authReducer?.authData?.id);
     const { id, timeQuiz, points } = route.params;
     const quizData = route.params?.quizData;
-
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [qAnswer, setQAnswer] = useState(0);
     const [point, setPoint] = useState(Math.floor(points / quizData.length));
-    console.log(point)
-    const [timeLeft, setTimeLeft] = useState(Math.floor(timeQuiz * 60 / quizData.length));
-    console.log(timeLeft)
+    const [isShow, setIsShow] = useState(false);
+    const timelet = Math.floor(timeQuiz * 60 / quizData.length);
+    const [timeLeft, setTimeLeft] = useState(timelet);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const [showAnswer, setShowAnswer] = useState(false);
     const [loading, SetLoadding] = useState(false);
 
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            setIsShow(true);
+            return true;
+        });
+        return () => {
+            backHandler.remove();
+        };
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -39,7 +50,7 @@ const PlayQuiz = ({ navigation, route }) => {
                 if (currentQuestion < quizData.length - 1) {
                     handleNext();
                     setShowAnswer(true);
-                    setTimeLeft(timeLeft);
+                    setTimeLeft(timelet);
                 } else {
                     setShowAnswer(true);
                 }
@@ -53,6 +64,15 @@ const PlayQuiz = ({ navigation, route }) => {
         PlaySound(SELECT_SOUND);
         setSelectedAnswer(selectedOption);
     });
+    // The end of the quiz
+    const handerEnd = useCallback(() => {
+        if (quizData.length - 1 > currentQuestion) {
+            setIsShow(true);
+        }
+    }, [])
+
+
+    // 
 
     const handleResult = async (data) => {
         console.log(data)
@@ -85,14 +105,14 @@ const PlayQuiz = ({ navigation, route }) => {
     const MemoizedQuestion = React.memo(({ image, question, manyAnswers, current, end }) => {
         return (
             <View>
-                <View style={styles.timeLeft}>
-                    <Text style={[styles.title, { color: Color.primaryWhite, marginBottom: 0 }]}>{timeLeft}</Text>
-                </View>
-
                 <Text style={styles.numberOf}>
                     {current + 1} of {end}
                 </Text>
-
+                <Progress.Bar
+                    animationType="timing"
+                    color={Color.globalApp}
+                    height={10}
+                    progress={timeLeft / timelet} width={wp(90)} />
                 <Text style={styles.title}>{question}</Text>
                 {image && <Image source={{ uri: image }} style={styles.image} resizeMode="cover" />}
                 {manyAnswers.map((item, index) => (
@@ -122,7 +142,7 @@ const PlayQuiz = ({ navigation, route }) => {
                 setShowAnswer(false);
                 if (currentQuestion < quizData.length - 1) {
                     setCurrentQuestion(currentQuestion + 1);
-                    setTimeLeft(timeLeft);
+                    setTimeLeft(timelet);
                 } else {
                     handleResult({
                         id,
@@ -138,8 +158,23 @@ const PlayQuiz = ({ navigation, route }) => {
     }, [showAnswer]);
 
     return (
-        loading ? <LoadingView /> : <SafeAreaView style={styles.container}>
-            <Container style={styles.viewContain}>
+        loading ? <LoadingView /> : <View style={styles.container}>
+            <Container style={styles.container}>
+                {/* The end */}
+                <TouchableOpacity
+                    onPress={handerEnd}
+                    style={styles.btnEnd}
+                >
+                    <Text
+                        style={{
+                            color: Color.primaryWhite,
+                            fontSize: FontSize.buttonMedium_size,
+                            fontFamily: FontFamily.mulishBold,
+                        }}
+                    >
+                        Kết thúc
+                    </Text>
+                </TouchableOpacity>
                 <MemoizedQuestion
                     image={quizData[currentQuestion]?.imageQuestion}
                     question={quizData[currentQuestion]?.title}
@@ -155,7 +190,26 @@ const PlayQuiz = ({ navigation, route }) => {
                     <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
             </Container>
-        </SafeAreaView>
+            <AlertNotification
+                title="Thông báo"
+                value="Bạn có muốn kết thúc bài kiểm tra không?"
+                isVisible={isShow}
+                isPress={true}
+                txtBtn1="Tiếp tục làm bài"
+                txtBtn2="Kết thúc bài "
+                onPress={() => setIsShow(false)}
+                onPress2={
+                    () => handleResult({
+                        id,
+                        quizData,
+                        score,
+                        answer: qAnswer,
+                        total: quizData.length
+                    })
+                }
+
+            />
+        </View>
     );
 };
 
@@ -163,8 +217,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Color.colorGhostwhite,
+        paddingTop: hp(2),
         alignItems: 'center',
-        justifyContent: 'center'
     },
     numberOf: {
         color: Color.inkDarkGray,
@@ -175,12 +229,13 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#3C3A36',
-        fontSize: FontSize.headingH4_size,
+        fontSize: FontSize.size_2xl,
         fontFamily: FontFamily.mulishBold,
         textAlign: 'center',
         marginBottom: 10,
         width: wp(85),
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: hp(2)
     },
     image: {
         width: wp(90),
@@ -241,6 +296,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Color.globalApp
+    },
+    btnEnd: {
+        backgroundColor: Color.globalApp,
+        padding: 10,
+        borderRadius: 10,
+        marginBottom: 10,
+        width: wp(30),
+        alignItems: 'center',
+        alignSelf: 'flex-end'
     }
 });
 

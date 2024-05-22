@@ -5,7 +5,7 @@ import { View, Text, Pressable, SafeAreaView, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Color, FontFamily, FontSize } from '../../GlobalStyles.js';
-import { ArrowLeft, Home, Book, Message, User, Game } from 'iconsax-react-native';
+import { ArrowLeft, Home, Book, Rank, Setting2, Game, Chainlink } from 'iconsax-react-native';
 import CourseNav from './Course.nav.js';
 import SettingNav from './Setting.nav';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -17,6 +17,8 @@ import MyCourse from '../screens/Course/MyCourse.js';
 import GameNav from './Game.nav.js';
 import { useTranslation } from 'react-i18next';
 import LeaderBoard from '../screens/Rank/Leaderboard.js';
+import Introduce from '../screens/Introduce/index.js';
+
 
 
 export const CustomHeader = React.memo(({ navigation, title }) => {
@@ -101,7 +103,7 @@ const HomeNav = React.memo(() => {
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <IconTab focused={focused} name={t('Honor')}>
-                                <Message size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                <Rank size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
                             </IconTab>
                         ),
                         tabBarStyle: {
@@ -126,7 +128,7 @@ const HomeNav = React.memo(() => {
                             headerShown: false,
                             tabBarStyle: {
                                 ...(Platform.OS === 'ios' && { paddingTop: 20 }),
-                                backgroundColor: '#4B5FBB',
+                                backgroundColor: Color.colorGhostwhite,
                                 height: hp(8),
                                 display: getTabBarVisible(route),
                             }
@@ -140,7 +142,27 @@ const HomeNav = React.memo(() => {
                         return {
                             tabBarIcon: ({ focused }) => (
                                 <IconTab focused={focused} name={t('Profile')}>
-                                    <User size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                    <Setting2 size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
+                                </IconTab>
+                            ),
+                            headerShown: false,
+                            tabBarStyle: {
+                                ...(Platform.OS === 'ios' && { paddingTop: 20 }),
+                                height: hp(8),
+                                display: getTabBarVisible(route),
+                            }
+                        };
+                    }}
+                />
+                {/* Introduce */}
+                <Tab.Screen
+                    name="Introduce"
+                    component={Introduce}
+                    options={({ route }) => {
+                        return {
+                            tabBarIcon: ({ focused }) => (
+                                <IconTab focused={focused} name={t('introlduction')}>
+                                    <Chainlink size={22} variant="Bold" color={focused ? Color.globalApp : Color.colorDimgray_100} />
                                 </IconTab>
                             ),
                             headerShown: false,
@@ -155,6 +177,7 @@ const HomeNav = React.memo(() => {
 
 
 
+
             </Tab.Navigator>
         </NavigationContainer>
 
@@ -164,7 +187,7 @@ const HomeNav = React.memo(() => {
 function getTabBarVisible(route) {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === 'EditProfile1' || routeName === 'Notification' || routeName === 'Security' || routeName === 'Help' || routeName === 'DetailCourse' || routeName === 'LessonCourse' || routeName === 'ShowAnswer' || routeName === 'Quiz' ||
-        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne' || routeName === 'ChangePasswo' || routeName === 'Exam' || routeName === 'viewAnswer'
+        routeName === 'CartificateCourse' || routeName === 'TopicSet' || routeName === 'SearchCourse' || routeName === 'NotificationOne' || routeName === 'ChangePasswo' || routeName === 'Exam' || routeName === 'viewAnswer' || routeName === 'EditProfile'
     ) {
         return 'none';
     }

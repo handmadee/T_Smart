@@ -11,7 +11,6 @@ const PopupImage = ({ imageUri, isVisible, toggleModal }) => {
             animationType="fade"
             visible={isVisible}
             onRequestClose={toggleModal}>
-
             <TouchableOpacity
                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(92, 90, 90, 0.347)' }}
                 activeOpacity={1}

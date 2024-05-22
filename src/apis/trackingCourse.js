@@ -9,10 +9,13 @@ export const trackingCourseFinsnish = async (data) => {
 }
 
 export const createTracking = async (data) => {
-    return await axiosClient.post('/tracking', data)
+    const response = await axiosClient.post('/tracking', data);
+    return response;
 };
 
 export const getTracking = async (idAccount, idCourse) => {
+
+    // Get Tracking
     return await axiosClient.get(`/tracking/?idCourse=${idCourse}&idAccount=${idAccount}`)
 };
 

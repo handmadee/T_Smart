@@ -47,5 +47,13 @@
   "Badge": "Badge",
   "Weekly": "Weekly",
   "All Time": "All Time",
-  "forgotPass": " Select which contact details should we use to Reset Your Password"
+  "forgotPass": " Select which contact details should we use to Reset Your Password",
+  "courseTest": "Test Results",
+  "happy": "Congratulations",
+  "congratulations": "Congratulations on completing the course",
+  "score": "Score",
+  "point": "Bonus Point",
+  "seeAnswer": "Show Answer",
+  "goBack": "Back to Home",
+  "introlduction": "Introduction"
 }
