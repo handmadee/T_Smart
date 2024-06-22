@@ -2,6 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from "react-native-push-notification";
 import messaging from '@react-native-firebase/messaging';
+import { deleteFcmToken, pushFcmToken } from "../../apis/fcmApi";
+import { Alert } from "react-native";
+
 
 class PushNotificationService {
     constructor() {
@@ -53,7 +56,6 @@ class PushNotificationService {
             largeIcon: "ic_launcher",
         });
     }
-
     pushNotificationSchedule(channel, message, date = 0, repeatTime = 0) {
         PushNotification.localNotificationSchedule({
             channelId: `${channel}`,
@@ -66,7 +68,6 @@ class PushNotificationService {
             largeIcon: "ic_launcher",
         });
     }
-
     // messaging online 
     messagingNotification() {
         messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -97,17 +98,40 @@ class PushNotificationService {
             });
         });
     }
+    // Lấy token fcm
     async getFcmToken() {
         let fcmToken = await AsyncStorage.getItem('fcmToken');
         if (!fcmToken) {
             fcmToken = await messaging().getToken();
             console.log('fcmToken', fcmToken)
             if (fcmToken) {
+
                 await AsyncStorage.setItem('fcmToken', fcmToken);
             }
         }
         console.log('fcmToken', fcmToken)
         return fcmToken;
+    }
+    // Lưu token fcm
+    async saveFcmToken(id) {
+        const fcmToken = await this.getFcmToken();
+        console.log('fcmToken', fcmToken)
+        if (fcmToken) {
+            await pushFcmToken({
+                accountId: id,
+                fcmToken: fcmToken
+            });
+        }
+    }
+    // Xóa token fcm
+    async removeFcmToken(id) {
+        await AsyncStorage.removeItem('fcmToken');
+        try {
+            await deleteFcmToken(id);
+        } catch (error) {
+            Alert.alert('Thông báo', 'Đã xảy ra lỗi, vui lòng thử lại sau');
+        }
+
     }
 }
 

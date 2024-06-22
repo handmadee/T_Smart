@@ -26,9 +26,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import AlertNotification from "../../components/AlertNotification";
 import LoadingView from "../Auth/LoadingScreen";
+import PushNotificationService from "../../services/notifications/PushNotificationService";
 
+const notificationServices = new PushNotificationService();
 const ProfileSetting = ({ navigation }) => {
     const dispatch = useDispatch();
+    const idUser = useSelector(state => state.authReducer?.authData?.id);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const { t, i18n } = useTranslation();
     const [vn, setVN] = useState(true);
@@ -41,7 +44,8 @@ const ProfileSetting = ({ navigation }) => {
 
     const handlerIn = () => setIsShow(true);
     const logOut = async () => {
-        await AsyncStorage.setItem('auth', JSON.stringify({ "accesstoken": '' }));
+        await AsyncStorage.removeItem('auth');
+        await notificationServices.removeFcmToken(idUser)
         dispatch(removeAuth());
     };
     const handlerOut = () => setIsShow(!isShow);
@@ -50,7 +54,7 @@ const ProfileSetting = ({ navigation }) => {
         { icon: <User size="17" color={Color.colorGray_100} />, text: t('edit'), onPress: "EditProfile1" },
         { icon: <EmptyWallet size="17" color={Color.colorGray_100} />, text: t('payment'), onPress: "Payment" },
         { icon: <SecurityUser size="17" color={Color.colorGray_100} />, text: t('security'), onPress: "Security" },
-        { icon: <Notification size="17" color={Color.colorGray_100} />, text: t('Notification'), onPress: "NotificationOne" },
+        { icon: <Notification size="17" color={Color.colorGray_100} />, text: t('notification'), onPress: "NotificationOne" },
         { icon: <MessageQuestion size="17" color={Color.colorGray_100} />, text: t('help'), onPress: "Help" },
     ];
     const handlerSetLanguage = () => {
@@ -77,7 +81,7 @@ const ProfileSetting = ({ navigation }) => {
             <View style={styles.header}>
                 <View style={styles.avatarContainer}>
                     <Image source={
-                        inforUser?.avatar ? { uri: inforUser?.avatar } : require('./../../../assets/avatar.png')
+                        inforUser?.avatar != 'undefined' ? { uri: inforUser?.avatar } : require('./../../../assets/avatar.png')
                     } style={styles.avatar} resizeMode="cover" />
                     <Image source={require('./../../../assets/SQUARE.png')} style={styles.squareIcon} resizeMode="cover" />
                 </View>

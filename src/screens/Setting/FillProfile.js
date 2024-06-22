@@ -5,10 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { Color, FontFamily, FontSize } from "../../../GlobalStyles";
 import { useForm, Controller } from "react-hook-form";
 import Input from "../../components/Input";
-import DatePicker from "react-native-date-picker";
 import { Calendar } from "iconsax-react-native";
 import Button from "../../components/Button";
-import DropDownPicker from "react-native-dropdown-picker";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { editInfor } from "../../apis/courseApi";

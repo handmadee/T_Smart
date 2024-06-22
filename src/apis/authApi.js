@@ -33,6 +33,7 @@ export const checkToken = async (token) => {
             }
         });
         const data = await response.json();
+        console.log(data)
         return data.data;
     } catch (error) {
         console.log(error)
@@ -92,3 +93,5 @@ export const changePassByUserName = async (data) => {
         throw new Error(error.response?.data?.data?.message || 'Change password failed');
     }
 };
+
+

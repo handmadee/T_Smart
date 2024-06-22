@@ -5,7 +5,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Container } from '../../components/Container';
 import { Rank } from './rank';
-import { useSelector } from 'react-redux';
 import { getRankWeek } from '../../apis/trackingQuiz';
 import LoadingView from '../Auth/LoadingScreen';
 
@@ -55,31 +54,36 @@ const LeaderBoard = () => {
     );
 
     return (
-        <View style={styles.container}>
-            <View style={styles.headerTab}>
-                <TouchableOpacity style={[styles.tabButton, !tab && styles.tabButtonSelected]} onPress={toggleTab}>
-                    <Text style={[styles.tabButtonText, !tab && styles.tabButtonTextActive]}>{t('Badge')}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.tabButton, tab && styles.tabButtonSelected]} onPress={toggleTab}>
-                    <Text style={[styles.tabButtonText, tab && styles.tabButtonTextActive]}>{t('Weekly')}</Text>
-                </TouchableOpacity>
+        <SafeAreaView style={{
+            flex: 1,
+            backgroundColor: Color.inkDark
+        }}>
+            <View style={styles.container}>
+                <View style={styles.headerTab}>
+                    <TouchableOpacity style={[styles.tabButton, !tab && styles.tabButtonSelected]} onPress={toggleTab}>
+                        <Text style={[styles.tabButtonText, !tab && styles.tabButtonTextActive]}>{t('Badge')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.tabButton, tab && styles.tabButtonSelected]} onPress={toggleTab}>
+                        <Text style={[styles.tabButtonText, tab && styles.tabButtonTextActive]}>{t('Weekly')}</Text>
+                    </TouchableOpacity>
 
+                </View>
+                {tab ? (
+                    loading ? <LoadingView /> : <Container width={wp(97)} height={Platform.OS === 'ios' ? hp(80) : hp(90)} style={styles.content}>
+                        {/* Render ranking list */}
+                        {
+                            data && data.length > 0 ? (<FlatList
+                                data={data}
+                                renderItem={({ item, index }) => <PlayerItem player={item} index={index} />}
+                                keyExtractor={(item) => item?.userID.toString()}
+                            />) : <Text style={{ textAlign: 'center', marginTop: 20, fontFamily: FontFamily.Medium, fontSize: FontSize.size_mini }}>{"Nếu bạn là người làm bài kiểm tra bạn sẽ được top 1"}</Text>
+                        }
+                    </Container>
+                ) : (
+                    <Rank />
+                )}
             </View>
-            {tab ? (
-                loading ? <LoadingView /> : <Container width={wp(97)} height={Platform.OS === 'ios' ? hp(80) : hp(90)} style={styles.content}>
-                    {/* Render ranking list */}
-                    {
-                        data && data.length > 0 ? (<FlatList
-                            data={data}
-                            renderItem={({ item, index }) => <PlayerItem player={item} index={index} />}
-                            keyExtractor={(item) => item?.userID.toString()}
-                        />) : <Text style={{ textAlign: 'center', marginTop: 20, fontFamily: FontFamily.Medium, fontSize: FontSize.size_mini }}>{"Nếu bạn là người làm bài kiểm tra bạn sẽ được top 1"}</Text>
-                    }
-                </Container>
-            ) : (
-                <Rank />
-            )}
-        </View>
+        </SafeAreaView>
     );
 };
 

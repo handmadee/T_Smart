@@ -3,7 +3,7 @@
 'use strict'
 
 import React from 'react'
-import { View, Text, Pressable, StyleSheet, SafeAreaView } from 'react-native'
+import { StyleSheet, SafeAreaView } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color, FontFamily, FontSize } from '../../GlobalStyles.js';
 import { Container } from '../components/Container.js';
@@ -13,7 +13,7 @@ import LetsAuth from '../screens/Auth/LetsAuth.js';
 import { SetPass } from '../screens/Auth/SetPass.js';
 import { Forgot } from '../screens/Auth/Forgot.js';
 import HomeNav from './Home.nav.js';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import EditProfile from '../screens/Setting/EditProfile.js';
 const AuthNav = React.memo(() => {
     // Notification 

@@ -242,7 +242,7 @@ export default function DetailCourse({ navigation, route }) {
 
 const styles = StyleSheet.create({
     cardDetail: {
-        width: wp(90),
+        width: wp(95),
         paddingVertical: hp(2),
         backgroundColor: Color.primaryWhite,
         borderRadius: 10,
@@ -297,6 +297,6 @@ const styles = StyleSheet.create({
     startCourse: {
         position: 'fixed',
         alignSelf: 'center',
-        bottom: Platform.OS === 'android' ? hp(13) : hp(10),
+        bottom: Platform.OS === 'android' ? hp(13) : hp(12),
     }
 });

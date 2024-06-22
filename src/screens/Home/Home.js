@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Image, TextInput, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, Text, Pressable, Image, TextInput, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
@@ -7,13 +7,15 @@ import { ArrowRight2, SearchNormal1, SaveAdd, Clock } from 'iconsax-react-native
 import { RowComponent } from '../../components/RowComponent';
 import { Container } from '../../components/Container';
 import { Tag } from '../../contanst/tag';
-import { getCategory, getCourses, getCategoryById, getNotification, checkInforUser, getPopup } from '../../apis/courseApi';
+import { getCategory, getCourses, getCategoryById, getNotification, getPopup } from '../../apis/courseApi';
 import SlideShow from '../../contanst/Slide';
 import LoadingView from '../Auth/LoadingScreen';
 import { useSelector } from 'react-redux';
 import Modal2 from '../../components/Modal';
 import PopupImage from '../Popup/mainPop';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { FlashList } from "@shopify/flash-list";
 
 
 const Home = () => {
@@ -96,14 +98,13 @@ const Home = () => {
 
     const Search = () => (
         <RowComponent style={styles.search}>
-            <SearchNormal1 size={FontSize.buttonMedium_size} color={Color.colorBlack} />
             <TextInput
                 style={styles.input}
                 placeholder={t('search')}
                 onChangeText={() => navigation.navigate('SearchCourse')}
                 onPressIn={() => navigation.navigate('SearchCourse')}
             />
-            <Image source={require('./../../../assets/FILTER.png')} />
+            <SearchNormal1 size={FontSize.size_2xl} color={Color.colorBlack} />
         </RowComponent>
     );
 
@@ -111,12 +112,32 @@ const Home = () => {
         navigation.navigate('SeeCourse');
     }, []);
 
+    // const TagList = () => (
+    //     <FlashList
+    //         bounces={false}
+    //         showsHorizontalScrollIndicator={false}
+    //         horizontal
+    //         data={categories}
+    //         keyExtractor={(item) => item._id}
+    //         estimatedItemSize={200}
+    //         renderItem={({ item }) => (
+    //             <Tag
+    //                 title={item.nameCategory}
+    //                 onPress={() => handleCategoryPress(item)}
+    //                 status={trackingCourse === item.nameCategory}
+    //             />
+    //         )}
+    //     />
+    // );
+
     const TagList = () => (
-        <FlatList
+        <FlashList
             bounces={false}
+            data={categories}
+            estimatedItemSize={60}
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={categories}
+            removeClippedSubviews={true}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
                 <Tag
@@ -129,10 +150,11 @@ const Home = () => {
     );
 
     const CourseList = ({ data }) => (
-        <FlatList
+        <FlashList
             bounces={false}
             showsHorizontalScrollIndicator={false}
             horizontal
+            estimatedItemSize={230}
             data={data}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
@@ -171,10 +193,14 @@ const Home = () => {
 
     return (
         loading ? <LoadingView /> :
-            <View style={{
+            <ScrollView style={{
                 flex: 1,
                 backgroundColor: Color.colorGhostwhite,
-            }}>
+
+            }}
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+            >
                 <Container style={styles.container}>
                     <Header name={inforUser?.fullname} onPress={handlerNotification} />
                     <Search />
@@ -218,7 +244,7 @@ const Home = () => {
                     toggleModal={() => setPopup(false)}
                 /> */}
                 </Container>
-            </View>
+            </ScrollView>
     );
 };
 

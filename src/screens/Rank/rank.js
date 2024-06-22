@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Platform } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Container } from '../../components/Container';
@@ -8,6 +7,7 @@ import * as Progress from 'react-native-progress';
 import { useSelector } from 'react-redux';
 import { getQuizbyUser, getRankUser, getScoreUser } from '../../apis/trackingQuiz';
 import LoadingView from '../Auth/LoadingScreen';
+import { useTranslation } from 'react-i18next';
 
 
 // Constants hoặc enums
@@ -20,9 +20,10 @@ const IMAGES = {
 
 // Component nhỏ hơn
 const UserInfo = ({ avatar, fullname }) => (
+    console.log(avatar, fullname),
     <View style={styles.userInfoContainer}>
         <Image source={
-            avatar ? { uri: avatar } : require('./../../../assets/avatar.png')
+            avatar !== 'undefined' ? { uri: avatar } : require('./../../../assets/avatar.png')
         } style={styles.avatar} />
         <Text style={styles.fullName}>{fullname}</Text>
     </View>
@@ -58,13 +59,14 @@ const Badge = ({ game }) => (
 );
 
 export const Rank = () => {
+    const { t } = useTranslation();
     const idUser = useSelector(state => state.authReducer?.authData?.id);
     const infor = useSelector(state => state.authReducer?.authData?.infor);
     const [loading, setLoading] = useState(false);
     const [poin, setPoin] = useState(0);
     const [localRank, setLocalRank] = useState(0);
-    const [wordRank, setWorkRank] = useState(1473);
     const [game, setGame] = useState(0);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,9 +92,9 @@ export const Rank = () => {
         loading ? <LoadingView /> : <Container width={wp(97)} height={hp(85)} style={styles.container}>
             <UserInfo avatar={infor?.avatar} fullname={infor?.fullname} />
             <View style={styles.cardView}>
-                <RankItem icon={IMAGES.POINS} label="POINS" rank={poin} />
-                <RankItem icon={IMAGES.WORLD_RANK} label="Play Rank" rank={game} />
-                <RankItem icon={IMAGES.LOCAL_RANK} label="LOCAL RANK" rank={localRank} />
+                <RankItem icon={IMAGES.POINS} label={t('point')} rank={poin} />
+                <RankItem icon={IMAGES.WORLD_RANK} label={t('playrank')} rank={game} />
+                <RankItem icon={IMAGES.LOCAL_RANK} label={t('localRank')} rank={localRank} />
             </View>
 
             <Badge game={game} />
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: hp(25),
-        top: -hp(5),
+        top: -hp(3),
     },
     avatar: {
         width: wp(20),
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
     badgeContainer: {
         width: '95%',
         alignSelf: 'center',
-        height: hp(50),
+        height: Platform.OS === 'ios' ? hp(40) : hp(50),
         borderRadius: 30,
         overflow: 'hidden',
         marginTop: hp(2),

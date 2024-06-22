@@ -7,7 +7,7 @@ const CheckButton = ({ width = 22, height = 22, borderColor, status = false, han
     return (
         <Pressable onPress={handlePress} style={[{ width: width, height: height, borderWidth: 2, borderColor: borderColor }, style]}>
             {status && (
-                <Image source={require('../../assets/check.jpeg')} style={{ width: width - 3, height: height - 3 }} resizeMode="contain" />
+                <Image source={require('../../assets/check123.jpeg')} style={{ width: width - 3, height: height - 3 }} resizeMode="contain" />
             )}
         </Pressable>
     );

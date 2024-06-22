@@ -55,5 +55,17 @@
   "point": "Bonus Point",
   "seeAnswer": "Show Answer",
   "goBack": "Back to Home",
-  "introlduction": "Introduction"
+  "introlduction": "Introduction",
+  "HistorySearch": "History Search",
+  "loading": "Loading...",
+  "point": "POINT",
+  "playrank": "PLAY RANK",
+  "localRank": "LOCAL RANK",
+  "tsmart": "TSMART PROGRAMMING TRAINING CENTER",
+  "hotline": "Contact",
+  "localtion": "Address",
+  "tsmart1": "Leading Center",
+  "tsmart2": "Tsmart is the leading programming training center in Da Nang with a team of high-quality, enthusiastic, and experienced teachers in the field of programming and information technology, helping students easily access and grasp knowledge quickly and effectively.",
+  "network": "No Connnection Found",
+  "tryNetWork": "Please check your network connection and try again"
 }

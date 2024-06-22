@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Text, Pressable, SafeAreaView, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,6 +18,10 @@ import GameNav from './Game.nav.js';
 import { useTranslation } from 'react-i18next';
 import LeaderBoard from '../screens/Rank/Leaderboard.js';
 import Introduce from '../screens/Introduce/index.js';
+import { NetworkStatusContext } from '../redux/NetworkStatusContext.js';
+import { showMessage } from 'react-native-flash-message';
+
+
 
 
 
@@ -27,7 +31,7 @@ export const CustomHeader = React.memo(({ navigation, title }) => {
     }, [navigation]);
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: Platform.OS == 'android' ? 10 : 5 }}>
             <Pressable onPress={goBack}>
                 <ArrowLeft style={{ marginRight: 20 }} variant="Outline" color={Color.colorDimgray_100} />
             </Pressable>
@@ -37,13 +41,20 @@ export const CustomHeader = React.memo(({ navigation, title }) => {
 });
 
 const HomeNav = React.memo(() => {
-    const { t, i18n } = useTranslation();
+    const isConnected = useContext(NetworkStatusContext);
+    const { t } = useTranslation();
     const IconTab = ({ focused, children, name }) => (
         <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
             {children}
             <Text style={{ color: focused ? Color.globalApp : Color.colorGray_100, fontWeight: '700', marginTop: 5, fontSize: 12 }}>{name}</Text>
         </View>
     );
+    useEffect(() => {
+        showMessage({
+            message: isConnected ? 'Kết nối internet' : 'Không có kết nối internet',
+            type: isConnected ? 'success' : 'danger',
+        });
+    }, [isConnected]);
     const Tab = createBottomTabNavigator();
     return (
         <NavigationContainer independent={true}>
@@ -109,9 +120,7 @@ const HomeNav = React.memo(() => {
                         tabBarStyle: {
                             display: 'none'
                         },
-                        headerShown: true,
-
-
+                        headerShown: false,
                     }}
                 />
                 <Tab.Screen

@@ -16,6 +16,8 @@ import { addAuth } from "../../redux/token/slice.token";
 import { useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { checkInforUser } from "../../apis/courseApi";
+import { pushFcmToken } from "../../apis/fcmApi";
+import PushNotificationService from "../../services/notifications/PushNotificationService";
 
 
 
@@ -27,6 +29,7 @@ export default function Login({ navigation }) {
     const [isVisible, setIsVisible] = React.useState(false);
     const [check, setCheck] = React.useState(false);
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+    const pushNotification = new PushNotificationService();
 
     const onSubmit = async (data) => {
         try {
@@ -43,6 +46,9 @@ export default function Login({ navigation }) {
                 infor: infor.data.data?.info
             }
             dispatch(addAuth(account));
+            // Lấy token fcm
+            pushNotification.saveFcmToken(client.data.data.user_id);
+            // await pushFcmToken();
             console.log(check)
             check && await AsyncStorage.setItem('auth', JSON.stringify(account));
             navigation.navigate('HomeNav');

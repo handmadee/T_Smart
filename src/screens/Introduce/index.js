@@ -3,9 +3,11 @@ import { Image, StyleSheet, Text, View, Linking, Pressable, Platform } from "rea
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Color, FontFamily, FontSize } from "../../../GlobalStyles";
 import { Location, Headphone, Box1 } from "iconsax-react-native";
+import { useTranslation } from "react-i18next";
 
 
 export default function Introduce({ navigation }) {
+    const { t } = useTranslation();
     const Maps = 'https://www.google.com/maps/place/TSmart/@16.0793408,108.1566794,17z/data=!3m1!4b1!4m6!3m5!1s0x3142199c300204d1:0x8e713512d88fb452!8m2!3d16.0793408!4d108.1592543!16s%2Fg%2F11vctdv37t?hl=vi-VN&entry=ttu'
     const handlerPhone = () => {
         let phoneNumber = '';
@@ -18,6 +20,7 @@ export default function Introduce({ navigation }) {
 
         Linking.openURL(phoneNumber);
     }
+
 
 
     const handlerMap = () => {
@@ -33,7 +36,7 @@ export default function Introduce({ navigation }) {
                     style={[styles.logo]}
                 />
                 <Text style={styles.title}>
-                    TRUNG TÂM ĐÀO TẠO LẬP TRÌNH TSMART
+                    {t('tsmart')}
                 </Text>
             </View>
             {/* Bottom */}
@@ -51,7 +54,7 @@ export default function Introduce({ navigation }) {
                             <Text style={[styles.txtContact]}>Liên hệ</Text>
                             <Text style={[
                                 styles.hotline
-                            ]}>Hotline: 0868 552 445</Text>
+                            ]}>    {t('hotline')}: 0868 552 445</Text>
                         </View>
                     </Pressable>
                     <Pressable style={[styles.item]}
@@ -63,7 +66,7 @@ export default function Introduce({ navigation }) {
                         <View style={{
                             marginLeft: wp(4)
                         }}>
-                            <Text style={[styles.txtContact]}>Địa Chỉ</Text>
+                            <Text style={[styles.txtContact]}>  {t('localtion')}</Text>
                             <Text style={[styles.hotline]}>
                                 34 Lương Khánh Thiện - Liên Chiểu - Đà Nẵng
                             </Text>
@@ -71,18 +74,6 @@ export default function Introduce({ navigation }) {
                     </Pressable>
                 </View>
                 {/*Content*/}
-                <View style={[styles.content]}>
-                    <Text
-                        style={[styles.welcome]}
-                    >
-                        Chào mừng bạn
-                    </Text>
-                    <Text
-                        style={[styles.welcome]}
-                    >
-                        Đến với ngôi nhà chung Tsmart
-                    </Text>
-                </View>
                 {/* Popup */}
                 <View style={[styles.contentText]}>
                     <View style={[
@@ -102,7 +93,7 @@ export default function Introduce({ navigation }) {
                                 marginLeft: wp(2)
 
                             }}
-                        >Trung Tâm Hàng Đầu</Text>
+                        >{t('tsmart1')}</Text>
                     </View>
                     <View>
                         <Text
@@ -115,7 +106,7 @@ export default function Introduce({ navigation }) {
 
                             }}
                         >
-                            Tsmart là trung tâm đào tạo lập trình hàng đầu tại Đà Nẵng với đội ngũ giáo viên chất lượng, nhiệt tình và giàu kinh nghiệm trong lĩnh vực lập trình và công nghệ thông tin giúp học viên dễ dàng tiếp cận và nắm bắt kiến thức một cách nhanh chóng và hiệu quả nhất.
+                            {t('tsmart2')}
                         </Text>
                     </View>
 
@@ -207,11 +198,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffff',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+        height: hp(32),
+        elevation: 5,
         ...Platform.OS !== 'android' && {
             shadowColor: Color.primaryBlack,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
+            height: hp(28),
         },
         padding: wp(5),
         ...Platform.OS !== 'android' && {

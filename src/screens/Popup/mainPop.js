@@ -15,7 +15,7 @@ const PopupImage = ({ imageUri, isVisible, toggleModal }) => {
                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(92, 90, 90, 0.347)' }}
                 activeOpacity={1}
                 onPress={toggleModal}>
-                <View style={{ width: wp(80), height: hp(60) }}>
+                <View style={{ width: wp(90), height: hp(70) }}>
                     <FastImage
                         style={{ flex: 1, borderRadius: 20 }}
                         source={{ uri: imageUri }}

@@ -90,7 +90,7 @@ export default function TopicSet({ navigation, route }) {
     }, []);
 
     const handlerUnLock = useCallback(async () => {
-        ''
+        return navigation.navigate('Introduce');
     });
 
 

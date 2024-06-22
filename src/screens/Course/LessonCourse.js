@@ -5,7 +5,6 @@ import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
 import { PlayCircle, Pause } from 'iconsax-react-native';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
-import LazyImage from '../../components/LazyImage';
 import Video from "react-native-youtube-iframe";
 import { getCourseById } from '../../apis/courseApi';
 import LoadingView from '../Auth/LoadingScreen';
@@ -136,6 +135,7 @@ const LessonCourse = ({ navigation, route }) => {
             </RowComponent>
         </Pressable>
     ));
+    console.log(dataLesson)
 
     const RenderCourse = useMemo(() => () => (
         <FlatList
@@ -143,7 +143,11 @@ const LessonCourse = ({ navigation, route }) => {
             renderItem={({ item, index }) => (
                 item && (
                     <View>
-                        <Chapter index={index + 1} chapter={item?.titleChapter} totalChapter={item?.duration} />
+                        <Chapter index={index + 1} chapter={item?.titleChapter}
+                            totalChapter={item?.lessons.reduce((total, currentValue) => {
+                                return total + (currentValue?.timeLesson || 0);
+                            }, 0)}
+                        />
                         {item?.lessons && item?.lessons.length > 0 && item?.lessons.map((lesson, index) => (
                             <RenderItem
                                 key={index}

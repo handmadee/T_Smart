@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import Splash from "../../Splash";
@@ -6,8 +6,13 @@ import AuthNav from "./Auth.nav";
 import { addAuth, authSelector } from "../redux/token/slice.token";
 import HomeNav from "./Home.nav";
 import { checkToken } from "../apis/authApi";
+import { NetworkStatusContext } from "../redux/NetworkStatusContext";
+import { showMessage } from "react-native-flash-message";
+
+
 
 const AppRouters = () => {
+    const isConnected = useContext(NetworkStatusContext);
     const [splash, setSplash] = useState(true);
     const { getItem } = useAsyncStorage('auth');
     const auth = useSelector(authSelector);
@@ -16,17 +21,18 @@ const AppRouters = () => {
     const checkLogin = async () => {
         try {
             const res = await getItem();
-            console.log("Hello")
-            console.log(res)
             if (res) {
-                const token = JSON.parse(res)?.accesstoken;
-                if (token) {
-                    const isToken = await checkToken(token);
-                    console.log(isToken)
+                const token = JSON.parse(res);
+                console.log(token)
+                if (token?.accesstoken) {
+                    const isToken = await checkToken(token?.accesstoken);
                     if (isToken) {
-                        console.log(res)
                         dispatch(addAuth(JSON.parse(res)));
-
+                    } else {
+                        const isToken = await checkToken(token?.refreshtoken);
+                        if (isToken) {
+                            dispatch(addAuth(JSON.parse(res)));
+                        }
                     }
                 }
             }
@@ -35,6 +41,13 @@ const AppRouters = () => {
         }
     };
     useEffect(() => {
+        showMessage({
+            message: isConnected ? 'Kết nối internet' : 'Không có kết nối internet',
+            type: isConnected ? 'success' : 'danger',
+        });
+    }, [isConnected]);
+    useEffect(() => {
+
         checkLogin();
         setTimeout(() => {
             setSplash(false);

@@ -5,13 +5,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { Color, FontFamily, FontSize } from "../../../GlobalStyles";
 import { useForm, Controller } from "react-hook-form";
 import Input from "../../components/Input";
-import DatePicker from "react-native-date-picker";
 import { Calendar } from "iconsax-react-native";
 import Button from "../../components/Button";
-import DropDownPicker from "react-native-dropdown-picker";
 import { launchImageLibrary } from "react-native-image-picker";
 import { useDispatch, useSelector } from "react-redux";
-import { editInfor, importInfor } from "../../apis/courseApi";
+import { importInfor } from "../../apis/courseApi";
 import LoadingView from "../Auth/LoadingScreen";
 import { updateInfor } from "../../redux/token/slice.token";
 import Modal2 from "../../components/Modal";
@@ -103,7 +101,7 @@ export default function EditProfile({ navigation }) {
                         }}
                         onPress={selectImage}>
                         <Image
-                            source={previewImage ? { uri: previewImage } : (inforUser?.avatar ? { uri: inforUser?.avatar } : require("./../../../assets/avatar.png"))}
+                            source={previewImage ? { uri: previewImage } : (inforUser?.avatar !== 'undefined' ? { uri: inforUser?.avatar } : require("./../../../assets/avatar.png"))}
                             style={{ width: wp(25), height: wp(25), borderRadius: 50 }}
                             resizeMode="cover"
                         />
@@ -131,7 +129,7 @@ export default function EditProfile({ navigation }) {
                             defaultValue={inforUser?.fullname}
                             rules={{
                                 required: "Vui lòng nhập tên của bạn", pattern: {
-                                    value: /^[a-zA-Z\s]+$/
+                                    value: /^[^0-9@]+$/
                                     , message: "Hãy nhập đúng tên của bạn !!"
                                 }
                             }
