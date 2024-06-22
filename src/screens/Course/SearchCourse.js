@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, Pressable, Image, TextInput, FlatList, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
-import { ArrowRight2, SearchNormal1, SaveAdd, Clock } from 'iconsax-react-native';
-import { getCategory, getCourses, getCategoryById, searchCourse } from '../../apis/courseApi';
+import { SaveAdd, Clock } from 'iconsax-react-native';
+import { searchCourse } from '../../apis/courseApi';
 import LoadingView from '../Auth/LoadingScreen';
 
 const SearchCourse = ({ navigation }) => {
@@ -67,7 +67,7 @@ const SearchCourse = ({ navigation }) => {
 
     const CardCourse = ({ url, title, category, onPress, time = 145 }) => (
         <Pressable style={styles.card} onPress={onPress}>
-            <Image style={styles.courseImage} resizeMode='cover' source={url} />
+            <Image style={styles.courseImage} resizeMode='stretch' source={url} />
             <View style={styles.cardDetail}>
                 <Text style={styles.courseTitle}>{title}</Text>
                 <View style={styles.courseInfo}>
@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
         marginBottom: hp(1),
     },
     card: {
-        width: wp(44),
-        height: hp(25),
+        width: wp(43),
+        height: hp(26),
         borderRadius: 15,
         overflow: 'hidden',
         marginRight: wp(4),
@@ -189,13 +189,13 @@ const styles = StyleSheet.create({
                 shadowRadius: 10,
             },
             android: {
-                elevation: 5,
+                elevation: 4,
             }
         })
 
     },
     courseImage: {
-        width: wp(55),
+        width: wp(43),
         height: hp(15),
     },
     cardDetail: {

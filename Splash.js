@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -7,7 +7,7 @@ import {
 import * as Progress from 'react-native-progress';
 import { Color } from './GlobalStyles';
 
-const logo = require('./assets/Splash.png');
+const logo = require('./assets/Logo.png');
 const Splash = () => (
     <>
         <View

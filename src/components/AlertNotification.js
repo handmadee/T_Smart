@@ -38,7 +38,8 @@ export default function AlertNotification({ img, title, value, onPress, isVisibl
                             fontFamily: FontFamily.poppinsSemiBold,
                             fontSize: 23,
                             marginTop: 10,
-                            color: Color.colorGray_100
+                            color: Color.colorGray_100,
+                            textAlign: 'center'
                         }}>
                             {title}
                         </Text>

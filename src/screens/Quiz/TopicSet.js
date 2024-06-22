@@ -24,6 +24,7 @@ export default function TopicSet({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     const [isContain, setIsContain] = useState(false)
+    const [isPremission, setIsPermission] = useState(false)
     const [data, setData] = useState(initialData);
     const [open, setOpen] = useState(false);
     const [selectedLevel, setSelectedLevel] = useState(999);
@@ -82,11 +83,16 @@ export default function TopicSet({ navigation, route }) {
                 }
             }
         } catch (error) {
-            console.log(error)
+            setIsPermission(true);
         } finally {
             setLoading(false);
         }
     }, []);
+
+    const handlerUnLock = useCallback(async () => {
+        return navigation.navigate('Introduce');
+    });
+
 
     const handlerResetTest = useCallback(async () => {
         try {
@@ -196,6 +202,15 @@ export default function TopicSet({ navigation, route }) {
                 onPress={() => setIsContain(false)}
                 isPress={true}
                 onPress2={handlerResetTest}
+            />
+            <AlertNotification
+                title={'Tài khoản chưa có quyền truy cập'}
+                value={' Vui lòng liên hệ với giảng viên để mở khoá tính năng này 😇  ?'}
+                isVisible={isPremission}
+                onPress={() => setIsPermission(false)}
+                isPress={true}
+                txtBtn2='Mở khoá'
+                onPress2={handlerUnLock}
             />
 
         </SafeAreaView>

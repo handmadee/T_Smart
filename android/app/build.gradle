@@ -79,7 +79,6 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
-
     namespace "com.t_smart"
     defaultConfig {
         applicationId "com.t_smart"
@@ -89,6 +88,14 @@ android {
         versionName "1.0"
     }
     signingConfigs {
+         release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -103,11 +110,17 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+             signingConfig signingConfigs.release
+            // signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    // // New Opition android min 7 
+    // packagingOptions {
+    //     pickFirst '**/libc++_shared.so'
+    //     pickFirst '**/libfbjni.so'
+    // }
 }
 
 dependencies {
@@ -126,6 +139,7 @@ project.ext.react = [
 ]
 
 // Phiên bản mặc định của các thư viện
+// call child conponents
 ext {
     buildToolsVersion = "30.0.3"
     minSdkVersion = 21

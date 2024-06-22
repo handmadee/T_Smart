@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, FlatList, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
 import { PlayCircle, Pause } from 'iconsax-react-native';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
-import LazyImage from '../../components/LazyImage';
 import Video from "react-native-youtube-iframe";
 import { getCourseById } from '../../apis/courseApi';
 import LoadingView from '../Auth/LoadingScreen';
@@ -15,13 +14,15 @@ import { useSelector } from 'react-redux';
 const LessonCourse = ({ navigation, route }) => {
     const idUser = useSelector(state => state?.authReducer?.authData?.id);
     const idCourse = route.params?.courseID;
+    const total = route.params?.total;
     const [loading, setLoading] = useState(true);
     const [video, setVideo] = useState(false);
     const [watching, setWatching] = useState(false);
     const [dataLesson, setDataLesson] = useState([]);
     const [haveLearn, setHaveLearn] = useState([]);
-    console.log("Welecom");
+
     const fetchCourse = useCallback(async () => {
+        console.log('fetchCourse');
         try {
             setLoading(true);
             const [CourseLesson, tracking] = await Promise.all([getCourseById(idCourse), getTracking(idUser, idCourse)]);
@@ -35,8 +36,11 @@ const LessonCourse = ({ navigation, route }) => {
     }, [idCourse, idUser]);
 
     useEffect(() => {
+        console.log(total)
+        haveLearn.length == total && console.log('Hoàn thành khóa học');
         fetchCourse();
     }, [video]);
+
     const handlePress = useCallback(async (id, url) => {
         const idVideo = url.slice(32, 43);
         setVideo(idVideo);
@@ -131,6 +135,7 @@ const LessonCourse = ({ navigation, route }) => {
             </RowComponent>
         </Pressable>
     ));
+    console.log(dataLesson)
 
     const RenderCourse = useMemo(() => () => (
         <FlatList
@@ -138,7 +143,11 @@ const LessonCourse = ({ navigation, route }) => {
             renderItem={({ item, index }) => (
                 item && (
                     <View>
-                        <Chapter index={index + 1} chapter={item?.titleChapter} totalChapter={item?.duration} />
+                        <Chapter index={index + 1} chapter={item?.titleChapter}
+                            totalChapter={item?.lessons.reduce((total, currentValue) => {
+                                return total + (currentValue?.timeLesson || 0);
+                            }, 0)}
+                        />
                         {item?.lessons && item?.lessons.length > 0 && item?.lessons.map((lesson, index) => (
                             <RenderItem
                                 key={index}

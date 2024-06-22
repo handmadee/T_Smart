@@ -1,25 +1,38 @@
 'use strict';
 
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../../../GlobalStyles";
 import { Container } from "../../components/Container";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import ResuftTest from './ResuftQuiz';
+import * as Progress from 'react-native-progress';
 import { PlaySound } from "../../contanst/PlaySound";
+import AlertNotification from "../../components/AlertNotification";
+import { BackHandler } from 'react-native';
+
+
 
 
 const Quiz = ({ navigation, route }) => {
     const quizData = route.params.quizData;
     const time = route.params.time || 10;
     const timlet = Math.floor((time * 60) / quizData.length);
-    console.log(quizData)
+    const [isShow, setIsShow] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
-    const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(timlet);
     // Sound mp3 
     const SELECT_SOUND = 'select.mp3';
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            setIsShow(true);
+            return true;
+        });
+        return () => {
+            backHandler.remove();
+        };
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -30,7 +43,7 @@ const Quiz = ({ navigation, route }) => {
                     setCurrentQuestion(currentQuestion + 1);
                     setTimeLeft(timlet);
                 } else {
-                    setQuizCompleted(true);
+                    handlerTheEnd();
                 }
             }
         }, 1000);
@@ -47,41 +60,50 @@ const Quiz = ({ navigation, route }) => {
             setCurrentQuestion(currentQuestion + 1);
             setTimeLeft(timlet);
         } else {
-            setQuizCompleted(true);
+            return handlerTheEnd();
         }
     };
 
-    const handleRetest = () => {
-        setCurrentQuestion(0);
-        setScore(0);
-        setQuizCompleted(false);
-        setTimeLeft(60);
-    };
+    const handerEnd = useCallback(() => {
+        if (quizData.length - 1 > currentQuestion) {
+            setIsShow(true);
+        }
+    }, [])
 
-    const handlerShowAnswer = () => {
-        setQuizCompleted(false);
-        return navigation.navigate('ShowAnswer', { data: quizData });
-    };
 
-    const handlerHome = useCallback(() => navigation.goBack());
-
-    const MemoizedQuestion = React.memo(({ question, manyAnswers, current, end }) => {
+    const handlerTheEnd = () => {
+        setIsShow(false);
+        navigation.navigate('ResuftTest', { total: quizData.length, score: score, coins: score * 10, data: quizData });
+    }
+    const MemoizedQuestion = React.memo(({ question, manyAnswers, current, end, image = "" }) => {
         return (
             <View>
-                <View style={[styles.timeLeft]}>
-                    <Text style={[styles.title, {
-                        color: Color.primaryWhite,
-                        marginBottom: 0
-                    }]}>{timeLeft}</Text>
-                </View>
-
+                {/*The end*/}
+                <TouchableOpacity
+                    onPress={handerEnd}
+                    style={styles.btnEnd}
+                >
+                    <Text
+                        style={{
+                            color: Color.primaryWhite,
+                            fontSize: FontSize.buttonMedium_size,
+                            fontFamily: FontFamily.mulishBold,
+                        }}
+                    >
+                        Kết thúc
+                    </Text>
+                </TouchableOpacity>
+                {/* Count Question */}
                 <Text style={styles.numberOf}>
                     {current + 1} of {end}
                 </Text>
-
+                {/* Progress Bar */}
+                <Progress.Bar
+                    animationType="timing"
+                    color={Color.globalApp}
+                    progress={timeLeft / timlet} width={wp(90)} />
                 <Text style={styles.title}>{question}</Text>
-
-                <Image source={require('./../../../assets/quiz.png')} style={styles.image} resizeMode="cover" />
+                {image && <Image source={{ uri: image }} style={styles.image} />}
                 {manyAnswers.map((item, index) => (
                     <Pressable
                         key={index}
@@ -92,12 +114,13 @@ const Quiz = ({ navigation, route }) => {
                         <Text style={styles.answer}>{item?.titleAnswer}</Text>
                     </Pressable>
                 ))}
+                {/* Aleart */}
             </View>
         );
     });
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Container style={styles.viewContain}>
                 {
                     quizData && quizData.length ? (
@@ -109,11 +132,23 @@ const Quiz = ({ navigation, route }) => {
                         />
                     ) : <Text>Dữ liệu bài kiểm tra đang được cập nhật</Text>
                 }
+
             </Container>
-            {quizCompleted && <ResuftTest score={score}
+            <AlertNotification
+                title="Thông báo"
+                value="Bạn có muốn kết thúc bài kiểm tra không?"
+                isVisible={isShow}
+                isPress={true}
+                txtBtn1="Tiếp tục làm bài"
+                txtBtn2="Kết thúc bài "
+                onPress={() => setIsShow(false)}
+                onPress2={handlerTheEnd}
+
+            />
+            {/* {quizCompleted && <ResuftTest score={score}
                 total={quizData.length}
-                showAswer={handlerShowAnswer} handlerHome={handlerHome} />}
-        </SafeAreaView>
+                showAswer={handlerShowAnswer} handlerHome={handlerHome} />} */}
+        </View>
     );
 };
 
@@ -121,24 +156,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Color.colorGhostwhite,
-        alignItems: 'center',
-        justifyContent: 'center'
+        paddingTop: hp(2)
     },
     numberOf: {
         color: Color.inkDarkGray,
-        fontSize: FontSize.buttonMedium_size,
+        fontSize: FontSize.size_2xl,
         fontFamily: FontFamily.mulishBold,
         marginBottom: 10,
         textAlign: 'center'
     },
     title: {
         color: '#3C3A36',
-        fontSize: FontSize.headingH4_size,
+        fontSize: FontSize.size_2xl,
         fontFamily: FontFamily.mulishBold,
         textAlign: 'center',
         marginBottom: 10,
         width: wp(85),
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: hp(2)
     },
     image: {
         width: wp(90),
@@ -194,7 +229,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: Color.globalApp
+    },
+    btnEnd: {
+        backgroundColor: Color.globalApp,
+        padding: 10,
+        borderRadius: 10,
+        marginBottom: 10,
+        width: wp(30),
+        alignItems: 'center',
+        alignSelf: 'flex-end'
     }
 });
+
 
 export default Quiz;

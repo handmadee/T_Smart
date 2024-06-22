@@ -84,7 +84,7 @@ const ResuftQuiz = ({ mark = 10 }) => {
                             <Text
                                 style={[styles.txtItem]}
                             >
-                                {score}
+                                {answer}
                             </Text>
                             <Text
                                 style={{

@@ -10,6 +10,7 @@ import { getPageCourse, searchCourse } from '../../apis/courseApi';
 import * as Progress from 'react-native-progress';
 import { Modalize } from 'react-native-modalize';
 import { getLowCourse, getTopCourse } from '../../apis/trackingCourse';
+import { FlashList } from "@shopify/flash-list";
 
 
 const SeeCourse = ({ navigation }) => {
@@ -87,9 +88,10 @@ const SeeCourse = ({ navigation }) => {
         fetchCouse();
     }, [page]);
     const CourseList = ({ data }) => (
-        <FlatList
+        <FlashList
             bounces={false}
             numColumns={1}
+            estimatedItemSize={370}
             onEndReached={
                 () => {
                     return totalPage > page ? setPage(page + 1) : ''
@@ -98,6 +100,7 @@ const SeeCourse = ({ navigation }) => {
             onEndReachedThreshold={1}
             data={data}
             showsVerticalScrollIndicator={false}
+            removeClippedSubviews={true}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
                 <CardCourse
