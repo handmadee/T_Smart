@@ -38,8 +38,6 @@ const CourseNav = React.memo(() => {
                 ),
                 gestureEnabled: false
             }}
-
-
         >
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="DetailCourse" component={DetailCourse} options={{ headerShown: true }} />

@@ -101,7 +101,7 @@ const SeeCourse = ({ navigation }) => {
             data={data}
             showsVerticalScrollIndicator={false}
             removeClippedSubviews={true}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
                 <CardCourse
                     title={item.title}

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, FlatList, Alert } from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, FlatList } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
@@ -20,6 +20,8 @@ const LessonCourse = ({ navigation, route }) => {
     const [watching, setWatching] = useState(false);
     const [dataLesson, setDataLesson] = useState([]);
     const [haveLearn, setHaveLearn] = useState([]);
+    const [play, setPlay] = useState(true);
+
 
     const fetchCourse = useCallback(async () => {
         console.log('fetchCourse');
@@ -74,12 +76,14 @@ const LessonCourse = ({ navigation, route }) => {
                     </View>
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={[styles.section, { fontSize: FontSize.buttonMedium_size }]}>{title}</Text>
-                        <Text style={styles.minLesson}>{duration} mins</Text>
+                        <Text style={styles.minLesson}>{duration} min</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
-                    {!(watching === id) ? <PlayCircle size={28} color={Color.globalApp} variant="Bold" /> :
-                        <Pause size={28} color={Color.globalApp} variant="Bold" />
+                    {(!(watching === id)) ? <PlayCircle size={28} color={Color.globalApp} variant="Bold" /> :
+                        <Pause size={28} color={Color.globalApp} variant="Bold"
+
+                        />
                     }
                     {status && (
                         <Image
@@ -97,7 +101,7 @@ const LessonCourse = ({ navigation, route }) => {
         <RowComponent style={styles.rowC}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.section}>Section {index}</Text>
-                <Text style={[styles.section, { color: Color.globalApp, marginLeft: 10 }]}>{chapter}</Text>
+                <Text style={[styles.section, { color: Color.globalApp, marginLeft: 10, width: wp(50), textTransform: 'uppercase' }]}>{chapter}</Text>
             </View>
             <Text style={styles.mins}>{totalChapter} Mins</Text>
         </RowComponent>
@@ -139,6 +143,7 @@ const LessonCourse = ({ navigation, route }) => {
 
     const RenderCourse = useMemo(() => () => (
         <FlatList
+            showsVerticalScrollIndicator={false}
             data={dataLesson}
             renderItem={({ item, index }) => (
                 item && (
@@ -184,7 +189,7 @@ const LessonCourse = ({ navigation, route }) => {
                         width={'100%'}
                         height={hp(24)}
                         videoId={video}
-                        play={true}
+                        play={play}
                     />
                 )}
                 <Container style={styles.viewLesson}>

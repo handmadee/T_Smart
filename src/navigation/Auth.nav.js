@@ -22,7 +22,7 @@ const AuthNav = React.memo(() => {
 
         <NavigationContainer >
             <Stack.Navigator
-                initialRouteName='LetsAuth'
+                initialRouteName='Login'
                 screenOptions={{
                     header: ({ navigation, route, options }) => (
                         <SafeAreaView style={{ backgroundColor: Color.colorGhostwhite }}>

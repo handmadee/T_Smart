@@ -12,19 +12,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { editInfor } from "../../apis/courseApi";
 import LoadingView from "../Auth/LoadingScreen";
 import { updateInfor } from "../../redux/token/slice.token";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 
 export default function FillProfile() {
     const dispatch = useDispatch();
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
+    const { getItem } = useAsyncStorage('auth');
     const [image, setImage] = useState('');
     const [previewImage, setPreviewImage] = useState(null);
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
-
-
+    console.log({
+        message: `inforUser now :: []`,
+        account: inforUser
+    })
     const selectImage = useCallback(() => {
         const options = {
             title: "Select Avatar",
@@ -42,7 +46,6 @@ export default function FillProfile() {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                console.log(response)
                 setImage(response?.assets[0]);
                 setPreviewImage(response?.assets[0]?.uri);
             }
@@ -50,6 +53,8 @@ export default function FillProfile() {
     }, []);
 
     const onSubmit = async (data) => {
+
+
         const formData = new FormData();
         formData.append('fullname', data.fullName);
         formData.append('phone', data.phoneNumber);
@@ -63,10 +68,29 @@ export default function FillProfile() {
             formData.append('avatar', imageBlob);
         }
         try {
-            console.log(inforUser)
             setLoading(true);
+            const res = await getItem();
             await editInfor(inforUser?._id, formData);
-            dispatch(updateInfor({ ...inforUser, fullname: data.fullName, email: data.userName, phone: data.phoneNumber, avatar: image?.uri }));
+            const updatedInfo12 = {
+                ...inforUser,
+                fullname: data.fullName,
+                email: data.userName,
+                phone: data.phoneNumber,
+                ...(image && { avatar: image.uri })
+            };
+            await dispatch(updateInfor(updatedInfo12));
+            // save localstore
+            if (res) {
+                const account = JSON.parse(res);
+                console.log({
+                    message: `Message now :: []`,
+                    account: account
+                })
+                await AsyncStorage.setItem('auth', JSON.stringify({
+                    ...account,
+                    infor: updatedInfo12
+                }));
+            }
         } catch (error) {
             console.log(error);
         } finally {
@@ -115,7 +139,7 @@ export default function FillProfile() {
                             defaultValue={inforUser?.fullname}
                             rules={{
                                 required: "Vui lòng nhập tên của bạn", pattern: {
-                                    value: /^[a-zA-Z\s]+$/
+                                    value: /^[^0-9@]+$/
                                     , message: "Hãy nhập đúng tên của bạn !!"
                                 }
                             }
@@ -138,6 +162,8 @@ export default function FillProfile() {
                                             style={{ marginLeft: 20 }}
                                             onChangeText={field.onChange}
                                             value={field.value}
+                                            keyboardType="phone-pad"
+
                                         />
                                     </View>
                                     <Text style={{ alignSelf: 'flex-start', color: 'red' }}>

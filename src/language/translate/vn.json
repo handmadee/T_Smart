@@ -30,7 +30,7 @@
   "signup": "Đăng ký",
   "letSign": "Hãy đăng nhập",
   "login": "Đăng nhập vào tài khoản của bạn để tiếp tục Khóa học của bạn",
-  "remember": "Nghi nhớ",
+  "remember": "Ngi nhớ",
   "forgot": "Quên mật khẩu?",
   "Signin": "Đăng nhập",
   "or": "Hoặc Tiếp tục với",
@@ -67,5 +67,8 @@
   "tsmart1": "Trung tâm hàng đầu",
   "tsmart2": "Tsmart là trung tâm đào tạo lập trình hàng đầu tại Đà Nẵng với đội ngũ giáo viên chất lượng, nhiệt tình và giàu kinh nghiệm trong lĩnh vực lập trình và công nghệ thông tin giúp học viên dễ dàng tiếp cận và nắm bắt kiến thức một cách nhanh chóng và hiệu quả nhất.",
   "network": "Không tìm thấy kết nối mạng",
-  "tryNetWork": "Vui lòng kiểm tra kết nối mạng của bạn và thử lại"
+  "tryNetWork": "Vui lòng kiểm tra kết nối mạng của bạn và thử lại",
+  "ab": "Giới thiệu",
+  "Curriculcum": "Chương trình giảng dạy",
+  "startLearing": "Bắt đầu khoá học"
 }

@@ -13,19 +13,22 @@ import { importInfor } from "../../apis/courseApi";
 import LoadingView from "../Auth/LoadingScreen";
 import { updateInfor } from "../../redux/token/slice.token";
 import Modal2 from "../../components/Modal";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 
 export default function EditProfile({ navigation }) {
     const dispatch = useDispatch();
     const idUser = useSelector(state => state.authReducer?.authData?.id);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
+    const { getItem } = useAsyncStorage('auth');
     const [image, setImage] = useState('');
     const { control, handleSubmit, formState: { errors } } = useForm();
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState(null);
+
 
     const selectImage = useCallback(() => {
         const options = {
@@ -35,7 +38,6 @@ export default function EditProfile({ navigation }) {
                 path: "images",
             },
         };
-
         launchImageLibrary(options, (response) => {
             if (response.didCancel) {
                 console.log('User cancelled image picker');
@@ -45,7 +47,6 @@ export default function EditProfile({ navigation }) {
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
-                console.log(image)
                 setImage(response?.assets[0]);
                 setPreviewImage(response?.assets[0]?.uri);
             }
@@ -67,17 +68,29 @@ export default function EditProfile({ navigation }) {
             formData.append('avatar', imageBlob);
         }
         formData.append('accountId', idUser);
-
         try {
             setLoading(true);
+            const res = await getItem();
             await importInfor(formData);
-            await dispatch(updateInfor({
-                id: data?._id,
+            const updatedInfo12 = {
+                id: data._id,
                 fullname: data.fullName,
                 email: data.userName,
                 phone: data.phoneNumber,
                 ...(image && { avatar: image.uri })
-            }));
+            };
+            await dispatch(updateInfor(updatedInfo12));
+            if (res) {
+                const account = JSON.parse(res);
+                console.log({
+                    message: `Message now :: []`,
+                    account: account
+                })
+                await AsyncStorage.setItem('auth', JSON.stringify({
+                    ...account,
+                    infor: updatedInfo12
+                }));
+            }
             setOpen(true);
         } catch (error) {
             console.log(error);
@@ -152,6 +165,7 @@ export default function EditProfile({ navigation }) {
                                             style={{ marginLeft: 20 }}
                                             onChangeText={field.onChange}
                                             value={field.value}
+                                            keyboardType="phone-pad"
                                         />
                                     </View>
                                     <Text style={{ alignSelf: 'flex-start', color: 'red' }}>

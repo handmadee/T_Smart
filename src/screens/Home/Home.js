@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Pressable, Image, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Pressable, Image, TextInput, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
@@ -16,9 +16,24 @@ import PopupImage from '../Popup/mainPop';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FlashList } from "@shopify/flash-list";
+import LazyImage from '../../components/LazyImage';
 
 
+/**
+ * 
+ *     const account = {
+                id: client.message.data.user_id,
+                accesstoken: client.message.data.accessToken,
+                refreshtoken: client.message.data.refreshToken,
+                infor: null
+            }
+            dispatch(addAuth(account));
+            await AsyncStorage.setItem('auth',
+                JSON.stringify(account)
+            )
+ */
 const Home = () => {
+    const SHOWIMAGE = 10000;
     const navigation = useNavigation();
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
@@ -30,6 +45,9 @@ const Home = () => {
     const [imageCourse, setImageCourse] = useState([]);
     const inforUser = useSelector(state => state.authReducer?.authData?.infor);
     const [open, setOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+
+
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -52,7 +70,7 @@ const Home = () => {
                 }
                 setTimeout(() => {
                     setPopup(true);
-                }, 10000);
+                }, SHOWIMAGE);
             } catch (error) {
                 console.error('Error fetching initial data:', error);
             } finally {
@@ -60,7 +78,7 @@ const Home = () => {
             }
         };
         fetchInitialData();
-    }, []);
+    }, [inforUser, SHOWIMAGE]);
 
     const handleCategoryPress = useCallback(async (category) => {
         setTrackingCourse(category.nameCategory);
@@ -74,11 +92,12 @@ const Home = () => {
             setLoading(false);
         }
     }, []);
-
     const handleCoursePress = (course) => {
+        console.log({
+            course: course
+        })
         navigation.navigate('DetailCourse', { course });
     };
-
     const handlerNotification = useCallback(() => {
         navigation.navigate('NotificationOne');
     }, []);
@@ -111,24 +130,6 @@ const Home = () => {
     const handlerSellAll = useCallback(() => {
         navigation.navigate('SeeCourse');
     }, []);
-
-    // const TagList = () => (
-    //     <FlashList
-    //         bounces={false}
-    //         showsHorizontalScrollIndicator={false}
-    //         horizontal
-    //         data={categories}
-    //         keyExtractor={(item) => item._id}
-    //         estimatedItemSize={200}
-    //         renderItem={({ item }) => (
-    //             <Tag
-    //                 title={item.nameCategory}
-    //                 onPress={() => handleCategoryPress(item)}
-    //                 status={trackingCourse === item.nameCategory}
-    //             />
-    //         )}
-    //     />
-    // );
 
     const TagList = () => (
         <FlashList
@@ -193,11 +194,11 @@ const Home = () => {
 
     return (
         loading ? <LoadingView /> :
-            <ScrollView style={{
-                flex: 1,
-                backgroundColor: Color.colorGhostwhite,
-
-            }}
+            <ScrollView
+                style={{
+                    flex: 1,
+                    backgroundColor: Color.colorGhostwhite,
+                }}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
             >
@@ -238,11 +239,6 @@ const Home = () => {
                             toggleModal={() => setPopup(false)}
                         />
                     }
-
-                    {/* <PopupImage imageUri={'https://mdcop.vn/wp-content/uploads/2020/02/pop-up-l%C3%A0-g%C3%AC.jpg'}
-                    isVisible={popup}
-                    toggleModal={() => setPopup(false)}
-                /> */}
                 </Container>
             </ScrollView>
     );

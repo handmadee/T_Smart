@@ -114,7 +114,7 @@ const PlayQuiz = ({ navigation, route }) => {
                     height={10}
                     progress={timeLeft / timelet} width={wp(90)} />
                 <Text style={styles.title}>{question}</Text>
-                {image && <Image source={{ uri: image }} style={styles.image} resizeMode="cover" />}
+                {image && <Image source={{ uri: image }} style={styles.image} resizeMode="stretch" />}
                 {manyAnswers.map((item, index) => (
                     <Pressable
                         key={index}
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: wp(90),
-        height: hp(23),
+        height: hp(20),
         borderRadius: 15,
         alignSelf: 'center',
         marginBottom: 10

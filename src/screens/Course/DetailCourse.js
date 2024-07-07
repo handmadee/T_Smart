@@ -1,13 +1,13 @@
 'use strict';
-import React, { useMemo, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, TextInput, ScrollView, Platform, FlatList, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Pressable, Image, ScrollView, Platform } from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Container } from '../../components/Container';
 import { RowComponent } from '../../components/RowComponent';
-import { Camera, Clock, Message, Star, Star1, Book, Mobile, Transmit, AudioSquare, PenTool2, BackwardItem } from 'iconsax-react-native';
+import { Camera, Clock, Message, Star, Book, Mobile, Transmit, AudioSquare, PenTool2, BackwardItem } from 'iconsax-react-native';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import loadText from '../../services/loadText';
 import Button from '../../components/Button';
@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import LoadingView from '../Auth/LoadingScreen';
 import { getCourseById } from '../../apis/courseApi';
 import notificationServiceCourse from './notificationCourse';
+import { useTranslation } from 'react-i18next';
 
 
 export default function DetailCourse({ navigation, route }) {
@@ -26,6 +27,7 @@ export default function DetailCourse({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [isShowModal, setIsShowModal] = useState(false);
+    const { t } = useTranslation();
     const RenderIntructor = React.memo(() => {
         return (
             <Container style={[styles.intructor]}>
@@ -42,7 +44,7 @@ export default function DetailCourse({ navigation, route }) {
                             />
                             <View>
                                 <Text style={[styles.category]}>Nguyễn Ngọc Tính</Text>
-                                <Text style={[styles.p]}>Graphic Design</Text>
+                                <Text style={[styles.p]}>Lập trình viên chuyên nghiệp</Text>
                             </View>
                         </View>
                     </View>
@@ -115,7 +117,7 @@ export default function DetailCourse({ navigation, route }) {
                                 color: Color.colorGray_100,
                                 textAlign: 'center',
                                 lineHeight: hp(7)
-                            }]}>About</Text>
+                            }]}>{t('ab')}</Text>
                         </Pressable>
                         {/*  */}
                         <Pressable style={[styles.btn]} >
@@ -123,7 +125,7 @@ export default function DetailCourse({ navigation, route }) {
                                 color: Color.colorGray_100,
                                 textAlign: 'center',
                                 lineHeight: hp(7)
-                            }]}>Curriculcum</Text>
+                            }]}>{t('Curriculcum')}</Text>
                         </Pressable>
                     </RowComponent>
                     {/* Content */}
@@ -150,7 +152,6 @@ export default function DetailCourse({ navigation, route }) {
 
     const handlerLearing = async () => {
         console.log(course)
-        // Step 1: Check if the course ID is valid
         const courseId = course?._id;
         console.log(courseId);
         if (!courseId) {
@@ -211,7 +212,7 @@ export default function DetailCourse({ navigation, route }) {
                     </View>
                 </View>
             </ScrollView >
-            <Button title="Start Learning" style={[styles.startCourse]} onPress={handlerLearing} />
+            <Button title={t('startLearing')} style={[styles.startCourse]} onPress={handlerLearing} />
             <Modal2 img={
                 require('./../../../assets/Logo.png')
             }
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Color.colorGray_100,
-        fontFamily: FontFamily.jostSemiBold,
+        fontFamily: FontFamily.robotoRegular,
         fontSize: FontSize.size_xl,
         letterSpacing: .2,
     },

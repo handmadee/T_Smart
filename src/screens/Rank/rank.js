@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Color, FontFamily, FontSize } from '../../../GlobalStyles';
 import { Container } from '../../components/Container';
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Color.colorGhostwhite,
         borderRadius: wp(5),
-        height: Platform.OS === 'ios' ? hp(70) : hp(80),
+        height: Platform.OS === 'ios' ? hp(70) : hp(85),
     },
     userInfoContainer: {
         alignItems: 'center',

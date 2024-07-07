@@ -6,7 +6,6 @@ import {
 } from 'react-native-responsive-screen';
 import * as Progress from 'react-native-progress';
 import { Color } from './GlobalStyles';
-
 const logo = require('./assets/Logo.png');
 const Splash = () => (
     <>

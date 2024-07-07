@@ -55,7 +55,7 @@ const MyCourse = ({ navigation }) => {
             <Pressable
                 onPress={onPress}
                 style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
-                <LazyImage url={image} width={wp(35)} height={'100%'} style={styles.lazy} resize={'cover'} />
+                <LazyImage url={image} width={wp(35)} height={'100%'} style={styles.lazy} resize={'stretch'} />
                 <View style={{ paddingRight: 15, width: wp(45) }}>
                     <Text style={[styles.cardCategory]}>{category}</Text>
                     <Text style={[styles.title]}>{title}</Text>
@@ -72,7 +72,7 @@ const MyCourse = ({ navigation }) => {
                     >
                         View Certificate
                     </Text>
-                    <Image style={styles.tick} source={require('./../../../assets/Check1.png')} />
+                    <Image style={styles.tick} source={require('./../../../assets/Check1.png')} resizeMode='stretch' />
                 </View>
             </Pressable>
         );
@@ -80,7 +80,7 @@ const MyCourse = ({ navigation }) => {
 
     const CourseGoing = ({ image = '', category = '', title = '', time = 90, learned = 0, totalCourse = 0, onPress }) => (
         <Pressable onPress={onPress} style={[styles.cardCourse, styles.rowC, { justifyContent: 'space-between' }]}>
-            <LazyImage url={image} width={wp(30)} height={'100%'} style={styles.lazy} resize={'cover'} />
+            <LazyImage url={image} width={wp(40)} height={'100%'} style={styles.lazy} resize={"stretch"} />
             <View style={{ paddingRight: 15 }}>
                 <Text style={[styles.cardCategory]}>{title}</Text>
                 <Text style={[styles.title]}>{category}</Text>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     cardCourse: {
         width: wp(85),
-        height: hp(15),
+        height: hp(20),
         borderRadius: 16,
         ...shadowStyle,
         flexDirection: 'row',
@@ -208,15 +208,17 @@ const styles = StyleSheet.create({
         marginBottom: hp(2),
     },
     cardCategory: {
+        width: "80%",
+        marginLeft: 10,
         fontFamily: FontFamily.mulishBold,
-        fontSize: FontSize.paragraphSmall_size,
+        fontSize: 16,
         color: Color.colorOrangered,
         marginVertical: 10,
     },
     title: {
-        fontFamily: FontFamily.jostSemiBold,
-        fontSize: FontSize.buttonMedium_size,
-        color: Color.colorGray_100,
+        fontFamily: FontFamily.poppinsSemiBold,
+        fontSize: FontSize.size_mini,
+        color: Color.colorOrangered,
         letterSpacing: 0.2,
     },
     star: {
@@ -233,12 +235,12 @@ const styles = StyleSheet.create({
         marginVertical: 7,
     },
     tick: {
-        width: wp(5),
-        height: wp(5),
+        width: wp(7),
+        height: wp(7),
         borderRadius: 50,
         position: 'absolute',
-        right: 10,
-        top: 10,
+        right: 20,
+        top: -10,
     },
     img: {
         width: wp(25),

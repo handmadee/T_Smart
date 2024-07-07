@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, KeyboardAvoidingView, Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Image, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useForm, Controller } from 'react-hook-form';
 import { Container } from "../../components/Container";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -16,10 +16,7 @@ import { addAuth } from "../../redux/token/slice.token";
 import { useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { checkInforUser } from "../../apis/courseApi";
-import { pushFcmToken } from "../../apis/fcmApi";
 import PushNotificationService from "../../services/notifications/PushNotificationService";
-
-
 
 
 export default function Login({ navigation }) {
@@ -39,17 +36,20 @@ export default function Login({ navigation }) {
                 password: data.pass
             })
             const infor = await checkInforUser(client?.data.data?.user_id);
+            console.log({
+                message: `[account :: -Infor]`,
+                infor: infor.data.data?.info
+            })
             const account = {
                 id: client.data.data.user_id,
                 accesstoken: client.data.data.accessToken,
                 refreshtoken: client.data.data.refreshToken,
-                infor: infor.data.data?.info
+                infor: infor ? infor.data.data?.info : null
             }
             dispatch(addAuth(account));
             // Lấy token fcm
             pushNotification.saveFcmToken(client.data.data.user_id);
             // await pushFcmToken();
-            console.log(check)
             check && await AsyncStorage.setItem('auth', JSON.stringify(account));
             navigation.navigate('HomeNav');
         } catch (error) {
